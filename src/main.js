@@ -1,8 +1,13 @@
 import Vue from 'vue'
-import App from './App.vue'
+import router from './router'
+import store from './store'
+import '../src/styles/index.scss'
+import Dashboard from './views/Dashboard.vue'
 
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(App),
+  router,
+  store,
+  render: h => h(Dashboard),
 }).$mount('#app')
