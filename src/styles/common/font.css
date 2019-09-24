@@ -1,0 +1,13 @@
+html * {
+  font-family: "Roboto", sans-serif !important;
+}
+a {
+  text-decoration: none;
+}
+.font {
+  outline: none;
+  color: black;
+}
+.font-default {
+  font-size: 1.3rem;
+}

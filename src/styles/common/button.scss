@@ -1,0 +1,21 @@
+.button {
+  &-primary {
+    padding: 1rem;
+    width: 100%;
+
+    outline: none;
+    border-radius: $border-radius-small;
+
+    background-color: $color-primary;
+
+    border: none;
+
+    color: $white;
+    cursor: pointer;
+
+    &:hover {
+      transition: all .2s ease-in-out;
+      background-color: $color-primary-dark;
+    }
+  }
+}

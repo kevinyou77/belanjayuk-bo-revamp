@@ -1,26 +1,84 @@
 <template>
-  <div>
-    ini login
+  <div class="login">
+    <div class="login-wrapper">
+      <ApolloMutation
+        :mutation="loginMutation"
+        :variables="{
+          username,
+          password
+        }">
+        <template v-slot="{ mutate, loading, error }">
+          <div class="login-wrapper-content">
+            <img 
+              class="login-wrapper-content-image"
+              src="../assets/logo.png"
+              alt=""
+              width="150"
+              height="180" />
+
+            <div class="login-wrapper-content-form form form-column form-center">
+              <input 
+                type="text"
+                class="form-input-text"
+                placeholder="Username"
+                v-model="username" />
+
+              <input
+               type="password"
+               class="form-input-text"
+               placeholder="Password"
+               v-model="password" />
+              
+              <button 
+                :disabled="loading"
+                @click="mutate()"
+                class="button-primary">
+                <span class="text-default">
+                  Masuk
+                </span>
+              </button>
+
+              <p v-if="error">An error occured: {{ error }}</p>
+            </div>
+          </div>
+        </template>
+      </ApolloMutation>
+      
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import {
+  mutations,
+  mutationTypes,
+} from '../commands/loginCommands'
 
 export default {
   name: 'login',
+  data () {
+    return {
+      username: '',
+      password: '',
+    }
+  },
   computed: {
     ...mapState({
       loggedIn: state => state.auth.loggedIn,
-    })
+    }),
+    loginMutation () {
+      const { LOGIN } = mutationTypes
+      const authenticateQuery = mutations[LOGIN]
+
+      return authenticateQuery
+    },
   },
   methods: {
     tryAuth() {
-      console.log(this.loggedIn)
-      this.$store.dispatch('auth/authenticate').then (res => {
-        console.log(res, 'success')
-      })
-    }
+
+    },
+
   },
   mounted () {
     this.tryAuth()

@@ -2,14 +2,14 @@
   display: flex;
 
   .sidebar {
-    background-color: black;
     height: 100vh;
     position: sticky;
-    flex-basis: 17vw;
+    flex-basis: 10vw;
   }
 
   .content {
     min-height: 100vh;
     flex: 1;
+    background: $background;
   }
 }
