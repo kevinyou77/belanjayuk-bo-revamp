@@ -12,9 +12,6 @@ const actions = {
   logout ({ commit }) {
     commit('setLoggedIn', false)
   },
-  appendUserInputArr ({ commit }, userInput) {
-    commit ('appendUserInputArr', userInput)
-  },
 }
 
 const mutations = {

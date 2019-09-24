@@ -6,8 +6,9 @@
         :variables="{
           username,
           password
-        }">
-        <template v-slot="{ mutate, loading, error }">
+        }"
+        @done="onMutationDone">
+        <template v-slot="{ mutate, loading, error, done }">
           <div class="login-wrapper-content">
             <img 
               class="login-wrapper-content-image"
@@ -39,6 +40,7 @@
               </button>
 
               <p v-if="error">An error occured: {{ error }}</p>
+              <p v-if="done">An error occured: {{ done }}</p>
             </div>
           </div>
         </template>
@@ -75,13 +77,25 @@ export default {
     },
   },
   methods: {
-    tryAuth() {
+    onMutationDone (res) {
+      if (!res.data) return
 
-    },
+      const {
+        bearerToken,
+        roleName,
+        username,
+      } = res.data.login
 
+      sessionStorage.setItem('bearerToken', bearerToken)
+      sessionStorage.setItem('roleName', roleName)
+      sessionStorage.setItem('username', username)
+
+      this.$store.dispatch('auth/authenticate')
+      this.$router.push('/category')
+    }
   },
   mounted () {
-    this.tryAuth()
+    // this.tryAuth()
   },
 }
 </script>

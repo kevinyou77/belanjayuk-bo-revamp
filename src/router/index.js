@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Dashboard from '../views/Dashboard'
 
 Vue.use(Router)
 
@@ -8,7 +7,7 @@ function lazyLoad (view) {
   return () => import(`@/views/${view}.vue`)
 }
 
-export default new Router ({
+const router = new Router ({
   mode: 'history',
   base: __dirname,
   routes: [
@@ -20,7 +19,25 @@ export default new Router ({
     {
       path: '/category',
       name: 'category',
-      component: lazyLoad('category/AddCategory')
+      component: lazyLoad('category/AddCategory'),
+      meta: {
+        requireAuth: true,
+      }
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(recodrd => recodrd.meta.requireAuth)) {
+    if (sessionStorage.getItem('bearerToken') == null) {
+      next({
+        path: '/login',
+        params: { nextUrl: to.fullPath },
+      })
+    }
+  }
+
+  next()
+})
+
+export default router
