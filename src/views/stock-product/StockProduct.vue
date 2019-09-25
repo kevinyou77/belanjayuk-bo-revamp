@@ -86,14 +86,17 @@ export default {
       console.log(target)
     },
     deleteStockProduct (id) {
-      this.productStocks = this.productStocks.filter ((item, i) => item.id !== id)
       this.$apollo.mutate({
         mutation: deleteStockProductQuery(),
         variables: {
           id,
         }
-      }).then ((data) => {
-        console.log(data)
+      })
+      .then ((data) => {
+        this.productStocks = this.productStocks.filter ((item, i) => item.id !== id)
+      })
+      .catch (err => {
+        
       })
     }
   },
@@ -107,7 +110,6 @@ export default {
   },
   apollo: {
     productStocks: getStockProductsQuery(),
-
   },
   
 }
