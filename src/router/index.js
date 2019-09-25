@@ -19,7 +19,7 @@ const router = new Router ({
     {
       path: '/category',
       name: 'category',
-      component: lazyLoad('category/AddCategory'),
+      component: lazyLoad('category/Category'),
       meta: {
         requireAuth: true,
       }
@@ -28,10 +28,18 @@ const router = new Router ({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(recodrd => recodrd.meta.requireAuth)) {
-    if (sessionStorage.getItem('bearerToken') == null) {
+  const bearerToken = sessionStorage.getItem('bearerToken')
+
+  if (to.fullPath === '/' && bearerToken) {
+    next({
+      path: '/dashboard',
+    })
+  }
+
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    if (bearerToken === null) {
       next({
-        path: '/login',
+        path: '/',
         params: { nextUrl: to.fullPath },
       })
     }

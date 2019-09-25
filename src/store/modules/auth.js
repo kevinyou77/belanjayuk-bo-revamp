@@ -4,10 +4,7 @@ const state = {
 
 const actions = {
   authenticate ({ commit }) {
-    return new Promise((resolve) => {
-      commit('setLoggedIn', true)
-      resolve(state.loggedIn)
-    })
+    commit('setLoggedIn', true)
   },
   logout ({ commit }) {
     commit('setLoggedIn', false)
@@ -24,5 +21,5 @@ export default {
   state,
   actions,
   mutations,
-  namespaced: true
+  namespaced: true,
 }

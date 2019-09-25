@@ -1,0 +1,10 @@
+.list {
+  display: flex;
+  flex-direction: column;
+}
+.list-header {
+  display: flex;
+}
+.list-content {
+  display: flex;
+}

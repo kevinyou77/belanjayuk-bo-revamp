@@ -1,0 +1,13 @@
+.category {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.category-content {
+  width: 50%;
+  height: 80%;
+}

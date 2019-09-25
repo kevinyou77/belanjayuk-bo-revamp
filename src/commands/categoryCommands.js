@@ -23,7 +23,6 @@ export const queries = {
   [queryTypes.GET_CATEGORIES]: gql`
     query categories {
       categories {
-        id
         name
       }
     }

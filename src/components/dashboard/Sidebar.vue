@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar" v-if="loggedIn">
+  <div class="sidebar">
     <img 
       src="../../assets/logo-horizontal.png"
       alt=""
@@ -36,14 +36,11 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 
 export default {
   name: 'sidebar',
   computed: {
-    ...mapState({
-      loggedIn: state => state.auth.loggedIn,
-    })
+    
   },
 }
 </script>

@@ -1,14 +1,22 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
 @import './common/variables.scss';
 
 @import './common/symbols.scss';
 @import './common/form.scss';
 @import './common/button.scss';
 @import './common/text.scss';
+@import './common/font.scss';
+@import './common/list.scss';
+@import './common/data-table.scss';
+@import './common/bootstrap/table.scss';
+@import './common/bootstrap/b-button.scss';
+@import './common/bootstrap/form-group.scss';
 
 @import './scaffold.scss';
 @import './dashboard.scss';
 @import './dashboard/sidebar.scss';
 @import './category/category.scss';
+@import './category/category-list.scss';
 
 @import './login.scss';
-@import './common/font.scss';
