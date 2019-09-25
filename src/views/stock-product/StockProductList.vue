@@ -1,7 +1,6 @@
 <template>
   <div class="category-list">
-    <div v-if="$apollo.queries.productStocks.loading">Loading...</div>
-    <div v-else>
+    <div>
       <b-table
         :fields="fields"
         :items="productStocks">
@@ -14,33 +13,32 @@
 </template>
 
 <script>
-import { queries, queryTypes } from '../../commands/stockProductCommands'
+// const getStockProductsQuery = () => {
+//   const { GET_PRODUCT_STOCKS } = queryTypes
+//   const getStockProductsQuery = queries[GET_PRODUCT_STOCKS]
 
-
-const getStockProductsQuery = () => {
-  const { GET_PRODUCT_STOCKS } = queryTypes
-  const getStockProductsQuery = queries[GET_PRODUCT_STOCKS]
-
-  return getStockProductsQuery
-}
+//   return getStockProductsQuery
+// }
 
 export default {
- 
+  props: ['productStocks'],
   data() {
     return {
       fields: [
         'no',
         'name',
       ],
-      productStocks: [],
+      // productStocks: [],
     }
   },
-  apollo: {
-    productStocks: getStockProductsQuery(),
-  },
+  // apollo: {
+  //   productStocks: getStockProductsQuery(),
+  // },
   computed: {
   
   },
-  
+  mounted () {
+    
+  }
 }
 </script>

@@ -29,7 +29,9 @@
         </template>
       </ApolloMutation>
 
-      <StockProductList />
+      <div v-if="$apollo.queries.productStocks.loading">Loading...</div>
+      <StockProductList v-else
+        :productStocks="productStocks" />
     </div>
   </div>
 </template>
@@ -40,6 +42,14 @@ import {
   mutations,
 } from '../../commands/stockProductCommands'
 import StockProductList from '../stock-product/StockProductList'
+import { queries, queryTypes } from '../../commands/stockProductCommands'
+
+const getStockProductsQuery = () => {
+  const { GET_PRODUCT_STOCKS } = queryTypes
+  const getStockProductsQuery = queries[GET_PRODUCT_STOCKS]
+
+  return getStockProductsQuery
+}
 
 export default {
   components: {
@@ -48,11 +58,13 @@ export default {
   data () {
     return {
       stockProductName: '',
+      productStocks: [],
     }
   },
   methods: {
     onStockProductMutationDone(res) {
-      console.log(res)
+      console.log(this.$apollo.queries)
+      this.$apollo.queries.productStocks.refetch()
     },
   },
   computed: {
@@ -63,5 +75,9 @@ export default {
       return addMutation
     },
   },
+  apollo: {
+    productStocks: getStockProductsQuery(),
+  },
+  
 }
 </script>
