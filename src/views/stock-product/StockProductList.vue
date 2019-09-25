@@ -7,6 +7,15 @@
         <template v-slot:cell(no)="data">
           {{ data.index + 1 }}
         </template>
+
+         <template v-slot:cell(actions)="row">
+            <b-button variant="success" @click="onProductEdit(row.item, row.index, $event.target)" class="mr-1">
+              Edit
+            </b-button>
+            <b-button variant="danger" @click="onProductDelete(row.item, row.index, $event.target)" class="mr-1">
+              Delete
+            </b-button>
+          </template>
       </b-table>
     </div>
   </div>
@@ -21,24 +30,19 @@
 // }
 
 export default {
-  props: ['productStocks'],
+  props: [
+    'productStocks',
+    'onProductEdit',
+    'onProductDelete',
+  ],
   data() {
     return {
       fields: [
         'no',
         'name',
+        { key: 'actions', label: 'Actions' }
       ],
-      // productStocks: [],
     }
   },
-  // apollo: {
-  //   productStocks: getStockProductsQuery(),
-  // },
-  computed: {
-  
-  },
-  mounted () {
-    
-  }
 }
 </script>

@@ -31,18 +31,17 @@
 
       <div v-if="$apollo.queries.productStocks.loading">Loading...</div>
       <StockProductList v-else
-        :productStocks="productStocks" />
+        :productStocks="productStocks"
+        :onProductEdit="onStockProductListItemEdit"
+        :onProductDelete="onStockProductListItemDelete" />
     </div>
   </div>
 </template>
 
 <script>
-import {
-  mutationTypes,
-  mutations,
-} from '../../commands/stockProductCommands'
 import StockProductList from '../stock-product/StockProductList'
-import { queries, queryTypes } from '../../commands/stockProductCommands'
+import { queries, mutations, queryTypes, mutationTypes } from '../../commands/stockProductCommands'
+import gql from 'graphql-tag'
 
 const getStockProductsQuery = () => {
   const { GET_PRODUCT_STOCKS } = queryTypes
@@ -50,6 +49,15 @@ const getStockProductsQuery = () => {
 
   return getStockProductsQuery
 }
+
+const deleteStockProductQuery = () => {
+  const { DELETE_STOCK_PRODUCT } = mutationTypes
+  const deleteQuery = mutations[DELETE_STOCK_PRODUCT]
+
+  return deleteQuery
+}
+
+console.log(deleteStockProductQuery())
 
 export default {
   components: {
@@ -63,9 +71,31 @@ export default {
   },
   methods: {
     onStockProductMutationDone(res) {
-      console.log(this.$apollo.queries)
       this.$apollo.queries.productStocks.refetch()
+      this.stockProductName = ''
     },
+    onStockProductListItemEdit (item, index, target) {
+      console.log(item)
+      console.log(index)
+      console.log(target)
+    },
+    onStockProductListItemDelete (item, index, target) {
+      this.deleteStockProduct(item.id)
+      console.log(item.id)
+      console.log(index)
+      console.log(target)
+    },
+    deleteStockProduct (id) {
+      this.productStocks = this.productStocks.filter ((item, i) => item.id !== id)
+      this.$apollo.mutate({
+        mutation: deleteStockProductQuery(),
+        variables: {
+          id,
+        }
+      }).then ((data) => {
+        console.log(data)
+      })
+    }
   },
   computed: {
     addStockProductMutation () {
@@ -77,6 +107,7 @@ export default {
   },
   apollo: {
     productStocks: getStockProductsQuery(),
+
   },
   
 }

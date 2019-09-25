@@ -1,7 +1,8 @@
 import gql from 'graphql-tag'
 
 export const mutationTypes = {
-  ADD_STOCK_PRODUCT: 'addProduct',
+  ADD_STOCK_PRODUCT: 'addProductStock',
+  DELETE_STOCK_PRODUCT: 'deleteStockProduct',
 }
 
 export const queryTypes = {
@@ -17,12 +18,18 @@ export const mutations = {
       }
     }
   `,
+  [mutationTypes.DELETE_STOCK_PRODUCT]: gql`
+    mutation productStocks($id: String!) {
+      deleteProductStock(id: $id)
+    }
+  `
 }
 
 export const queries = {
   [queryTypes.GET_PRODUCT_STOCKS]: gql`
     query productStocks {
       productStocks {
+        id
         name
       }
     }

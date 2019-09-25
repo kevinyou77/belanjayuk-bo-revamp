@@ -8,22 +8,22 @@
     
     <div class="navigation">
       <div class="navigation-list">
-        <router-link to="/category">
+        <router-link to="/product">
           <div class="navigation-list-item">
-            <span class="font font-default">Product<i class="right"></i></span>
+            <span class="font font-default">Produk<i class="right"></i></span>
           </div>
         </router-link>
 
         <router-link to="/category">
           <div class="navigation-list-item">
-            <span class="font font-default">Categories<i class="right"></i></span>
+            <span class="font font-default">Kategori<i class="right"></i></span>
           </div>
         </router-link>
         
-        <router-link to="/category">
+        <router-link to="/stock-products">
           <div class="navigation-list-item">
             <span class="font font-default">
-              Staff
+              Stok Produk
               <i class="right"></i>
             </span>
           </div>
