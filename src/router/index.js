@@ -23,6 +23,14 @@ const router = new Router ({
       meta: {
         requireAuth: true,
       }
+    },
+    {
+      path: '/stock-products',
+      name: 'stock-products',
+      component: lazyLoad('stock-product/StockProduct'),
+      meta: {
+        requireAuth: true,
+      }
     }
   ]
 })

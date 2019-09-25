@@ -21,9 +21,8 @@ export const mutations = {
 
 export const queries = {
   [queryTypes.GET_PRODUCT_STOCKS]: gql`
-    query datas {
+    query productStocks {
       productStocks {
-        id
         name
       }
     }
