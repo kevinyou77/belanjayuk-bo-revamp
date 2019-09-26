@@ -31,6 +31,14 @@ const router = new Router ({
       meta: {
         requireAuth: true,
       }
+    },
+    {
+      path: '/staff',
+      name: 'staff',
+      component: lazyLoad('staff/Staff'),
+      meta: {
+        requireAuth: true,
+      },
     }
   ]
 })

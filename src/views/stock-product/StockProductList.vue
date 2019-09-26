@@ -9,10 +9,10 @@
         </template>
 
          <template v-slot:cell(actions)="row">
-            <b-button variant="success" @click="onProductEdit(row.item, row.index, $event.target)" class="mr-1">
-              Edit
-            </b-button>
-            <b-button variant="danger" @click="onProductDelete(row.item, row.index, $event.target)" class="mr-1">
+            <b-button 
+              variant="danger" 
+              @click="onProductDelete(row.item, row.index, $event.target)" 
+              class="mr-1">
               Delete
             </b-button>
           </template>

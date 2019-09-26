@@ -28,6 +28,15 @@
             </span>
           </div>
         </router-link>
+
+        <router-link to="/staff">
+          <div class="navigation-list-item">
+            <span class="font font-default">
+              Staff
+              <i class="right"></i>
+            </span>
+          </div>
+        </router-link>
         
       </div>
     </div>
