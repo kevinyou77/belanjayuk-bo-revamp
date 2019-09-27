@@ -31,7 +31,7 @@
               label="Kata sandi"
               id="input-1"
               v-model="staffFields.password"
-              type="text"
+              type="password"
               required
             ></b-form-input>
             <b-form-invalid-feedback :state="isPasswordValid">
@@ -43,13 +43,31 @@
           </b-form-group>
 
           <b-form-group
+            label="Tanggal Lahir"
+            label-for="input">
+            <b-form-input
+              label="Tanggal lahir"
+              id="input-1"
+              v-model="staffFields.dateOfBirth"
+              type="date"
+              required
+            ></b-form-input>
+            <b-form-invalid-feedback :state="isBirthDateValid">
+              Tanggal lahir tidak valid
+            </b-form-invalid-feedback>
+            <b-form-valid-feedback :state="isBirthDateValid">
+              Tanggal lahir valid
+            </b-form-valid-feedback>
+          </b-form-group>
+
+          <b-form-group
             label="Email"
             label-for="input">
             <b-form-input
               label="E-mail"
               id="input-1"
               v-model="staffFields.email"
-              type="text"
+              type="email"
               required
             ></b-form-input>
             <b-form-invalid-feedback :state="isEmailValid">
@@ -222,6 +240,16 @@ export default {
     },
     isNoNikValid () {
       return this.staffFields.noNik.length === 16
+    },
+    isBirthDateValid () {
+      const dob = new Date(this.staffFields.dateOfBirth)
+      const year = dob.getFullYear()
+      const month = dob.getMonth()
+      const day = dob.getDay()
+      console.log(year)
+      console.log(month)
+      console.log(day)
+      return new Date(year + 18, month - 1, day) <= new Date();
     }
   },
   apollo: {

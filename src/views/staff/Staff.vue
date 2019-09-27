@@ -114,7 +114,7 @@ export default {
             phoneNumber,
             address,
             noNik,
-            dateOfBirth: new Date().getTime(),
+            dateOfBirth: new Date(dateOfBirth).getTime(),
           },
           roleId,
         }

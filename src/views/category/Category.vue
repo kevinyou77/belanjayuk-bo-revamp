@@ -29,7 +29,11 @@
         </template>
       </ApolloMutation>
 
-      <CategoryList />
+      <div v-if="$apollo.queries.categories.loading">Loading...</div>
+      <CategoryList
+        :categories="categories"
+        :onCategoryEdit="() => {}"
+        :onCategoryDelete="onCategoryDelete" v-else />
     </div>
   </div>
 </template>
@@ -38,8 +42,24 @@
 import {
   mutationTypes,
   mutations,
+  queryTypes,
+  queries,
 } from '../../commands/categoryCommands'
 import CategoryList from '../category/CategoryList'
+
+const deleteCategoryQuery = () => {
+  const { DELETE_CATEGORY } = mutationTypes
+  const deleteQuery = mutations[DELETE_CATEGORY]
+
+  return deleteQuery
+}
+
+const getCategoryQuery = () => {
+  const { GET_CATEGORIES } = queryTypes
+  const getCategories = queries[GET_CATEGORIES]
+
+  return getCategories
+}
 
 export default {
   components: {
@@ -48,12 +68,28 @@ export default {
   data () {
     return {
       categoryName: '',
+      categories: [],
     }
   },
   methods: {
     onAddCategoryMutationDone(res) {
-      console.log(res)
+      this.$apollo.queries.categories.refetch()
+      this.categoryName = ''
     },
+    onCategoryDelete (category) {
+      this.$apollo.mutate({
+        mutation: deleteCategoryQuery(),
+        variables: {
+          id: category.id,
+        }
+      })
+      .then ((data) => {
+        this.categories = this.categories.filter ((item, i) => item.id !== category.id)
+      })
+      .catch (err => {
+        
+      })
+    }
   },
   computed: {
     addCategoryMutation () {
@@ -62,6 +98,9 @@ export default {
 
       return addMutation
     },
+  },
+  apollo: {
+    categories: getCategoryQuery(),
   },
 }
 </script>

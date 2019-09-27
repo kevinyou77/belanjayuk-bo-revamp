@@ -1,12 +1,20 @@
 <template>
   <div class="category-list">
-    <div v-if="$apollo.queries.categories.loading">Loading...</div>
-    <div v-else>
+    <div>
       <b-table
         :fields="fields"
         :items="categories">
         <template v-slot:cell(no)="data">
           {{ data.index + 1 }}
+        </template>
+
+        <template v-slot:cell(actions)="row">
+          <b-button 
+            variant="danger" 
+            @click="onCategoryDelete(row.item, row.index, $event.target)" 
+            class="mr-1">
+            Delete
+          </b-button>
         </template>
       </b-table>
     </div>
@@ -14,37 +22,22 @@
 </template>
 
 <script>
-import { queries, queryTypes } from '../../commands/categoryCommands.js'
-
-
-const getCategoryQuery = () => {
-  const { GET_CATEGORIES } = queryTypes
-  const getCategories = queries[GET_CATEGORIES]
-
-  return getCategories
-}
-
 export default {
- 
+  props: [
+    'categories',
+    'onCategoryEdit',
+    'onCategoryDelete',
+  ],
   data() {
     return {
       fields: [
         'no',
         'name',
+        { key: 'actions', label: 'Actions' }
       ],
-      categories: [],
     }
   },
   methods: {
-    getCategoryQuery () {
-      const { GET_CATEGORIES } = queryTypes
-      const getCategories = queries[GET_CATEGORIES]
-
-      return getCategories
-    },
-  },
-  apollo: {
-    categories: getCategoryQuery(),
   },
   computed: {
     
