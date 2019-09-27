@@ -15,8 +15,16 @@
             id="input-1"
             v-model="stockProductName"
             type="text"
+            :state="isStockProductValid"
             required
           ></b-form-input>
+          <b-form-invalid-feedback :state="isStockProductValid">
+            Nama stok produk harus lebih dari 1 huruf
+          </b-form-invalid-feedback>
+          <b-form-valid-feedback :state="isStockProductValid">
+            Nama stok produk valid
+          </b-form-valid-feedback>
+          
           <b-button
             @click="mutate()"
            type="submit" variant="primary">Simpan</b-button>
@@ -35,6 +43,11 @@ export default {
     'stockProductName',
     'onStockProductMutationDone',
     'addStockProductMutation',
-  ]
+  ],
+  computed: {
+    isStockProductValid () {
+      return this.stockProductName.length > 1
+    }
+  }
 }
 </script>

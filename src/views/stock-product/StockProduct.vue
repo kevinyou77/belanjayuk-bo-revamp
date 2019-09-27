@@ -12,14 +12,6 @@
         :productStocks="productStocks"
         :onProductEdit="onStockProductListItemEdit"
         :onProductDelete="onStockProductListItemDelete" />
-
-      <b-modal id="my-modal">
-        <EditStockProduct
-          :addStockProductMutation="addStockProductMutation"
-          :stockProductName="stockProductName"
-          :onStockProductMutationDone="onStockProductMutationDone"
-        />
-      </b-modal>
     </div>
   </div>
 </template>

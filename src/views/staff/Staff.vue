@@ -6,6 +6,10 @@
         :staffFields="staffFields"
         :addStaffMutation="addStaffMutation"
         :onAddStaffMutationDone="onAddStaffMutationDone" />
+
+      <b-modal id="error-modal">
+        {{ error }}
+      </b-modal>
     </div>
   </div>
 </template>
@@ -61,12 +65,27 @@ export default {
         address: '',
         noNik: '',
         dateOfBirth: '',
+        roleId: null,
       },
-      roles: [],
       staff: {},
+      error: '',
     }
   },
   methods: {
+    clearFields () {
+      Object.keys(this.staffFields).forEach(item => {
+        if (item === 'roleId') {
+          this.staffFields[item] = null
+          return
+        }
+
+        this.staffFields[item] = ''
+      })
+    },
+    showModal (msg) {
+      this.error = msg
+      this.$bvModal.show('error-modal')
+    },
     onAddStaffMutationDone () {
       console.log('hehe')
     },
@@ -80,6 +99,7 @@ export default {
         address,
         noNik,
         dateOfBirth,
+        roleId,
       } = this.staffFields
 
       return {
@@ -94,10 +114,10 @@ export default {
             phoneNumber,
             address,
             noNik,
-            dateOfBirth: new Date().now,
+            dateOfBirth: new Date().getTime(),
           },
-        },
-        roles: [],
+          roleId,
+        }
       }
     },
     addStaffMutation () {
@@ -107,10 +127,11 @@ export default {
         variables: this.addStaffVariables(),
       })
       .then ((data) => {
-        console.log(data)
+        this.showModal('Data sukses di input')
+        this.clearFields()
       })
       .catch (err => {
-        console.log(err)
+        this.showModal('Data gagal di input, mohon cek kembali data yang di isi')
       })
     }
   },
