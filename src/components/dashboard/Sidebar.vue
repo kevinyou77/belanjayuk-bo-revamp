@@ -8,7 +8,7 @@
     
     <div class="navigation">
       <div class="navigation-list">
-        <router-link to="/product">
+        <router-link to="/products">
           <div class="navigation-list-item">
             <span class="font font-default">Produk<i class="right"></i></span>
           </div>

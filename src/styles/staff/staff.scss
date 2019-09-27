@@ -1,4 +1,4 @@
-.category {
+.staff {
   // background-color: red;
   display: flex;
   flex-direction: column;
@@ -20,5 +20,9 @@
     box-shadow: $box-shadow-default;
     
     background-color: $white;
+  }
+
+  &-add-form {
+    margin-top: 2rem;
   }
 }

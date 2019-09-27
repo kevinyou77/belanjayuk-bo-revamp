@@ -6,11 +6,31 @@ a {
   text-decoration: none;
 }
 
+.box {
+  &-underline {
+    border-bottom: 3px solid black;
+  }
+}
+
 .font {
   outline: none;
   color: $font-color-primary;
 
   &-default {
     font-size: 1.3rem;
+  }
+}
+
+.heading {
+  display: inline-block;
+
+  &-bold {
+
+  }
+  
+  &-default {
+    font-size: 4rem;
+    font-weight: 700;
+    letter-spacing: .3rem;
   }
 }

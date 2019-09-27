@@ -69,7 +69,7 @@ export default {
         this.productStocks = this.productStocks.filter ((item, i) => item.id !== id)
       })
       .catch (err => {
-        
+        console.log(err)
       })
     }
   },

@@ -1,14 +1,17 @@
 <template>
-  <div class="category">
-    <div class="category-content">
-      <h1>Input staff</h1>
+  <div class="staff">
+    <div class="staff-content">
+      <div class="box-underline">
+        <span class="heading heading-default">INPUT STAFF</span>
+      </div>
+      
       <AddStaff
         :staffFields="staffFields"
         :addStaffMutation="addStaffMutation"
         :onAddStaffMutationDone="onAddStaffMutationDone" />
 
       <b-modal id="error-modal">
-        {{ error }}
+        <span class="heading heading-default">{{ error }}</span>
       </b-modal>
     </div>
   </div>

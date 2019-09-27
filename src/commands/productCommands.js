@@ -3,6 +3,7 @@ import gql from 'graphql-tag'
 export const mutationTypes = {
   ADD_PRODUCT: 'addProduct',
   UPDATE_PRODUCT: 'updateProduct',
+  DELETE_PRODUCT: 'deleteProduct'
 }
 
 export const queryTypes = {
@@ -72,6 +73,11 @@ export const mutations = {
         }
       }
     }
+  `,
+  [mutationTypes.DELETE_PRODUCT]: gql`
+    mutation deleteProduct($id: String!){
+      deleteProduct(id: $id)
+    }
   `
 }
 
@@ -89,11 +95,17 @@ export const queries = {
       products {
         id
         name
+        SKU
+        stock
+        status
         productDetail {
           id
           value
           purchasePrice
           sellingPrice
+        }
+        category {
+          name
         }
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="staff-add-form">
     <!-- <ApolloMutation
         :mutation="addStaffMutation"
         @done="onAddStaffMutationDone"
