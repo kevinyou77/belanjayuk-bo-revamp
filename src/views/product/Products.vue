@@ -37,15 +37,13 @@
           :onProductDetailAdd="onProductDetailAdd" />
       </transition>
 
-      
-
-        <b-button
-          @click="switched = !switched"
-          variant="success"
-          class="mt-3" 
-          block >
+      <b-button
+        @click="switched = !switched"
+        variant="success"
+        class="mt-3" 
+        block >
           Simpan
-        </b-button>
+      </b-button>
     </b-modal>
   </div>
 </template>
