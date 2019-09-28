@@ -20,7 +20,6 @@ export default {
       loggedInFromStore: state => state.auth.loggedIn,
     }),
     loggedIn () {
-      console.log(this.loggedInFromStore)
       return this.loggedInFromStore || (sessionStorage.getItem('bearerToken') !== null)
     },
   },

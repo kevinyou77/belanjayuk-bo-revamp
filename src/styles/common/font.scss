@@ -19,18 +19,20 @@ a {
   &-default {
     font-size: 1.3rem;
   }
+
+  &-medium {
+    font-size: 1.7rem;
+  }
 }
 
 .heading {
   display: inline-block;
 
-  &-bold {
-
-  }
-  
   &-default {
     font-size: 4rem;
     font-weight: 700;
     letter-spacing: .3rem;
   }
+
+  
 }

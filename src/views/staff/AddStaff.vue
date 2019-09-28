@@ -246,9 +246,7 @@ export default {
       const year = dob.getFullYear()
       const month = dob.getMonth()
       const day = dob.getDay()
-      console.log(year)
-      console.log(month)
-      console.log(day)
+
       return new Date(year + 18, month - 1, day) <= new Date();
     }
   },

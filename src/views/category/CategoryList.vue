@@ -9,9 +9,9 @@
         </template>
 
         <template v-slot:cell(actions)="row">
-          <b-button 
+          <b-button
+            @click="onCategoryDelete(row.item)" 
             variant="danger" 
-            @click="onCategoryDelete(row.item, row.index, $event.target)" 
             class="mr-1">
             Delete
           </b-button>
@@ -37,14 +37,5 @@ export default {
       ],
     }
   },
-  methods: {
-  },
-  computed: {
-    
-  },
-  mounted () {
-    console.log(this.categories)
-  },
-  
 }
 </script>

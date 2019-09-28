@@ -124,7 +124,6 @@ export default {
       }
     },
     addStaffMutation () {
-      console.log(this.addStaffVariables())
       this.$apollo.mutate({
         mutation: addStaffQuery(),
         variables: this.addStaffVariables(),

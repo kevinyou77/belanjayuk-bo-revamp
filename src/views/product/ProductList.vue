@@ -1,9 +1,16 @@
 <template>
   <div class="products-list">
     <div>
+      <div v-if="productIsEmpty">
+        <span class="font font-medium">
+          Tidak ada produk
+        </span>
+      </div>
       <b-table
+        v-else
         :fields="fields"
         :items="products">
+
         <template v-slot:cell(no)="data">
           {{ data.index + 1 }}
         </template>
@@ -22,12 +29,6 @@
 </template>
 
 <script>
-// const getStockProductsQuery = () => {
-//   const { GET_PRODUCT_STOCKS } = queryTypes
-//   const getStockProductsQuery = queries[GET_PRODUCT_STOCKS]
-
-//   return getStockProductsQuery
-// }
 
 export default {
   props: [
@@ -44,6 +45,11 @@ export default {
         { key: 'category.name', label: 'Category' },
         { key: 'actions', label: 'Actions' }
       ],
+    }
+  },
+  computed: {
+    productIsEmpty () {
+      return this.products.length === 0
     }
   },
 }

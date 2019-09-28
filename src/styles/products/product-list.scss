@@ -9,15 +9,22 @@
   &-content {
     width: 70%;
     padding: 3rem;
-
     border-radius: $border-radius-default;
-
     box-shadow: $box-shadow-default;
-    
     background-color: $white;
+
+    &-header {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   &-list {
     margin-top: 1rem;
   }
+
+  &-add-form {
+    margin-top: 2rem;
+  }
+
 }
