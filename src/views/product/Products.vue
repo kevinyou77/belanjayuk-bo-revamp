@@ -18,32 +18,49 @@
         :onProductDelete="onProductDelete"
         :onProductEdit="onProductEdit" />
     </div>
+
+    <!-- MODAL -->
     <b-modal
       id="add-product-modal"
       hide-footer>
       <div class="box-underline">
-        <span class="heading heading-default">Tambah</span>
+        <span class="heading heading-default">Tambah Produk</span>
       </div>
+        <transition
+          tag="div"
+          name="slide-fade"
+          mode="out-in">
+          <AddProduct
+            v-if="!formFinalStep"
+            key="`addproduct`"
+            :productFields="addProductFields"
+            :onProductAddConfirmed="onProductAddConfirmed" />
+          <transition-group
+            v-else
+            tag="div"
+            name="fade"
+            mode="out-in">
+            <AddProductDetail
+              key="`detail`"
+              :productDetailFields="productDetailInput"
+              :onProductDetailAdd="onProductDetailAdd" />
 
-      <transition name="fade" mode="out-in">
-        <AddProduct
-          v-if="!switched"
-          :productFields="addProductFields"
-          :onProductAddConfirmed="onProductAddConfirmed" />
+            <List
+              key="`list`"
+              :items="productDetailInputArray"
+              :fields="productDetailListFields"
+              :actions="productDetailListActions()" />
 
-        <AddProductDetail
-          v-else
-          :productDetailFields="productDetailInput"
-          :onProductDetailAdd="onProductDetailAdd" />
-      </transition>
-
-      <b-button
-        @click="switched = !switched"
-        variant="success"
-        class="mt-3" 
-        block >
-          Simpan
-      </b-button>
+            <b-button
+              @click="handleAddProductMutation()"
+              key="`finalize button`"
+              variant="primary"
+              class="mt-3" 
+              block >
+              Simpan produk
+            </b-button>
+          </transition-group>
+        </transition>
     </b-modal>
   </div>
 </template>
@@ -52,6 +69,7 @@
 import ProductList from './ProductList'
 import AddProduct from './AddProduct'
 import AddProductDetail from './AddProductDetail'
+import List from '../../components/common/List'
 import {
   queries,
   mutations,
@@ -85,6 +103,7 @@ export default {
     ProductList,
     AddProduct,
     AddProductDetail,
+    List,
   },
   data () {
     return {
@@ -93,17 +112,28 @@ export default {
         name: '',
         SKU: '',
         stock: '',
-        category: null,
+        categoryId: null,
       },
       productDetailInput: {
         productStockId: null,
+        tempId: {
+          id: '',
+          name: '',
+        },
         sellingPrice: '',
         purchasePrice: '',
         value: '',
         productId: '',
       },
+      productDetailListFields: [
+        'purchasePrice',
+        'sellingPrice',
+        { key: 'tempId.name', label: 'Unit stok' },
+        { key: 'value', label: 'Jumlah stok per unit stok' },
+        { key: 'actions', label: 'Aksi' }
+      ],
       productDetailInputArray: [],
-      switched: false,
+      formFinalStep: false,
     }
   },
   methods: {
@@ -120,7 +150,8 @@ export default {
       })
       .catch (err => console.log(err))
     },
-    addProductMutation () {
+    handleAddProductMutation () {
+      console.log(this.constructMutationVariables())
       this.$apollo.mutate({
         mutation: addProductMutation(),
         variables: {
@@ -129,37 +160,79 @@ export default {
       })
       .then (res => {
         console.log(res)
+        console.log('mantul')
       })
-      .catch (err => console.log(err))
+      .catch (err => {
+        console.log(err)
+        console.log('error')
+      })
     },
     onProductAddConfirmed () {
-
+      this.formFinalStep = !this.formFinalStep
     },
     onProductEdit () {
 
     },
     onProductDetailAdd (newProductDetail) {
+      const {
+        sellingPrice,
+        purchasePrice,
+        value,
+        productStockId,
+        tempId,
+      } = newProductDetail
+
+      newProductDetail.sellingPrice = parseInt(sellingPrice)
+      newProductDetail.purchasePrice = parseInt(purchasePrice)
+      newProductDetail.value = parseInt(value)
+      newProductDetail.productStockId = tempId.id
+      // newProductDetail.productStockId = `${productStockId.id}`
+
+      console.log(productStockId, 'psi')
+      console.log(newProductDetail, 'npd')
+
       this.productDetailInputArray = [
-        ...this.productDetailInput,
+        ...this.productDetailInputArray,
         { ...newProductDetail }
       ]
     },
+    onProductDetailDelete (productDetail) {
+      this.productDetailInputArray = this.productDetailInputArray.filter(
+        item => item.id !== productDetail.id
+      )
+    },
     constructMutationVariables () {
+      const { stock } = this.addProductFields
+      this.addProductFields.stock = parseInt(stock)
+
       const productFields = {
         ...this.addProductFields
       }
 
+      console.log(this.productDetailInputArray)
       return {
         product: {
-          productFields,
+          ...productFields,
           productDetailInput: [
-            ...this.productDetailInputArray
+            ...this.productDetailInputArray.map (item => {
+              delete item.tempId
+              return item
+            })
           ]
         }
       }
     },
     showAddProductModal () {
       this.$bvModal.show('add-product-modal')
+    },
+    productDetailListActions () {
+      return [
+        {
+          name: 'Delete',
+          handle: this.onProductDetailDelete,
+          variant: 'danger',
+        }
+      ]
     }
   },
   apollo: {
@@ -167,6 +240,7 @@ export default {
   },
   mounted () {
     this.showAddProductModal()
+    console.log(this.products)
   }
 }
 </script>

@@ -16,12 +16,9 @@
             type="text"
             required
           ></b-form-input>
-          <!-- <b-form-invalid-feedback :state="isUsernameValid">
-            Nama stok produk harus lebih dari 1 huruf
+          <b-form-invalid-feedback :state="isSkuValid">
+            SKU harus lebih dari 3 huruf
           </b-form-invalid-feedback>
-          <b-form-valid-feedback :state="isUsernameValid">
-            Nama stok produk valid
-          </b-form-valid-feedback> -->
         </b-form-group>
 
           <b-form-group
@@ -33,6 +30,9 @@
               type="text"
               required
             ></b-form-input>
+            <b-form-invalid-feedback :state="isProductNameValid">
+              Nama produk harus lebih dari 3 huruf
+            </b-form-invalid-feedback>
           </b-form-group>
 
           <b-form-group
@@ -42,7 +42,7 @@
             <div v-if="$apollo.queries.categories.loading">Loading...</div>
             <b-form-select
               v-else 
-              v-model="productFields.category"
+              v-model="productFields.categoryId"
               class="mb-3">
               <option :value="null">Please select an option</option>
               <option
@@ -52,6 +52,9 @@
                 {{ item.name }}
               </option>
             </b-form-select>
+            <b-form-invalid-feedback :state="isCategoryValid">
+              Kategori harus dipilih!
+            </b-form-invalid-feedback>
             <!-- <b-form-invalid-feedback :state="isRoleValid">
               Pilih peran
             </b-form-invalid-feedback> -->
@@ -67,12 +70,9 @@
               type="number"
               required
             ></b-form-input>
-            <!-- <b-form-invalid-feedback :state="isPhoneNumberValid">
-              Nomor telepon tidak valid (format: 08xx)
+            <b-form-invalid-feedback :state="isStockValid">
+              Stok produk harus lebih dari 0!
             </b-form-invalid-feedback>
-            <b-form-valid-feedback :state="isPhoneNumberValid">
-              Nama stok produk valid
-            </b-form-valid-feedback> -->
           </b-form-group>
 
            <b-button
@@ -81,7 +81,7 @@
             class="mt-3" 
             block
           >
-            Simpan
+            Lanjut input detil produk
           </b-button>
   
 
@@ -118,50 +118,18 @@ export default {
     categories: getCategoryQuery(),
   },
   computed: {
-    // isUsernameValid () {
-    //   return this.productFields.username.length > 3
-    // },
-    // isPasswordValid () {
-    //   const letter = /[a-zA-Z]/
-    //   const number = /[0-9]/
-    //   const valid = number.test(this.productFields.password) && letter.test(this.productFields.password)
-
-    //   return valid
-    // },
-    // isEmailValid () {
-    //   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    //   return emailRegex.test(this.productFields.email)
-    // },
-    // isRoleValid () {
-    //   return this.productFields.roleId !== null
-    // },
-    // isPhoneNumberValid () {
-    //   let phoneNumber = (this.productFields.phoneNumber || '').trim()
-    //   if (!phoneNumber) {
-    //     return false
-    //   }
-    //   phoneNumber = phoneNumber.replace(/^0*/, '')
-    //   if (!/^\d{9,12}$/.test(phoneNumber)) {
-    //     return false
-    //   }
-    // },
-    // isAddressValid () {
-    //   return this.productFields.address.length > 5
-    // },
-    // isNoNikValid () {
-    //   return this.productFields.noNik.length === 16
-    // },
-    // isBirthDateValid () {
-    //   const dob = new Date(this.productFields.dateOfBirth)
-    //   const year = dob.getFullYear()
-    //   const month = dob.getMonth()
-    //   const day = dob.getDay()
-
-    //   return new Date(year + 18, month - 1, day) <= new Date();
-    // }
+    isSkuValid () {
+      return this.productFields.SKU.length > 3 || this.productFields.SKU === ''
+    },
+    isProductNameValid () {
+      return this.productFields.name.length > 3
+    },
+    isCategoryValid () {
+      return this.productFields.categoryId !== null
+    },
+    isStockValid () {
+      return this.productFields.stock > 0
+    },
   },
-  // apollo: {
-  //   roles: getAllRoles()
-  // },
 }
 </script>

@@ -11,9 +11,12 @@
         <b-form-input
           id="input-1"
           v-model="productDetailFields.purchasePrice"
-          type="text"
+          type="number"
           required
         />
+        <b-form-invalid-feedback :state="isPurchasePriceValid">
+          Harga beli harus lebih dari 0!
+        </b-form-invalid-feedback>
       </b-form-group>
         
       <b-form-group
@@ -24,18 +27,13 @@
         <b-form-input
           id="sellingPrice"
           v-model="productDetailFields.sellingPrice"
-          type="text"
+          type="number"
           required
         />
-        <!-- <b-form-invalid-feedback :state="isUsernameValid">
-          Nama stok produk harus lebih dari 1 huruf
+        <b-form-invalid-feedback :state="isSellingPriceValid">
+          Harga jual harus lebih dari 0!
         </b-form-invalid-feedback>
-        <b-form-valid-feedback :state="isUsernameValid">
-          Nama stok produk valid
-        </b-form-valid-feedback> -->
       </b-form-group>
-
-          
 
       <b-form-group
         label="Jenis stok"
@@ -44,19 +42,19 @@
         <div v-if="$apollo.queries.productStocks.loading">Loading...</div>
         <b-form-select
           v-else 
-          v-model="productDetailFields.productStockId"
+          v-model="productDetailFields.tempId"
           class="mb-3">
-          <option :value="null">Please select an option</option>
+          <option :value="{id: '', name: ''}">Please select an option</option>
           <option
             v-for="(item, index) in productStocks"
             :key="index"
-            :value="item.id">
+            :value="{id: item.id, name: item.name}">
             {{ item.name }}
           </option>
         </b-form-select>
-        <!-- <b-form-invalid-feedback :state="isRoleValid">
-          Pilih peran
-        </b-form-invalid-feedback> -->
+        <b-form-invalid-feedback :state="isProductStockTypeValid">
+          Pilih unit stok!
+        </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group
         label="Jumlah stok"
@@ -68,6 +66,9 @@
           type="number"
           required
         />
+        <b-form-invalid-feedback :state="isValueValid">
+          Stok per unit harus lebih dari 0!
+        </b-form-invalid-feedback>
             <!-- <b-form-invalid-feedback :state="isPhoneNumberValid">
               Nomor telepon tidak valid (format: 08xx)
             </b-form-invalid-feedback>
@@ -77,12 +78,12 @@
       </b-form-group>
 
       <b-button
+        @click="onProductDetailAdd(productDetailFields)"
         variant="success"
         class="mt-3" 
         block >
-        Simpan
+        Simpan detail produk
       </b-button>
-  
 
     <!-- </ApolloMutation> -->
   </div>
@@ -121,50 +122,18 @@ export default {
     productStocks: getProductStocks(),
   },
   computed: {
-    // isUsernameValid () {
-    //   return this.productDetailFields.username.length > 3
-    // },
-    // isPasswordValid () {
-    //   const letter = /[a-zA-Z]/
-    //   const number = /[0-9]/
-    //   const valid = number.test(this.productDetailFields.password) && letter.test(this.productDetailFields.password)
-
-    //   return valid
-    // },
-    // isEmailValid () {
-    //   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-    //   return emailRegex.test(this.productDetailFields.email)
-    // },
-    // isRoleValid () {
-    //   return this.productDetailFields.roleId !== null
-    // },
-    // isPhoneNumberValid () {
-    //   let phoneNumber = (this.productDetailFields.phoneNumber || '').trim()
-    //   if (!phoneNumber) {
-    //     return false
-    //   }
-    //   phoneNumber = phoneNumber.replace(/^0*/, '')
-    //   if (!/^\d{9,12}$/.test(phoneNumber)) {
-    //     return false
-    //   }
-    // },
-    // isAddressValid () {
-    //   return this.productDetailFields.address.length > 5
-    // },
-    // isNoNikValid () {
-    //   return this.productDetailFields.noNik.length === 16
-    // },
-    // isBirthDateValid () {
-    //   const dob = new Date(this.productDetailFields.dateOfBirth)
-    //   const year = dob.getFullYear()
-    //   const month = dob.getMonth()
-    //   const day = dob.getDay()
-
-    //   return new Date(year + 18, month - 1, day) <= new Date();
-    // }
+    isSellingPriceValid () {
+      return this.productDetailFields.sellingPrice > 0
+    },
+    isPurchasePriceValid () {
+      return this.productDetailFields.purchasePrice > 0
+    },
+    isValueValid () {
+      return this.productDetailFields.value > 0
+    },
+    isProductStockTypeValid () {
+      return this.productDetailFields.productStockId !== null
+    },
   },
-  // apollo: {
-  //   roles: getAllRoles()
-  // },
 }
 </script>

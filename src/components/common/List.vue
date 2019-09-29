@@ -1,29 +1,46 @@
 <template>
   <div class="list">
-    <div class="list-header">
-      <div class="list-header-item">
-        <span class="header-item-title">
-          No
-        </span>
-      </div>
-    </div>
+    <b-table
+      :fields="fields"
+      :items="items"
+      show-empty>
+        <template v-slot:empty="items">
+          <h4>Tidak ada data</h4>
+        </template>
 
-    <div class="list-content">
-      <div class="list-content-row">
-        <span class="list-content-row-data">
-          pcs
-        </span>
-      </div>
-    </div>
+      <template v-slot:cell(no)="data">
+        {{ data.index + 1 }}
+      </template>
+      <template
+        v-if="hasActions"
+        v-slot:cell(actions)="row">
+        <b-button
+          v-for="(action, index) in actions"
+          @click="action.handle(row.item)"
+          :key="index"
+          :variant="action.variant"
+          class="mr-1">
+          {{ action.name }}
+        </b-button>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
 export default {
   props: [
-    'title',
-    'header',
-    'data'
-  ]
+    'items',
+    'actions',
+    'fields',
+  ],
+  computed: {
+    hasActions () {
+      return !!this.actions
+    }
+  },
+  mounted () {
+    console.log(this.actions)
+  }
 }
 </script>
