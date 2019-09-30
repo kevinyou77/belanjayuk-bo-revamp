@@ -7,6 +7,7 @@
         </div>
 
          <b-button
+          @click="showAddProductModal()"
           variant="primary"
           class="mt-3" >
           TAMBAH PRODUK
@@ -19,7 +20,7 @@
         :onProductEdit="onProductEdit" />
     </div>
 
-    <!-- MODAL -->
+    <!-- ADD MODAL -->
     <b-modal
       id="add-product-modal"
       hide-footer>
@@ -63,14 +64,67 @@
           </transition-group>
         </transition>
     </b-modal>
+
+    <!-- EDIT MODAL -->
+    <b-modal
+      id="edit-product-modal"
+      hide-footer>
+      <div class="box-underline">
+        <span class="heading heading-default">Edit produk</span>
+      </div>
+        <transition
+          tag="div"
+          name="slide-fade"
+          mode="out-in">
+          <EditProduct
+            v-if="!formFinalStep"
+            key="`edit-product`"
+            :editProductData="editProductData"
+            :productFields="addProductFields"
+            :onProductAddConfirmed="onProductAddConfirmed" />
+
+          <transition-group
+            v-else
+            tag="div"
+            name="fade"
+            mode="out-in">
+            <EditProductDetail
+              key="`detail`"
+              :productDetailFields="productDetailInput"
+              :onProductDetailAdd="onProductDetailAdd" />
+
+            <List
+              key="`list`"
+              :items="editProductDetailInputArray"
+              :fields="productDetailListFields"
+              :actions="productDetailListActions()" />
+
+            <b-button
+              @click="handleAddProductMutation()"
+              key="`finalize button`"
+              variant="primary"
+              class="mt-3" 
+              :disabled="!isFormConditionFulfilled"
+              block >
+              Simpan produk
+            </b-button>
+          </transition-group>
+        </transition>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import ProductList from './ProductList'
+
 import AddProduct from './AddProduct'
 import AddProductDetail from './AddProductDetail'
+
+import EditProduct from './edit/EditProduct'
+import EditProductDetail from './edit/EditProductDetail'
+
 import List from '../../components/common/List'
+
 import {
   queries,
   mutations,
@@ -82,6 +136,13 @@ const getProductsQuery = () => {
   const { GET_PRODUCTS } = queryTypes
   const getProducts = queries[GET_PRODUCTS]
 
+  return getProducts
+}
+
+const getProductQuery = () => {
+  const { GET_PRODUCT } = queryTypes
+  const getProducts = queries[GET_PRODUCT]
+  
   return getProducts
 }
 
@@ -99,11 +160,20 @@ const addProductMutation = () => {
   return addProduct
 }
 
+const editProductMutation = () => {
+  const { UPDATE_PRODUCT } = mutationTypes
+  const updateProduct = mutations[UPDATE_PRODUCT]
+
+  return updateProduct
+}
+
 export default {
   components: {
     ProductList,
     AddProduct,
     AddProductDetail,
+    EditProduct,
+    EditProductDetail,
     List,
   },
   data () {
@@ -134,6 +204,7 @@ export default {
         { key: 'actions', label: 'Aksi' }
       ],
       productDetailInputArray: [],
+      editProductDetailInputArray: [],
       formFinalStep: false,
     }
   },
@@ -143,6 +214,27 @@ export default {
     }
   },
   methods: {
+    resetForm () {
+      this.addProductFields = {
+        name: '',
+        SKU: '',
+        stock: '',
+        categoryId: null,
+      }
+
+      this.productDetailInput = {
+        productStockId: null,
+        tempId: {
+          id: '',
+          name: '',
+        },
+        sellingPrice: '',
+        purchasePrice: '',
+        value: '',
+        productId: '',
+      }
+      this.productDetailInputArray = []
+    },
     onProductDelete (id) {
       this.$apollo.mutate({
         mutation: deleteProductMutation(),
@@ -156,8 +248,13 @@ export default {
       })
       .catch (err => console.log(err))
     },
+    onProductEdit (id) {
+      this.$apollo.queries.editProductData.refetch({ name: id }).then (res => {
+        this.showEditProductModal()
+      })
+      .catch (err => console.log(err))
+    },
     handleAddProductMutation () {
-      console.log(this.constructMutationVariables())
       this.$apollo.mutate({
         mutation: addProductMutation(),
         variables: {
@@ -166,18 +263,13 @@ export default {
       })
       .then (res => {
         console.log(res)
-        console.log('mantul')
       })
       .catch (err => {
         console.log(err)
-        console.log('error')
       })
     },
     onProductAddConfirmed () {
       this.formFinalStep = !this.formFinalStep
-    },
-    onProductEdit () {
-
     },
     onProductDetailAdd (newProductDetail) {
       const {
@@ -192,10 +284,6 @@ export default {
       newProductDetail.purchasePrice = parseInt(purchasePrice)
       newProductDetail.value = parseInt(value)
       newProductDetail.productStockId = tempId.id
-      // newProductDetail.productStockId = `${productStockId.id}`
-
-      console.log(productStockId, 'psi')
-      console.log(newProductDetail, 'npd')
 
       this.productDetailInputArray = [
         ...this.productDetailInputArray,
@@ -203,7 +291,6 @@ export default {
       ]
     },
     onProductDetailDelete (productDetail) {
-      console.log(productDetail, 'id')
       this.productDetailInputArray = this.productDetailInputArray.filter(
         item => item.productStockId !== productDetail.productStockId
       )
@@ -212,9 +299,7 @@ export default {
       const { stock } = this.addProductFields
       this.addProductFields.stock = parseInt(stock)
 
-      const productFields = {
-        ...this.addProductFields
-      }
+      const productFields = { ...this.addProductFields }
 
       return {
         product: {
@@ -231,6 +316,9 @@ export default {
     showAddProductModal () {
       this.$bvModal.show('add-product-modal')
     },
+    showEditProductModal () {
+      this.$bvModal.show('edit-product-modal')
+    },
     productDetailListActions () {
       return [
         {
@@ -239,17 +327,25 @@ export default {
           variant: 'danger',
         }
       ]
-    }
+    },
+    editProductActions () {
+      return [
+         {
+          name: 'Edit',
+          handle: this,
+          variant: 'danger',
+        },
+        {
+          name: 'Delete',
+          handle: this.onProductDetailDelete,
+          variant: 'danger',
+        }
+      ]
+    },
   },
   apollo: {
     products: getProductsQuery(),
+    editProductData: getProductQuery(),
   },
-  mounted () {
-    this.showAddProductModal()
-    console.log(this.products)
-  },
-  updated () {
-    console.log(this.products)
-  }
 }
 </script>

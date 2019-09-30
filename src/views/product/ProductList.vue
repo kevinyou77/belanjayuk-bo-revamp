@@ -17,6 +17,12 @@
 
          <template v-slot:cell(actions)="row">
             <b-button 
+              variant="primary" 
+              @click="onProductEdit(row.item.id)" 
+              class="mr-1">
+              Edit
+            </b-button>
+            <b-button 
               variant="danger" 
               @click="onProductDelete(row.item.id)" 
               class="mr-1">

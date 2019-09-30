@@ -10,6 +10,7 @@
         id="sku"
         v-model="productFields.SKU"
         type="text"
+        :value="productData"
         required
       ></b-form-input>
       <b-form-invalid-feedback :state="isSkuValid">
@@ -82,7 +83,7 @@
 import {
   queryTypes as categoryQueryTypes,
   queries as categoryQueries
-} from '../../commands/categoryCommands'
+} from '../../../commands/categoryCommands'
 
 const getCategoryQuery = () => {
   const { GET_CATEGORIES } = categoryQueryTypes
@@ -95,6 +96,7 @@ export default {
   props: [
     'productFields',
     'onProductAddConfirmed',
+    'productData'
   ],
   data () {
     return {
@@ -126,7 +128,6 @@ export default {
         && this.isStockValid
       )
     },
-
   },
 }
 </script>

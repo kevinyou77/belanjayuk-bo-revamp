@@ -59,7 +59,6 @@ export const mutations = {
         SKU
         name
         stock
-        stock
         id
         category {
           id
