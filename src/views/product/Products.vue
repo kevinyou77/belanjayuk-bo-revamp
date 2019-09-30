@@ -56,6 +56,7 @@
               key="`finalize button`"
               variant="primary"
               class="mt-3" 
+              :disabled="!isFormConditionFulfilled"
               block >
               Simpan produk
             </b-button>
@@ -136,6 +137,11 @@ export default {
       formFinalStep: false,
     }
   },
+  computed: {
+    isFormConditionFulfilled () {
+      return this.productDetailInputArray.length !== 0
+    }
+  },
   methods: {
     onProductDelete (id) {
       this.$apollo.mutate({
@@ -197,8 +203,9 @@ export default {
       ]
     },
     onProductDetailDelete (productDetail) {
+      console.log(productDetail, 'id')
       this.productDetailInputArray = this.productDetailInputArray.filter(
-        item => item.id !== productDetail.id
+        item => item.productStockId !== productDetail.productStockId
       )
     },
     constructMutationVariables () {
@@ -209,7 +216,6 @@ export default {
         ...this.addProductFields
       }
 
-      console.log(this.productDetailInputArray)
       return {
         product: {
           ...productFields,
@@ -240,6 +246,9 @@ export default {
   },
   mounted () {
     this.showAddProductModal()
+    console.log(this.products)
+  },
+  updated () {
     console.log(this.products)
   }
 }
