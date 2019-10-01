@@ -1,0 +1,41 @@
+.transaction {
+  display: flex;
+  justify-content: space-around;
+  margin: 5rem 2rem;
+  box-shadow: $box-shadow-default;
+
+  &-selected {
+    height: 0vh;
+    flex: 1;
+  }
+
+  &-list {
+    height: 90vh;
+    flex: 1;
+    border-right: 2px solid black;
+
+    &-search-bar {
+      padding: 2rem;
+    }
+
+    &-content {
+      height: 100%;
+      display: flex;
+      justify-content: space-around;
+
+      &-item {
+        width: 20%;
+        height: 15rem;
+        text-align: center;
+        transition: .2s all;
+        cursor: pointer;
+        padding: .1rem;
+
+        &:hover {
+          background-color: lightgray;
+          box-shadow: $box-shadow-default;
+        }
+      }
+    }
+  }
+}

@@ -11,9 +11,9 @@ export const queryTypes = {
 export const mutations = {
   [mutationTypes.ADD_STAFF]: gql`
     mutation createStaff($staff: StaffInput!) {
-      createStaff(staff: $staff){
+      createStaff(staff: $staff) {
           id
-          user{
+          user {
             username
             password
             email
