@@ -55,6 +55,14 @@ const router = new Router ({
       meta: {
         requireAuth: true,
       }
+    },
+    {
+      path: '/transaction/history',
+      name: 'transaction-history',
+      component: lazyLoad('transaction/history/TransactionHistory'),
+      meta: {
+        requireAuth: true,
+      }
     }
   ]
 })

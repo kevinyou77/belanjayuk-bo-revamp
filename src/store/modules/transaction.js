@@ -4,7 +4,7 @@ const state = {
 
 const actions = {
   addSelectedProduct ({ commit }, newProduct) {
-    commit(newProduct)
+    commit('addSelectedProduct', newProduct)
   },
   removeSelectedProduct ({ commit }, SKU) {
     const filteredSelectedProducts = state.selectedProducts.filter(item => item.SKU !== SKU)
@@ -19,7 +19,7 @@ const actions = {
 }
 
 const mutations = {
-  addSelectedProducts (state, newProduct) {
+  addSelectedProduct (state, newProduct) {
     state.selectedProducts = [
       ...state.selectedProducts,
       newProduct,
