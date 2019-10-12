@@ -91,7 +91,7 @@ export default {
       sessionStorage.setItem('username', username)
 
       this.$store.dispatch('auth/authenticate')
-      this.$router.push('/category')
+      this.$router.push('/dashboard')
     }
   },
   mounted () {

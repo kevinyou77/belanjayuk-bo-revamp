@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 
 export const mutationTypes = {
   ADD_STAFF: 'addStaff',
+  GET_STAFFS: 'getStaffs',
 }
 
 export const queryTypes = {
@@ -39,6 +40,23 @@ export const queries = {
       roles {
         id
         name
+      }
+    }
+  `,
+  [queryTypes.GET_STAFFS]: gql`
+    query staffList {
+      staffs {
+        status
+        id
+        user {
+          username
+          userProfile {
+            fullName
+          }
+        }
+        role {
+          name
+        }
       }
     }
   `

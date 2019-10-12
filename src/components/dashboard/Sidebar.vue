@@ -8,6 +8,12 @@
     
     <div class="navigation">
       <div class="navigation-list">
+        <router-link to="/dashboard">
+          <div class="navigation-list-item">
+            <span class="font font-default">Dashboard<i class="right"></i></span>
+          </div>
+        </router-link>
+
         <router-link to="/transaction">
           <div class="navigation-list-item">
             <span class="font font-default">Penjualan<i class="right"></i></span>

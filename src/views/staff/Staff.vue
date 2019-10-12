@@ -1,14 +1,24 @@
 <template>
   <div class="staff">
     <div class="staff-content">
-      <div class="box-underline">
-        <span class="heading heading-default">INPUT STAFF</span>
-      </div>
-      
-      <AddStaff
-        :staffFields="staffFields"
-        :addStaffMutation="addStaffMutation"
-        :onAddStaffMutationDone="onAddStaffMutationDone" />
+
+      <div v-if="$apollo.queries.staffs.loading">Loading...</div>
+      <StaffList
+        v-else
+        :staffList="staffs"
+        :onStaffDelete="() => {}"
+        :onStaffEdit="() => {}" />
+
+      <b-modal id="add-staff" hide-footer>
+        <div class="box-underline">
+          <span class="heading heading-default">INPUT STAFF</span>
+        </div>
+
+        <AddStaff
+          :staffFields="staffFields"
+          :addStaffMutation="addStaffMutation"
+          :onAddStaffMutationDone="onAddStaffMutationDone" />
+      </b-modal>
 
       <b-modal id="error-modal">
         <span class="heading heading-default">{{ error }}</span>
@@ -18,45 +28,31 @@
 </template>
 
 <script>
-// const processedValues = {
-//       staff: {
-//         userInput: {
-//           ...userInput,
-//         },
-//         userProfileInput: {
-//           ...userProfileInput,
-//         },
-//         roleId,
-//       },
-//     }
-// const { username, password, email } = values
-// const userInput = {
-//   username,
-//   password,
-//   email,
-// }
-// const userProfileInput = {
-//   fullName,
-//   phoneNumber,
-//   address,
-//   noNik,
-//   dateOfBirth: processedDob,
-// }
+import AddStaff from './AddStaff'
+import StaffList from './StaffList'
+import {
+  mutationTypes, mutations,
+  queryTypes, queries,
+} from '../../commands/staffCommands'
 
-import { mutationTypes, mutations } from '../../commands/staffCommands'
-
-const addStaffQuery = () => {
+const addStaffMutation = () => {
   const { ADD_STAFF } = mutationTypes
   const addStaff = mutations[ADD_STAFF]
 
   return addStaff
 }
 
-import AddStaff from './AddStaff'
+const staffListQuery = () => {
+  const { GET_STAFFS } =  queries
+  const staffList = queries[GET_STAFFS]
+
+  return staffList
+}
 
 export default {
   components: {
     AddStaff,
+    StaffList,
   },
   data () {
     return {
@@ -125,7 +121,7 @@ export default {
     },
     addStaffMutation () {
       this.$apollo.mutate({
-        mutation: addStaffQuery(),
+        mutation: addStaffMutation(),
         variables: this.addStaffVariables(),
       })
       .then ((data) => {
@@ -137,5 +133,8 @@ export default {
       })
     }
   },
+  apollo: {
+    staffs: staffListQuery(),
+  }
 }
 </script>

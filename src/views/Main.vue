@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard">
+  <div class="main">
     <Sidebar v-show="loggedIn" />
     <div class="content">
       <router-view></router-view>

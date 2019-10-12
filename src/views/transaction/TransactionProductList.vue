@@ -176,8 +176,6 @@ export default {
     },
     handleTransactionModalAdd (newProduct) {
       const itemExistsInSelectedProduct = this.selectedProducts.find(item => item.SKU === newProduct.SKU)
-      console.log(itemExistsInSelectedProduct)
-      console.log(newProduct.SKU)
       if (itemExistsInSelectedProduct) {
         this.showToast()
         return

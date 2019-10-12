@@ -17,6 +17,11 @@ const router = new Router ({
       component: lazyLoad('Login'),
     },
     {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: lazyLoad('dashboard/Dashboard'),
+    },
+    {
       path: '/category',
       name: 'category',
       component: lazyLoad('category/Category'),
