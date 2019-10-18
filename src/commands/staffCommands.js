@@ -3,10 +3,12 @@ import gql from 'graphql-tag'
 export const mutationTypes = {
   ADD_STAFF: 'addStaff',
   GET_STAFFS: 'getStaffs',
+  EDIT_STAFF: 'editStaffs',
 }
 
 export const queryTypes = {
   GET_ROLES: 'getRoles',
+  GET_STAFF: 'getStaff',
 }
 
 export const mutations = {
@@ -29,6 +31,30 @@ export const mutations = {
           role {
             name
           }
+      }
+    }
+  `,
+  [mutationTypes.EDIT_STAFF]: gql`
+    mutation updateStaff (
+      $staffId: String!, 
+      $fullName: String!,
+      $phoneNumber: String!,
+      $address: String!,
+      $noNik: String!,
+      $dateOfBirth: String!,
+      $roleId: String!
+    ) {
+      updateStaff(
+        staffId: $staffId, 
+        fullName: $fullName,
+        phoneNumber: $phoneNumber,
+        address: $staddressaffId,
+        noNik: $noNik,
+        dateOfBirth: $dateOfBirth,
+        roleId: $roleId
+      ) {
+        status
+        id
       }
     }
   `,
@@ -59,5 +85,29 @@ export const queries = {
         }
       }
     }
-  `
+  `,
+  [queryTypes.GET_STAFF]: gql`
+    query staff ($staffId: String!){
+      staff(staffId: $staffId){
+        status
+        id
+        user {
+          username
+          password
+          email
+          userProfile {
+            phoneNumber
+            dateOfBirth
+            address
+            noNik
+            fullName
+          }
+        }
+        role {
+                id
+          name
+        }
+      }
+    }
+  `,
 }

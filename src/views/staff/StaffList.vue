@@ -19,6 +19,12 @@
 
          <template v-slot:cell(actions)="row">
             <b-button 
+              variant="primary" 
+              @click="onStaffEdit(row.item.id)" 
+              class="mr-1">
+              Edit
+            </b-button>
+            <b-button 
               variant="danger" 
               @click="onStaffDelete(row.item, row.index, $event.target)" 
               class="mr-1">
@@ -68,9 +74,6 @@ export default {
     showAddStaffModal () {
       this.$bvModal.show('add-staff')
     },
-  },
-  mounted () {
-    console.log(this.staffList)
   },
 }
 </script>

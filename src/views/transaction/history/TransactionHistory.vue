@@ -2,7 +2,7 @@
   <div>
     <List
       key="`list`"
-      :items="transactions"
+      :items="transactionsById"
        />
   </div>
 </template>
@@ -13,10 +13,24 @@ import {
 } from '../../../commands/transactionCommands'
 import List from '../../../components/common/List'
 
-const getTransactionsQuery = () => {
+// const getTransactionsQuery = () => {
+//   const { GET_TRANSACTIONS } = queryTypes
+//   const getTransactions = queries[GET_TRANSACTIONS]
+
+//   return getTransactions
+// }
+
+const getTransactionsByIdQuery = () => {
+  const { GET_TRANSACTIONS_BY_STATUS } = queryTypes
+  const getTransactionByStatus = queries[GET_TRANSACTIONS_BY_STATUS]
+  console.log(getTransactionByStatus)
+  return getTransactionByStatus
+}
+
+const getTransactions = () => {
   const { GET_TRANSACTIONS } = queryTypes
   const getTransactions = queries[GET_TRANSACTIONS]
-
+  console.log(getTransactions)
   return getTransactions
 }
 
@@ -27,16 +41,33 @@ export default {
   data () {
     return {
       transactions: [],
+      transactionsById: [],
+      status: 1,
     }
   },
-  apollo: {
-    transactions: getTransactionsQuery()
-  },
-  mounted () {
-    console.log('heheh')
+  methods: {
+    onTransactionStatusTabClick () {
+      this.$apollo.query({
+        query: getTransactionsByIdQuery(),
+        variables: { status: this.status }
+      })
+      .then (res => {
+        console.log(res, 'transactions history')
+        this.transactionsById = [ ...res.data.transactions ]
+      })
+      .catch (err => console.log(err))
+    },
+    onAllTransactionsTabClick () {
+      this.$apollo.query({ query: getTransactions() })
+      .then (res => {
+        const { hasNextData, totalCount } = res.data.transactionsWithLimit
+        this.transactions = [ ...res.data.transactionsWithLimit.transactions ]
+      })
+      .catch (err => console.log(err))
+    },
   },
   updated () {
-    console.log(this.transactions)
+    
   }
 }
 </script>
