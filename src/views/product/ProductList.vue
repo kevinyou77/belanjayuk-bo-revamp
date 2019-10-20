@@ -9,6 +9,8 @@
       <b-table
         v-else
         :fields="fields"
+        :current-page="currentPage"
+        :per-page="10"
         :items="products">
 
         <template v-slot:cell(no)="data">
@@ -30,6 +32,13 @@
             </b-button>
           </template>
       </b-table>
+
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="10"
+        aria-controls="my-table"
+      ></b-pagination>
     </div>
   </div>
 </template>
@@ -51,12 +60,16 @@ export default {
         { key: 'category.name', label: 'Category' },
         { key: 'actions', label: 'Actions' }
       ],
+      currentPage: 1,
     }
   },
   computed: {
     productIsEmpty () {
       return this.products.length === 0
-    }
+    },
+    rows () {
+      return this.products.length
+    },
   },
 }
 </script>

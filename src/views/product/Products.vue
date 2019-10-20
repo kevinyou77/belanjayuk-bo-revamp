@@ -10,7 +10,7 @@
           @click="showAddProductModal()"
           variant="primary"
           class="mt-3" >
-          TAMBAH PRODUK
+          + TAMBAH PRODUK
         </b-button>
       </div>
   
@@ -243,7 +243,6 @@ export default {
         }
       })
       .then (res => {
-        console.log(res)
         this.products = this.products.filter ((item, i) => item.id !== id)
       })
       .catch (err => console.log(err))

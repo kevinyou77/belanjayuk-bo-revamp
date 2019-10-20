@@ -23,14 +23,14 @@ import List from '../../../components/common/List'
 const getTransactionsByIdQuery = () => {
   const { GET_TRANSACTIONS_BY_STATUS } = queryTypes
   const getTransactionByStatus = queries[GET_TRANSACTIONS_BY_STATUS]
-  console.log(getTransactionByStatus)
+
   return getTransactionByStatus
 }
 
 const getTransactions = () => {
   const { GET_TRANSACTIONS } = queryTypes
   const getTransactions = queries[GET_TRANSACTIONS]
-  console.log(getTransactions)
+
   return getTransactions
 }
 
@@ -51,10 +51,7 @@ export default {
         query: getTransactionsByIdQuery(),
         variables: { status: this.status }
       })
-      .then (res => {
-        console.log(res, 'transactions history')
-        this.transactionsById = [ ...res.data.transactions ]
-      })
+      .then (res => this.transactionsById = [ ...res.data.transactions ])
       .catch (err => console.log(err))
     },
     onAllTransactionsTabClick () {

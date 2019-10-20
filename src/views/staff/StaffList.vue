@@ -6,15 +6,25 @@
           @click="showAddStaffModal()"
           variant="primary"
           class="mt-3" >
-          TAMBAH PRODUK
+          + TAMBAH PRODUK
         </b-button>
     </div>
     <div>
       <b-table
         :fields="fields"
-        :items="staffList">
+        :items="staffList"
+        :per-page="10"
+        :current-page="currentPage">
         <template v-slot:cell(no)="data">
           {{ data.index + 1 }}
+        </template>
+
+         <!-- <template v-slot:row-details="row">
+           
+         </template> -->
+
+        <template v-slot:cell(dateOfBirth)="row">
+          <p>{{ new Date(row.item.user.userProfile.dateOfBirth) }}</p>
         </template>
 
          <template v-slot:cell(actions)="row">
@@ -26,32 +36,23 @@
             </b-button>
             <b-button 
               variant="danger" 
-              @click="onStaffDelete(row.item, row.index, $event.target)" 
+              @click="onStaffDelete(row.item)" 
               class="mr-1">
               Delete
             </b-button>
           </template>
       </b-table>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="10"
+        aria-controls="my-table"
+      ></b-pagination>
     </div>
   </div>
 </template>
 
 <script>
-// query{
-//   staffs{
-//     status
-//     id
-//     user {
-//       username
-//       userProfile {
-//         fullName
-// 			}
-//     }
-//     role {
-//       name
-//     }
-//   }
-// }
 
 export default {
   props: [
@@ -63,11 +64,23 @@ export default {
     return {
       fields: [
         'no',
-        { key: 'user.username', label: 'Nama pengguna' },
         { key: 'user.userProfile.fullName', label: 'Nama lengkap' },
+        { key: 'user.username', label: 'Nama pengguna' },
+        { key: 'user.userProfile.address', label: 'Alamat' },
+        { key: 'user.userProfile.phoneNumber', label: 'Nomor telepon' },
+        { key: 'user.email', label: 'E-mail' },
+        { key: 'user.userProfile.dateOfBirth', label: 'Tanggal Lahir' },
+        { key: 'user.userProfile.noNik', label: 'Alamat' },
         { key: 'role.name', label: 'Peran' },
         { key: 'actions', label: 'Aksi' }
       ],
+      currentPage: 0,
+    }
+  },
+  computed: {
+    rows () {
+      console.log(this.staffList.length)
+      return this.staffList.length
     }
   },
   methods: {
@@ -75,5 +88,8 @@ export default {
       this.$bvModal.show('add-staff')
     },
   },
+  mounted () {
+    console.log(this.staffList)
+  }
 }
 </script>

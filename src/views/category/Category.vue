@@ -1,39 +1,45 @@
 <template>
   <div class="category">
     <div class="category-content">
-      <ApolloMutation
+      <div class="box-underline">
+        <span class="heading heading-default">Kategori</span>
+      </div>
+
+      <div class="category-content-list">
+        <ApolloMutation
           :mutation="addCategoryMutation"
           :variables="{ name: categoryName }"
           @done="onAddCategoryMutationDone"
         >
-        <template v-slot="{ mutate, loading, error, done }">
-          <b-form-group
-            id="input-group-1"
-            label="Nama kategori:"
-            label-for="input-1"
-          >
-            <b-form-input
-              id="input-1"
-              v-model="categoryName"
-              type="text"
-              required
-            ></b-form-input>
+          <template v-slot="{ mutate, loading, error, done }">
+            <b-form-group
+              id="input-group-1"
+              label="Nama kategori:"
+              label-for="input-1"
+            >
+              <b-form-input
+                id="input-1"
+                v-model="categoryName"
+                type="text"
+                required
+              ></b-form-input>
 
-            <b-button
-              @click="mutate()"
-             type="submit" variant="primary">Simpan</b-button>
-          </b-form-group>
+              <b-button
+                @click="mutate()"
+              type="submit" variant="primary">Simpan</b-button>
+            </b-form-group>
 
-          <p v-if="error">An error occured: {{ error }}</p>
-          <p v-if="done">An error occured: {{ done }}</p>
-        </template>
-      </ApolloMutation>
+            <p v-if="error">An error occured: {{ error }}</p>
+            <p v-if="done">An error occured: {{ done }}</p>
+          </template>
+        </ApolloMutation>
 
-      <div v-if="$apollo.queries.categories.loading">Loading...</div>
-      <CategoryList
-        :categories="categories"
-        :onCategoryEdit="() => {}"
-        :onCategoryDelete="onCategoryDelete" v-else />
+        <div v-if="$apollo.queries.categories.loading">Loading...</div>
+        <CategoryList
+          :categories="categories"
+          :onCategoryEdit="() => {}"
+          :onCategoryDelete="onCategoryDelete" v-else />
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +52,7 @@ import {
   queries,
 } from '../../commands/categoryCommands'
 import CategoryList from '../category/CategoryList'
+import StockProduct from '../stock-product/StockProduct'
 
 const deleteCategoryQuery = () => {
   const { DELETE_CATEGORY } = mutationTypes
@@ -64,6 +71,7 @@ const getCategoryQuery = () => {
 export default {
   components: {
     CategoryList,
+    StockProduct,
   },
   data () {
     return {

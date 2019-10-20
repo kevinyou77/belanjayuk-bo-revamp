@@ -1,17 +1,23 @@
 <template>
   <div class="category">
     <div class="category-content">
-      <AddStockProduct
-        :addStockProductMutation="addStockProductMutation"
-        :stockProductName="stockProductName"
-        :onStockProductMutationDone="onStockProductMutationDone"
-      />
+      <div class="box-underline">
+        <span class="heading heading-default">Stok Produk</span>
+      </div>
 
-      <div v-if="$apollo.queries.productStocks.loading">Loading...</div>
-      <StockProductList v-else
-        :productStocks="productStocks"
-        :onProductEdit="onStockProductListItemEdit"
-        :onProductDelete="onStockProductListItemDelete" />
+      <div class="category-content-list">
+        <AddStockProduct
+          :addStockProductMutation="addStockProductMutation"
+          :stockProductName="stockProductName"
+          :onStockProductMutationDone="onStockProductMutationDone"
+        />
+
+        <div v-if="$apollo.queries.productStocks.loading">Loading...</div>
+        <StockProductList v-else
+          :productStocks="productStocks"
+          :onProductEdit="onStockProductListItemEdit"
+          :onProductDelete="onStockProductListItemDelete" />
+      </div>
     </div>
   </div>
 </template>

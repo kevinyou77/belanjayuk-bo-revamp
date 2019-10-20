@@ -76,8 +76,13 @@ export const queries = {
         id
         user {
           username
+          email
           userProfile {
             fullName
+            dateOfBirth
+            address
+            noNik
+            phoneNumber
           }
         }
         role {

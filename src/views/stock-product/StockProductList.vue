@@ -3,7 +3,9 @@
     <div>
       <b-table
         :fields="fields"
-        :items="productStocks">
+        :items="productStocks"
+        :current-page="currentPage"
+        :per-page="perPage">
         <template v-slot:cell(no)="data">
           {{ data.index + 1 }}
         </template>
@@ -17,6 +19,13 @@
             </b-button>
           </template>
       </b-table>
+
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        aria-controls="my-table"
+      ></b-pagination>
     </div>
   </div>
 </template>
@@ -42,6 +51,13 @@ export default {
         'name',
         { key: 'actions', label: 'Actions' }
       ],
+      currentPage: 1,
+      perPage: 10,
+    }
+  },
+  computed: {
+    rows () {
+      return this.productStocks.length
     }
   },
 }
