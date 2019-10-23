@@ -1,7 +1,9 @@
 import gql from 'graphql-tag'
 
 export const mutationTypes = {
-  ADD_STAFF: 'addTransaction',
+  CREATE_TRANSACTION_ID: 'createTransactionId',
+  CHECKOUT: 'checkout',
+  COMPLETE_TRANSACTION: 'createTransaction',
 }
 
 export const queryTypes = {
@@ -11,28 +13,34 @@ export const queryTypes = {
 }
 
 export const mutations = {
-  [mutationTypes.ADD_STAFF]: gql`
-    mutation createStaff($staff: StaffInput!) {
-      createStaff(staff: $staff) {
-        id
-        user {
-          username
-          password
-          email
-          userProfile{
-            address
-            fullName
-            dateOfBirth
-            noNik
-            phoneNumber
-          }
-        }
-        role {
-          name
+  [mutationTypes.CREATE_TRANSACTION_ID]: gql`
+    mutation {
+      createTransaction{
+        status
+        transactionId
+      }
+    }
+  `,
+  [mutationTypes.CHECKOUT]: gql`
+    mutation checkout ($transaction: TransactionInput!) {
+      checkout(transaction: $transaction) {
+        status
+        details {
+          numberOfPurchases
         }
       }
     }
   `,
+  [mutationTypes.COMPLETE_TRANSACTION]: gql`
+    mutation completePayment ($transactionId: String!) {
+      completePayment(transactionId: $transactionId){
+        status
+        details {
+          numberOfPurchases
+        }
+      }
+    }
+  `
 }
 
 export const queries = {

@@ -175,7 +175,7 @@ export default {
     },
     onStaffEditMutation (staffId) {
       this.editStaffFields.dateOfBirth = new Date(this.editStaffFields.dateOfBirth).getTime()
-
+s
       this.$apollo.mutate({
         mutation: editStaffMutation(),
         variables: {

@@ -44,28 +44,90 @@
         Total harga: {{ totalPrice }}
       </div>
 
-      <button class="button button-primary">
+      <button
+        @click="checkout()"
+        class="button button-primary"
+        >
         Checkout
       </button>
     </div>
+
+    <b-modal
+      id="checkout-confirmation-modal"
+      hide-footer>
+        <b-button
+          @click="handleAddProductMutation()"
+          key="`finalize button`"
+          variant="primary"
+          class="mt-3" 
+          block >
+          Simpan produk
+        </b-button>
+    </b-modal>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { mutations, mutationTypes } from '../../commands/transactionCommands'
+
+const checkoutMutation = () => {
+  const { CHECKOUT } = mutationTypes
+  return mutations[CHECKOUT]
+}
 
 export default {
+  data () {
+    return {
+      error: '',
+    }
+  },
   computed: {
     ...mapState({
       selectedProducts: state => state.transaction.selectedProducts,
     }),
     totalPrice () {
       return this.selectedProducts.reduce ((total, item) => total + item.productDetail.sellingPrice, 0)
-    }
+    },
+  },
+  computed: {
+    isSelectedProductsEmpty () {
+      return this.selectedProducts.length === 0
+    },
   },
   methods: {
     deleteSelectedProduct (SKU) {
       this.$store.dispatch('transaction/removeSelectedProduct', SKU)
+    },
+    showCheckoutModal () {
+      if (this.isSelectedProductsEmpty) {
+        this.error = 'Keranjang kosong!'
+        this.$bvModal.show('error-modal')
+
+        return
+      }
+
+      this.$bvModal.show('checkout-confirmation-modal')
+    },
+    checkout () {
+      const transactionParameters = {
+        transactionId: sessionStorage.getItem('transactionId'),
+        customerId: '',
+        staffId: '',
+        detail: [
+          ...this.selectedProducts
+        ]
+      }
+      this.$apollo.mutate({
+        mutation: checkoutMutation(),
+        variables: {
+          transaction: transactionParameters,
+        }
+      })
+      .then (res => {
+
+      })
+      .catch (err => console.log(err))
     }
   },
 }
