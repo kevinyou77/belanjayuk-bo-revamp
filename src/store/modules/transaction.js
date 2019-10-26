@@ -1,5 +1,6 @@
 const state = {
   selectedProducts: [],
+  error: '',
 }
 
 const actions = {
@@ -15,6 +16,9 @@ const actions = {
     targetProduct.stock = stock
 
     commit('modifySelectedProduct', targetProduct)
+  },
+  setErrorMessage ({ commit }, errorMessage) {
+    commit('setErrorMessage', errorMessage)
   }
 }
 
@@ -27,6 +31,9 @@ const mutations = {
   },
   modifySelectedProduct (state, selectedProducts) {
     state.selectedProducts = selectedProducts
+  },
+  setErrroMessage (state, errorMessage) {
+    state.errorMessage = errorMessage
   },
 }
 

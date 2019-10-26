@@ -48,6 +48,7 @@ import {
   mutationTypes, mutations,
   queryTypes, queries,
 } from '../../commands/staffCommands'
+import dateFormat from '../../utils/dateFormat'
 
 const addStaffMutation = () => {
   const { ADD_STAFF } = mutationTypes
@@ -98,9 +99,7 @@ export default {
       },
       editStaffFields: {
         staffId: '',
-        username: '',
-        password: '',
-        email: '',
+        staffEmail: '',
         fullName: '',
         address: '',
         noNik: '',
@@ -147,7 +146,7 @@ export default {
           userInput: {
             username,
             password,
-            email
+            email,
           },
           userProfileInput: {
             fullName,
@@ -174,20 +173,20 @@ export default {
       })
     },
     onStaffEditMutation (staffId) {
-      this.editStaffFields.dateOfBirth = new Date(this.editStaffFields.dateOfBirth).getTime()
-s
+      const newStaffFields = { ...this.editStaffFields }
+      newStaffFields.dateOfBirth = new Date(this.editStaffFields.dateOfBirth).getTime()
+      console.log(newStaffFields, 'edit try')
+
       this.$apollo.mutate({
         mutation: editStaffMutation(),
-        variables: {
-          ...this.editStaffFields,
-        }
+        variables: newStaffFields
       })
       .then (res => {
-        
+        this.showModal('Data berhasil di ubah!')
       })
+      .catch (err => console.log(err))
     },
     editStaffQuery (id, cb) {
-      console.log(id)
       this.$apollo.query({
         query: getStaffQuery(),
         variables: { staffId: id },
@@ -203,6 +202,7 @@ s
     onStaffEdit (id) {
       this.editStaffQuery(id, (data) => {
         const {
+          id: staffId,
           user,
           role,
         } = data.data.staff
@@ -213,7 +213,6 @@ s
         } = role
 
         const {
-          username,
           email,
           userProfile,
         } = user
@@ -227,17 +226,16 @@ s
         } = userProfile
 
         this.editStaffFields = {
-          staffId: id,
-          username,
-          email,
+          staffId,
+          staffEmail: email,
           address,
           noNik,
           phoneNumber,
           fullName,
-          roleId: id
+          roleId: id,
+          dateOfBirth: dateFormat(dateOfBirth),
         }
 
-        console.log(this.editStaffFields)
         this.$bvModal.show('edit-staff')
       })
     }

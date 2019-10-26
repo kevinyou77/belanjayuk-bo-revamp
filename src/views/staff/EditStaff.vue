@@ -6,41 +6,14 @@
       > -->
     <template>
       <b-form-group
-        id="input-group-1"
-        label="Nama pengguna"
-        label-for="Username"
-        description="We'll never share your email with anyone else."
-      >
-        <b-form-input
-          id="username"
-          v-model="editStaffFields.username"
-          type="text"
-          required
-        ></b-form-input>
-        <b-form-invalid-feedback :state="isUsernameValid">
-          Nama pengguna harus lebih dari 1 huruf
-        </b-form-invalid-feedback>
-        <b-form-valid-feedback :state="isUsernameValid">
-          Nama pengguna valid
-        </b-form-valid-feedback>
-      </b-form-group>
-
-        <b-form-group
-          label="Password"
+          label="Nama Lengkap"
           label-for="input">
           <b-form-input
-            label="Kata sandi"
             id="input-1"
-            v-model="editStaffFields.password"
-            type="password"
+            v-model="editStaffFields.fullName"
+            type="text"
             required
           ></b-form-input>
-          <b-form-invalid-feedback :state="isPasswordValid">
-            Password harus mengandung huruf dan angka
-          </b-form-invalid-feedback>
-          <b-form-valid-feedback :state="isPasswordValid">
-            Password valid
-          </b-form-valid-feedback>
         </b-form-group>
 
         <b-form-group
@@ -67,7 +40,7 @@
           <b-form-input
             label="E-mail"
             id="input-1"
-            v-model="editStaffFields.email"
+            v-model="editStaffFields.staffEmail"
             type="email"
             required
           ></b-form-input>
@@ -77,17 +50,6 @@
           <b-form-valid-feedback :state="isEmailValid">
             Email valid
           </b-form-valid-feedback>
-        </b-form-group>
-
-        <b-form-group
-          label="Nama Lengkap"
-          label-for="input">
-          <b-form-input
-            id="input-1"
-            v-model="editStaffFields.fullName"
-            type="text"
-            required
-          ></b-form-input>
         </b-form-group>
 
         <b-form-group
@@ -193,6 +155,7 @@ import {
   queryTypes, queries,
   mutationTypes, mutations,
 } from '../../commands/staffCommands'
+import moment from 'moment'
 
 const getAllRoles = () => {
   const { GET_ROLES } = queryTypes
@@ -218,16 +181,9 @@ export default {
     isUsernameValid () {
       return this.editStaffFields.username.length > 3
     },
-    isPasswordValid () {
-      const letter = /[a-zA-Z]/
-      const number = /[0-9]/
-      const valid = number.test(this.editStaffFields.password) && letter.test(this.editStaffFields.password)
-
-      return valid
-    },
     isEmailValid () {
       const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-      return emailRegex.test(this.editStaffFields.email)
+      return emailRegex.test(this.editStaffFields.staffEmail)
     },
     isRoleValid () {
       return this.editStaffFields.roleId !== null
@@ -249,12 +205,15 @@ export default {
       return this.editStaffFields.noNik.length === 16
     },
     isBirthDateValid () {
-      const dob = new Date(this.editStaffFields.dateOfBirth)
-      const year = dob.getFullYear()
-      const month = dob.getMonth()
-      const day = dob.getDay()
-
-      return new Date(year + 18, month - 1, day) <= new Date();
+      const now = moment()
+      const dob = moment(new Date(this.editStaffFields.dateOfBirth))
+      
+      return now.diff(dob, 'days') > 3650
+    },
+  },
+  methods: {
+    onStaffEditButtonPress (id, cb) {
+      this.onStaffEdit(id)
     }
   },
   apollo: {

@@ -41,17 +41,19 @@ export const mutations = {
       $phoneNumber: String!,
       $address: String!,
       $noNik: String!,
-      $dateOfBirth: String!,
-      $roleId: String!
+      $dateOfBirth: Long!,
+      $roleId: String!,
+      $staffEmail: String!
     ) {
       updateStaff(
         staffId: $staffId, 
         fullName: $fullName,
         phoneNumber: $phoneNumber,
-        address: $staddressaffId,
+        address: $address,
         noNik: $noNik,
         dateOfBirth: $dateOfBirth,
-        roleId: $roleId
+        roleId: $roleId,
+        staffEmail: $staffEmail
       ) {
         status
         id

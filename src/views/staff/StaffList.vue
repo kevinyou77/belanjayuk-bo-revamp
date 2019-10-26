@@ -24,7 +24,7 @@
          </template> -->
 
         <template v-slot:cell(dateOfBirth)="row">
-          <p>{{ new Date(row.item.user.userProfile.dateOfBirth) }}</p>
+          <p>{{ new Date(row.item.user.userProfile.dateOfBirth).toLocaleDateString() }}</p>
         </template>
 
          <template v-slot:cell(actions)="row">
@@ -69,7 +69,7 @@ export default {
         { key: 'user.userProfile.address', label: 'Alamat' },
         { key: 'user.userProfile.phoneNumber', label: 'Nomor telepon' },
         { key: 'user.email', label: 'E-mail' },
-        { key: 'user.userProfile.dateOfBirth', label: 'Tanggal Lahir' },
+        { key: 'dateOfBirth', label: 'Tanggal Lahir' },
         { key: 'user.userProfile.noNik', label: 'Alamat' },
         { key: 'role.name', label: 'Peran' },
         { key: 'actions', label: 'Aksi' }
@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     rows () {
-      console.log(this.staffList.length)
+      console.log(this.staffList)
       return this.staffList.length
     }
   },

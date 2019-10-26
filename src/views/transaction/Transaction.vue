@@ -12,6 +12,7 @@
 import TransactionProductList from "./TransactionProductList"
 import TransactionSelectedProduct from './TransactionSelectedProduct'
 import { mutations, mutationTypes } from '../../commands/transactionCommands'
+import { mapState } from 'vuex'
 
 const createTransactionIdMutation = () => {
   const { CREATE_TRANSACTION_ID } = mutationTypes
@@ -22,6 +23,11 @@ export default {
   components: {
     TransactionProductList,
     TransactionSelectedProduct,
+  },
+  computed: {
+    ...mapState({
+      error: state => state.transaction.error,
+    }),
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {

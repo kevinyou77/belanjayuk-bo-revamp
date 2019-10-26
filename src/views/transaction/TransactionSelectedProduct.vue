@@ -77,11 +77,6 @@ const checkoutMutation = () => {
 }
 
 export default {
-  data () {
-    return {
-      error: '',
-    }
-  },
   computed: {
     ...mapState({
       selectedProducts: state => state.transaction.selectedProducts,
@@ -89,8 +84,6 @@ export default {
     totalPrice () {
       return this.selectedProducts.reduce ((total, item) => total + item.productDetail.sellingPrice, 0)
     },
-  },
-  computed: {
     isSelectedProductsEmpty () {
       return this.selectedProducts.length === 0
     },
@@ -101,7 +94,7 @@ export default {
     },
     showCheckoutModal () {
       if (this.isSelectedProductsEmpty) {
-        this.error = 'Keranjang kosong!'
+        store.dispatch('transaction/setErrorMessage', 'Keranjang kosong!')
         this.$bvModal.show('error-modal')
 
         return
