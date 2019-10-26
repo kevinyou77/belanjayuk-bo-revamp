@@ -184,7 +184,7 @@ export default {
       this.$store.dispatch('transaction/addSelectedProduct', newProduct)
       this.$bvModal.hide('transaction-product-modal')
       this.showSuccessToast()
-    }
+    },
     // handleTransactionItemOnClick(newProduct) {
     //   const itemExistsInSelectedProduct = this.selectedProducts.find(item => item.SKU === newProduct.SKU)
     //   console.log(itemExistsInSelectedProduct)

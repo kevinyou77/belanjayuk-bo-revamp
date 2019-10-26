@@ -76,6 +76,11 @@ const checkoutMutation = () => {
   return mutations[CHECKOUT]
 }
 
+// const completePaymentMutation = () => {
+//   const { COMPLETE_PAYMENT } = mutationTypes
+//   return mutations[COMPLETE_PAYMENT]
+// }
+
 export default {
   computed: {
     ...mapState({
@@ -123,5 +128,8 @@ export default {
       .catch (err => console.log(err))
     }
   },
+  updated () {
+      console.log(this.selectedProducts)
+    }
 }
 </script>

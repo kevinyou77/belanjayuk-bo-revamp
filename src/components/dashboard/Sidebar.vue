@@ -61,6 +61,15 @@
             </span>
           </div>
         </router-link>
+
+        <router-link @click.native="onLogout()" to="/logout">
+          <div class="navigation-list-item">
+            <span class="font font-default">
+              Keluar
+              <i class="right"></i>
+            </span>
+          </div>
+        </router-link>
         
       </div>
     </div>
@@ -72,8 +81,10 @@
 
 export default {
   name: 'sidebar',
-  computed: {
-    
+  methods: {
+    onLogout () {
+      this.$store.dispatch('auth/logout')
+    },
   },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <Sidebar v-show="loggedIn" />
+    <Sidebar v-if="loggedIn" />
     <div class="content">
       <router-view></router-view>
     </div>

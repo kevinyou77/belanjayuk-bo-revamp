@@ -89,6 +89,11 @@ router.beforeEach((to, from, next) => {
     })
   }
 
+  if (to.fullPath === '/logout' && bearerToken) {
+    sessionStorage.clear()
+    next({ path: '/' })
+  }
+
   if (to.matched.some(record => record.meta.requireAuth)) {
     if (bearerToken === null) {
       next({
