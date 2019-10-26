@@ -1,5 +1,16 @@
 <template>
   <div class="list">
+    <div class="box-underline">
+      <span class="heading heading-default">{{ header.title }}</span>
+      <b-button
+        v-for="(item, index) in header.actions"
+        @click="item.action()"
+        :key="index"
+        variant="primary"
+        class="mt-3" >
+        {{ item.actionTitle }}
+      </b-button>
+    </div>
     <b-table
       :fields="fields"
       :items="items"
@@ -33,6 +44,7 @@ export default {
     'items',
     'actions',
     'fields',
+    'header'
   ],
   computed: {
     hasActions () {

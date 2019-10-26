@@ -46,6 +46,14 @@ const router = new Router ({
       },
     },
     {
+      path: '/customers',
+      name: 'customers',
+      component: lazyLoad('customers/Customers'),
+      meta: {
+        requireAuth: true,
+      },
+    },
+    {
       path: '/products',
       name: 'products',
       component: lazyLoad('product/Products'),
@@ -68,7 +76,7 @@ const router = new Router ({
       meta: {
         requireAuth: true,
       }
-    }
+    },
   ]
 })
 

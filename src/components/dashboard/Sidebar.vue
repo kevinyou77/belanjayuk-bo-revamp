@@ -37,6 +37,12 @@
             <span class="font font-default">Kategori<i class="right"></i></span>
           </div>
         </router-link>
+
+        <router-link to="/customers">
+          <div class="navigation-list-item">
+            <span class="font font-default">Pelanggan<i class="right"></i></span>
+          </div>
+        </router-link>
         
         <router-link to="/stock-products">
           <div class="navigation-list-item">
