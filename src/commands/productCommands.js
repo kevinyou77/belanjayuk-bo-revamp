@@ -102,6 +102,10 @@ export const queries = {
           value
           purchasePrice
           sellingPrice
+          productStock {
+            id
+            name
+          }
         }
         category {
           name

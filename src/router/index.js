@@ -80,7 +80,7 @@ const router = new Router ({
   ]
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   const bearerToken = sessionStorage.getItem('bearerToken')
 
   if (to.fullPath === '/' && bearerToken) {

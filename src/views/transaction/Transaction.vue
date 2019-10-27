@@ -39,7 +39,10 @@ export default {
           sessionStorage.removeItem('transactionId')
         }
 
-        sessionStorage.setItem ('transactionId', res.data.createTransaction.transactionId)
+        sessionStorage.setItem (
+          'transactionId',
+          res.data.createTransaction.transactionId
+        )
         next()
       })
       .catch (err => {

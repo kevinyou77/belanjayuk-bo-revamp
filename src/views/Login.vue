@@ -84,11 +84,13 @@ export default {
         bearerToken,
         roleName,
         username,
+        id,
       } = res.data.login
 
       sessionStorage.setItem('bearerToken', bearerToken)
       sessionStorage.setItem('roleName', roleName)
       sessionStorage.setItem('username', username)
+      sessionStorage.setItem('staffId', id)
 
       this.$store.dispatch('auth/authenticate')
       this.$router.push('/dashboard')

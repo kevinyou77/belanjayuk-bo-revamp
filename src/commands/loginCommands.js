@@ -8,9 +8,10 @@ export const mutations = {
   [mutationTypes.LOGIN]: gql`
     mutation login($username: String!, $password: String!){
       login(username: $username, password: $password){
-          bearerToken
-          roleName
-          username
+        bearerToken
+        roleName
+        username
+        id
       }
     }
   `,

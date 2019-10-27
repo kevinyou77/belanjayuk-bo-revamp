@@ -23,6 +23,7 @@
     </div>
 
     <b-modal
+      @hidden="resetSelectedProductData()"
       id="transaction-product-modal"
       hide-footer>
 
@@ -37,9 +38,26 @@
             <span class="font font-medium font-bold">{{ selectedProduct.name }}</span>
             <span class="font font-default">SKU: {{ selectedProduct.SKU }}</span>
             <span class="font font-default">Stok tersedia: {{ selectedProduct.stock }}</span>
-            <span class="font font-default">Harga: {{ selectedProduct.productDetail.sellingPrice }}</span>
+            <span class="font font-default">Harga: {{ sellingPrice }}</span>
 
             <span class="font font-default">Total harga: {{ totalPrice }}</span>
+<!-- console.log(this.selectedProduct.productDetail[0].productStock.id, 'od') -->
+            <b-form-group
+              label="Stok produk"
+              label-for="input"
+              >
+              <b-form-select
+                v-model="productStockId"
+                class="mb-3">
+                <option :value="null">Please select an option</option>
+                <option
+                  v-for="(item, index) in selectedProduct.productDetail"
+                  :key="index"
+                  :value="item.productStock.id">
+                  {{ item.productStock.name }}
+                </option>
+              </b-form-select>
+            </b-form-group>
 
              <b-form-group
               label="Jumlah stok"
@@ -71,12 +89,12 @@
 import { queries, queryTypes } from '../../commands/productCommands'
 import { mapState } from 'vuex'
 
-// const getProductsQuery = () => {
-//   const { GET_PRODUCTS } = queryTypes
-//   const getProducts = queries[GET_PRODUCTS]
+const getProductsQuery = () => {
+  const { GET_PRODUCTS } = queryTypes
+  const getProducts = queries[GET_PRODUCTS]
 
-//   return getProducts
-// }
+  return getProducts
+}
 
 export default {
   data () {
@@ -87,48 +105,18 @@ export default {
         SKU: '',
         stock: 0,
         image: '',
-        productDetail: {
-          sellingPrice: 0,
-        },
+        productDetail: [
+          {
+            sellingPrice: 0,
+            productStock: {
+              id: '',
+              name: '',
+            }
+          }
+        ],
       },
-      products: [
-        {
-          SKU: '1232131232',
-          name: 'Lays Seaweed',
-          stock: 123,
-          image: 'https://i5.walmartimages.ca/images/Large/172/111/6000200172111.jpg',
-          productDetail: {
-            sellingPrice: 20000
-          }
-        },
-        {
-          SKU: '5675676',
-          name: 'Nestle Nestum',
-          stock: 123,
-          image: 'https://i5.walmartimages.ca/images/Large/172/111/6000200172111.jpg',
-          productDetail: {
-            sellingPrice: 20000
-          }
-        },
-        {
-          SKU: '4534524',
-          name: 'Nestle Coffee 45g',
-          stock: 123,
-          image: 'https://i5.walmartimages.ca/images/Large/172/111/6000200172111.jpg',
-          productDetail: {
-            sellingPrice: 20000
-          }
-        },
-        {
-          SKU: '789789789',
-          name: 'UC Orange Water 500ml',
-          stock: 123,
-          image: 'https://i5.walmartimages.ca/images/Large/172/111/6000200172111.jpg',
-          productDetail: {
-            sellingPrice: 20000
-          }
-        },
-      ],
+      productStockId: '',
+      products: [],
       searchQuery: '',
     }
   },
@@ -147,9 +135,19 @@ export default {
     isStockValid () {
       return this.stockAmount <= this.selectedProduct.stock
     },
+    productDetailItem () {
+      const { productDetail } = this.selectedProduct
+      return productDetail.find(item => item.productStock.id === this.productStockId)
+    },
     totalPrice () {
-      if (this.stockAmount === 0) return 0
-      return this.stockAmount * this.selectedProduct.productDetail.sellingPrice
+      if (this.stockAmount === 0 || this.stockAmount === '') return 0
+
+      return this.stockAmount * this.productDetailItem.sellingPrice
+    },
+    sellingPrice () {
+      if (this.productStockId === '') return 0
+
+      return this.productDetailItem.sellingPrice
     }
   },
   methods: {
@@ -171,6 +169,7 @@ export default {
       this.$bvModal.show('transaction-product-modal')
     },
     handleTransactionItemOnClick (newProduct) {
+      console.log(newProduct)
       this.selectedProduct = { ...newProduct }
       this.showModal()
     },
@@ -185,23 +184,29 @@ export default {
       this.$bvModal.hide('transaction-product-modal')
       this.showSuccessToast()
     },
-    // handleTransactionItemOnClick(newProduct) {
-    //   const itemExistsInSelectedProduct = this.selectedProducts.find(item => item.SKU === newProduct.SKU)
-    //   console.log(itemExistsInSelectedProduct)
-    //   console.log(newProduct.SKU)
-    //   if (itemExistsInSelectedProduct) {
-    //     this.showToast()
-    //     return
-    //   }
-
-    //   this.$store.dispatch('transaction/addSelectedProduct', newProduct)
-    // }
+    resetSelectedProductData () {
+      console.log(this.selectedProduct, 'before')
+      this.productStockId = ''
+      this.stockAmount = 0
+      this.selectedProduct = {
+        name: '',
+        SKU: '',
+        stock: 0,
+        image: '',
+        productDetail: [
+          {
+            sellingPrice: 0,
+            productStock: {
+              id: '',
+              name: '',
+            }
+          }
+        ],
+      }
+    }
   },
-  // apollo: {
-  //   products: getProductsQuery()
-  // },
-  // updated () {
-  //   console.log(this.products)
-  // }
+  apollo: {
+    products: getProductsQuery()
+  },
 }
 </script>
