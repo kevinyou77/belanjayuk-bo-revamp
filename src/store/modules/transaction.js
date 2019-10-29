@@ -1,14 +1,31 @@
 const state = {
   selectedProducts: [],
+  selectedProductDetail: [],
   error: '',
 }
 
 const actions = {
-  addSelectedProduct ({ commit }, newProduct) {
-    commit('addSelectedProduct', newProduct)
+  addSelectedProduct ({ commit, state }, newProduct) {
+    return new Promise ((resolve, reject) => {
+      const filteredSelectedProducts = state.selectedProducts.filter (item => item.id === newProduct.id)
+      const hasSelectedProductDetail = filteredSelectedProducts.find (item => (
+        item.productDetail.find (pd => pd.id === newProduct.productDetail[0].id)
+      ))
+      
+      if (hasSelectedProductDetail) {
+        reject(false)
+        return
+      }
+
+      commit('addSelectedProduct', newProduct)
+      resolve(true)
+    })
   },
-  removeSelectedProduct ({ commit }, SKU) {
-    const filteredSelectedProducts = state.selectedProducts.filter(item => item.SKU !== SKU)
+  removeSelectedProduct ({ commit }, selectedProductInfo) {
+    const filteredSelectedProducts = state.selectedProducts.filter(item => {
+      return item.productDetail[0].id !== selectedProductInfo.productDetailId
+    })
+
     commit ('modifySelectedProduct', filteredSelectedProducts)
   },
   updateSelectedProduct ({ commit }, { SKU, stock }) {
@@ -19,13 +36,22 @@ const actions = {
   },
   setErrorMessage ({ commit }, errorMessage) {
     commit('setErrorMessage', errorMessage)
-  }
+  },
+  setSelectedProductDetail ({ commit }, productDetail) {
+    commit ('addSelectedProductDetail', productDetail)
+  },
 }
 
 const mutations = {
   addSelectedProduct (state, newProduct) {
     state.selectedProducts = [
       ...state.selectedProducts,
+      newProduct,
+    ]
+  },
+  addSelectedProductDetail (state, newProduct) {
+    state.selectedProducts = [
+      ...state.selectedProductDetail,
       newProduct,
     ]
   },

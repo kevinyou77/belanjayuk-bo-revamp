@@ -151,7 +151,7 @@ export default {
     }
   },
   methods: {
-    showToast () {
+    showFailedToast () {
       this.$bvToast.toast(`Oops`, {
         title: 'Produk telah sudah ada di cart',
         autoHideDelay: 1000,
@@ -169,23 +169,24 @@ export default {
       this.$bvModal.show('transaction-product-modal')
     },
     handleTransactionItemOnClick (newProduct) {
-      console.log(newProduct)
       this.selectedProduct = { ...newProduct }
       this.showModal()
     },
     handleTransactionModalAdd (newProduct) {
-      const itemExistsInSelectedProduct = this.selectedProducts.find(item => item.SKU === newProduct.SKU)
-      if (itemExistsInSelectedProduct) {
-        this.showToast()
-        return
-      }
+      const product = { ...newProduct }
+      const { productDetail } = product
+      const filteredProductDetail = productDetail.filter(item => item.productStock.id === this.productStockId)
 
-      this.$store.dispatch('transaction/addSelectedProduct', newProduct)
+      product.productDetail = filteredProductDetail
+
+      this.$store.dispatch('transaction/addSelectedProduct', product)
+        .then(res => this.showSuccessToast())
+        .catch(err => this.showFailedToast())
+
       this.$bvModal.hide('transaction-product-modal')
       this.showSuccessToast()
     },
     resetSelectedProductData () {
-      console.log(this.selectedProduct, 'before')
       this.productStockId = ''
       this.stockAmount = 0
       this.selectedProduct = {

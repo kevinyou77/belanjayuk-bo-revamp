@@ -15,7 +15,7 @@ export const queryTypes = {
 export const mutations = {
   [mutationTypes.CREATE_TRANSACTION_ID]: gql`
     mutation {
-      createTransaction{
+      createTransaction {
         status
         transactionId
       }

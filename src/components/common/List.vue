@@ -1,6 +1,8 @@
 <template>
   <div class="list">
-    <div class="box-underline">
+    <div
+      v-if="hasHeader"
+      class="box-underline">
       <span class="heading heading-default">{{ header.title }}</span>
       <b-button
         v-for="(item, index) in header.actions"
@@ -49,6 +51,9 @@ export default {
   computed: {
     hasActions () {
       return !!this.actions
+    },
+    hasHeader () {
+      return !!this.header
     }
   },
   mounted () {

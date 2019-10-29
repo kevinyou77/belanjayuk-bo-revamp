@@ -89,12 +89,12 @@
             name="fade"
             mode="out-in">
             <EditProductDetail
-              key="`detail`"
+              key="`product detail`"
               :productDetailFields="productDetailInput"
               :onProductDetailAdd="onProductDetailAdd" />
 
             <List
-              key="`list`"
+              key="`editlist`"
               :items="editProductDetailInputArray"
               :fields="productDetailListFields"
               :actions="productDetailListActions()" />
@@ -182,7 +182,7 @@ export default {
       addProductFields: {
         name: '',
         SKU: '',
-        stock: '',
+        stock: 0,
         categoryId: null,
       },
       productDetailInput: {
@@ -299,7 +299,7 @@ export default {
       this.addProductFields.stock = parseInt(stock)
 
       const productFields = { ...this.addProductFields }
-
+      console.log(productFields, 'pf')
       return {
         product: {
           ...productFields,
@@ -331,12 +331,12 @@ export default {
       return [
          {
           name: 'Edit',
-          handle: this,
+          handle: () => {},
           variant: 'danger',
         },
         {
           name: 'Delete',
-          handle: this.onProductDetailDelete,
+          handle: () => {},
           variant: 'danger',
         }
       ]
