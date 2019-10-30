@@ -48,17 +48,17 @@
 
     <div class="transaction-selected-info">
       <b-form-group
-        label="Jenis stok"
+        label=""
         label-for="input">
-
-        <div v-if="$apollo.queries.staffs.loading">Loading...</div>
+        Nama pelanggan
+        <div v-if="$apollo.queries.customers.loading">Loading...</div>
         <b-form-select
           v-else 
           v-model="customerId"
           class="mb-3">
           <option :value="``">Please select an option</option>
           <option
-            v-for="(item, index) in staffs"
+            v-for="(item, index) in customers"
             :key="index"
             :value="item.id">
             {{ item.user.userProfile.fullName }}
@@ -105,13 +105,13 @@
 import { mapState } from 'vuex'
 import { mutations, mutationTypes } from '../../commands/transactionCommands'
 import {
-  queries as staffQueries,
-  queryTypes as staffQueryTypes
-} from '../../commands/staffCommands'
+  queryTypes as customerQueryTypes,
+  queries as customerQueries,
+} from '../../commands/customerCommands'
 
 const getCustomersQuery = () => {
-  const { GET_CUSTOMERS } = staffQueryTypes
-  return staffQueries[GET_CUSTOMERS]
+  const { GET_CUSTOMERS } = customerQueryTypes
+  return customerQueries[GET_CUSTOMERS]
 }
 
 const checkoutMutation = () => {
@@ -127,7 +127,7 @@ const checkoutMutation = () => {
 export default {
   data () {
     return {
-      staffs: [],
+      customers: [],
       customerId: '',
       error: '',
     }
@@ -170,14 +170,22 @@ export default {
         return
       }
 
+      const flattendProductDetail = this.selectedProducts.reduce((prev, { productDetail }) => {
+        const detail = {
+          productDetailId: productDetail[0].id,
+          numberOfPurchase: productDetail[0].value
+        }
+        return [ ...prev, detail ]
+      }, [])
+
       const transactionParameters = {
         transactionId: sessionStorage.getItem('transactionId'),
         customerId: this.customerId,
         staffId: sessionStorage.getItem('staffId'),
-        detail: [
-          ...this.selectedProducts
-        ],
+        detail: flattendProductDetail,
       }
+
+      console.log(transactionParameters, 'txparams')
       this.$apollo.mutate({
         mutation: checkoutMutation(),
         variables: {
@@ -197,7 +205,7 @@ export default {
     console.log(this.customerId)
   },
   apollo: {
-    staffs: getCustomersQuery()
+    customers: getCustomersQuery(),
   }
 }
 </script>
