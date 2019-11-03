@@ -21,6 +21,9 @@ const actions = {
       resolve(true)
     })
   },
+  injectSelectedProducts ({ commit }, products) {
+    commit('injectSelectedProducts', products)
+  },
   removeSelectedProduct ({ commit }, selectedProductInfo) {
     const filteredSelectedProducts = state.selectedProducts.filter(item => {
       return item.productDetail[0].id !== selectedProductInfo.productDetailId
@@ -47,6 +50,11 @@ const mutations = {
     state.selectedProducts = [
       ...state.selectedProducts,
       newProduct,
+    ]
+  },
+  injectSelectedProducts (state, products) {
+    state.selectedProducts = [
+      ...products,
     ]
   },
   addSelectedProductDetail (state, newProduct) {

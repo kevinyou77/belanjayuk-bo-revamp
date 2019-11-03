@@ -20,6 +20,12 @@
           </div>
         </router-link>
 
+        <router-link to="/purchase">
+          <div class="navigation-list-item">
+            <span class="font font-default">Pembelian<i class="right"></i></span>
+          </div>
+        </router-link>
+
         <router-link to="/transaction/history">
           <div class="navigation-list-item">
             <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>

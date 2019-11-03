@@ -25,16 +25,38 @@ export const mutations = {
     mutation checkout ($transaction: TransactionInput!) {
       checkout(transaction: $transaction) {
         status
+        totalPrice
+        debt
         details {
           numberOfPurchases
+          status
+          productDetail {
+            value
+            productStock {
+              id
+              name
+            }
+            product {
+              SKU
+              name
+            }
+          }
         }
       }
     }
   `,
   [mutationTypes.COMPLETE_TRANSACTION]: gql`
-    mutation completePayment ($transactionId: String!) {
-      completePayment(transactionId: $transactionId){
+    mutation completePayment (
+      $transactionId: String!,
+      $amountOfPayment: BigDecimal!
+    ) {
+      completePayment(
+        transactionId: $transactionId,
+        amountOfPayment: $amountOfPayment
+      ){
         status
+        totalPrice
+        debt
         details {
           numberOfPurchases
         }

@@ -1,7 +1,7 @@
 <template>
   <div class="transaction">
-    <TransactionProductList />
-    <TransactionSelectedProduct />
+    <PurchaseProductList />
+    <PurchaseSelectedProduct />
     <b-modal id="error-modal">
       <span class="heading heading-default">{{ error }}</span>
     </b-modal>
@@ -9,20 +9,20 @@
 </template>
 
 <script>
-import TransactionProductList from "./TransactionProductList"
-import TransactionSelectedProduct from './TransactionSelectedProduct'
-import { mutations, mutationTypes } from '../../commands/transactionCommands'
+import PurchaseProductList from "./PurchaseProductList"
+import PurchaseSelectedProduct from './PurchaseSelectedProduct'
+import { mutations, mutationTypes } from '../../commands/purchaseCommands'
 import { mapState } from 'vuex'
 
 const createTransactionIdMutation = () => {
-  const { CREATE_TRANSACTION_ID } = mutationTypes
-  return mutations[CREATE_TRANSACTION_ID]
+  const { CREATE_PURCHASE_ID } = mutationTypes
+  return mutations[CREATE_PURCHASE_ID]
 }
 
 export default {
   components: {
-    TransactionProductList,
-    TransactionSelectedProduct,
+    PurchaseProductList,
+    PurchaseSelectedProduct,
   },
   computed: {
     ...mapState({
@@ -41,13 +41,15 @@ export default {
           return
         }
 
-        if (!sessionStorage.getItem('transactionId')) {
-          sessionStorage.removeItem('transactionId')
+        if (!sessionStorage.getItem('purchaseId')) {
+          sessionStorage.removeItem('purchaseId')
         }
 
+        console.log(res)
+
         sessionStorage.setItem (
-          'transactionId',
-          res.data.createTransaction.transactionId
+          'purchaseId',
+          res.data.createPurchasesTransaction.purchasesTransactionId
         )
         next()
       })
