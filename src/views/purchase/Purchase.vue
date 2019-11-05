@@ -45,8 +45,6 @@ export default {
           sessionStorage.removeItem('purchaseId')
         }
 
-        console.log(res)
-
         sessionStorage.setItem (
           'purchaseId',
           res.data.createPurchasesTransaction.purchasesTransactionId

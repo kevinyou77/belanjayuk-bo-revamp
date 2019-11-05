@@ -186,8 +186,6 @@ export default {
         })
         .catch(err => this.showFailedToast())
 
-      localStorage.setItem('products', product)
-
       this.$bvModal.hide('transaction-product-modal')
       this.showSuccessToast()
     },

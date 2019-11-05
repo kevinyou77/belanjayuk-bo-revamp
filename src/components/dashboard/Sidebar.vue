@@ -26,6 +26,12 @@
           </div>
         </router-link>
 
+        <router-link to="/supplier">
+          <div class="navigation-list-item">
+            <span class="font font-default">Supplier<i class="right"></i></span>
+          </div>
+        </router-link>
+
         <router-link to="/transaction/history">
           <div class="navigation-list-item">
             <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>

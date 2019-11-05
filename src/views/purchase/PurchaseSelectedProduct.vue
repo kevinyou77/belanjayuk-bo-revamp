@@ -193,7 +193,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mutations, mutationTypes } from '../../commands/transactionCommands'
+import { mutations, mutationTypes } from '../../commands/purchaseCommands'
 import {
   queryTypes as customerQueryTypes,
   queries as customerQueries,
@@ -210,8 +210,8 @@ const checkoutMutation = () => {
 }
 
 const completePaymentMutation = () => {
-  const { COMPLETE_TRANSACTION } = mutationTypes
-  return mutations[COMPLETE_TRANSACTION]
+  const { COMPLETE_PAYMENT_PURCHASE } = mutationTypes
+  return mutations[COMPLETE_PAYMENT_PURCHASE]
 }
 
 export default {
@@ -258,13 +258,6 @@ export default {
       this.$bvModal.show('checkout-confirmation-modal')
     },
     checkout () {
-      if (this.customerId === '') {
-        this.error = 'Nama pelanggan harus diisi!'
-        this.$bvModal.show('error-modal')
-
-        return
-      }
-
       const flattendProductDetail = this.selectedProducts.reduce((prev, { productDetail }) => {
         const detail = {
           productDetailId: productDetail[0].id,
@@ -274,8 +267,8 @@ export default {
       }, [])
 
       const transactionParameters = {
-        transactionId: sessionStorage.getItem('transactionId'),
-        customerId: this.customerId,
+        purchasesTransactionId: sessionStorage.getItem('purchaseId'),
+        supplierId : '932c6fbf-3259-4317-917f-58293e1ac809',
         staffId: sessionStorage.getItem('staffId'),
         detail: flattendProductDetail,
       }
@@ -287,10 +280,12 @@ export default {
         }
       })
       .then (res => {
+        console.log(res)
         this.checkoutResultData = res.data.checkout
         this.$bvModal.show('confirm-payment-modal')
       })
       .catch (err => {
+        console.log(err)
         this.error = 'Terjadi masalah, coba lagi!'
         this.$bvModal.show('error-modal')
       })

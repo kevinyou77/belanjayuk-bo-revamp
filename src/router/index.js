@@ -38,6 +38,14 @@ const router = new Router ({
       }
     },
     {
+      path: '/supplier',
+      name: 'supplier',
+      component: lazyLoad('supplier/Supplier'),
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
       path: '/stock-products',
       name: 'stock-products',
       component: lazyLoad('stock-product/StockProduct'),
