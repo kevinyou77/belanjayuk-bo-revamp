@@ -13,9 +13,9 @@
         :key="index"
         >
           <div class="transaction-selected-list-item-image">
-            <!-- <img :src="item.image"
+            <img :src="item.imageUrl"
               width="100"
-              heigh="100" alt=""> -->
+              heigh="100" alt="">
           </div>
 
           <div class="transaction-selected-list-item-info">
@@ -227,7 +227,7 @@ export default {
   },
   computed: {
     ...mapState({
-      selectedProducts: state => state.transaction.selectedProducts,
+      selectedProducts: state => state.purchase.selectedProducts,
     }),
     totalPrice () {
       return this.selectedProducts.reduce ((total, item) => total + item.productDetail.sellingPrice, 0)
@@ -245,11 +245,11 @@ export default {
         SKU: item.SKU,
         productDetailId: item.productDetail[0].id,
       }
-      this.$store.dispatch('transaction/removeSelectedProduct', selectedProductInfo)
+      this.$store.dispatch('purchase/removeSelectedProduct', selectedProductInfo)
     },
     showCheckoutModal () {
       if (this.isSelectedProductsEmpty) {
-        store.dispatch('transaction/setErrorMessage', 'Keranjang kosong!')
+        this.$store.dispatch('purchase/setErrorMessage', 'Keranjang kosong!')
         this.$bvModal.show('error-modal')
 
         return
@@ -327,6 +327,6 @@ export default {
   },
   apollo: {
     customers: getCustomersQuery(),
-  }
+  },
 }
 </script>

@@ -14,7 +14,7 @@ import PurchaseSelectedProduct from './PurchaseSelectedProduct'
 import { mutations, mutationTypes } from '../../commands/purchaseCommands'
 import { mapState } from 'vuex'
 
-const createTransactionIdMutation = () => {
+const createPurchaseIdMutation = () => {
   const { CREATE_PURCHASE_ID } = mutationTypes
   return mutations[CREATE_PURCHASE_ID]
 }
@@ -32,11 +32,11 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.$apollo.mutate({
-        mutation: createTransactionIdMutation()
+        mutation: createPurchaseIdMutation()
       })
       .then (res => {
-        if (localStorage.getItem('products')) {
-          this.$store.dispatch('transaction/injectSelectedProducts')
+        if (localStorage.getItem('purchaseProducts')) {
+          this.$store.dispatch('purchase/injectSelectedProducts')
           next()
           return
         }

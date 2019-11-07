@@ -182,7 +182,7 @@ export default {
       this.$store.dispatch('transaction/addSelectedProduct', product)
         .then(res => {
           this.showSuccessToast()
-          localStorage.setItem('products', JSON.stringify(this.selectedProducts))
+          localStorage.setItem('purchaseProducts', JSON.stringify(this.selectedProducts))
         })
         .catch(err => this.showFailedToast())
 
