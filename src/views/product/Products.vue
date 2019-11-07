@@ -299,7 +299,9 @@ export default {
       this.addProductFields.stock = parseInt(stock)
 
       const productFields = { ...this.addProductFields }
+      productFields.imageUrl = 'https://images.unsplash.com/photo-1572946281197-6129946d463f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1982&q=80'
       console.log(productFields, 'pf')
+      
       return {
         product: {
           ...productFields,

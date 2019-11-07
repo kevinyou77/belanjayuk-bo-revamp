@@ -74,6 +74,15 @@
           </div>
         </router-link>
 
+        <router-link to="/help">
+          <div class="navigation-list-item">
+            <span class="font font-default">
+              Bantuan
+              <i class="right"></i>
+            </span>
+          </div>
+        </router-link>
+
         <router-link @click.native="onLogout()" to="/logout">
           <div class="navigation-list-item">
             <span class="font font-default">

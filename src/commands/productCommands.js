@@ -97,6 +97,7 @@ export const queries = {
         SKU
         stock
         status
+        imageUrl
         productDetail {
           id
           value

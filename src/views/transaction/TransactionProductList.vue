@@ -13,7 +13,7 @@
         @click="handleTransactionItemOnClick(product)"
         :key="index">
         <img
-          :src="product.image"
+          :src="product.imageUrl"
           width="120"
           height="120">
         <div class="font font-default font-bold">{{ product.name }}</div>
