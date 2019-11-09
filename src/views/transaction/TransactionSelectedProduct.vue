@@ -227,7 +227,7 @@ export default {
   },
   computed: {
     ...mapState({
-      selectedProducts: state => state.purchase.selectedProducts,
+      selectedProducts: state => state.transaction.selectedProducts,
     }),
     totalPrice () {
       return this.selectedProducts.reduce ((total, item) => total + item.productDetail.sellingPrice, 0)
@@ -328,5 +328,8 @@ export default {
   apollo: {
     customers: getCustomersQuery(),
   },
+  updated () {
+    console.log(this.selectedProducts)
+  }
 }
 </script>

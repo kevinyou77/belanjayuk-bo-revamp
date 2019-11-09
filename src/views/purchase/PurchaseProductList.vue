@@ -178,6 +178,7 @@ export default {
       const filteredProductDetail = productDetail.filter(item => item.productStock.id === this.productStockId)
 
       product.productDetail = filteredProductDetail
+      product.productDetail[0]["numberOfPurchase"] = this.stockAmount
 
       this.$store.dispatch('transaction/addSelectedProduct', product)
         .then(res => {

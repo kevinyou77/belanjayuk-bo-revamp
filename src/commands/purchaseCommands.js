@@ -22,8 +22,8 @@ export const mutations = {
     }
   `,
   [mutationTypes.CHECKOUT]: gql`
-    mutation checkoutPurchases ($purchaseTransaction: PurchasesTransactionInput!) {
-      checkoutPurchases(purchasesTransaction: $purchaseTransaction){
+    mutation checkoutPurchases ($purchasesTransaction: PurchasesTransactionInput!) {
+      checkoutPurchases(purchasesTransaction: $purchasesTransaction){
         status
         totalPrice
         debt

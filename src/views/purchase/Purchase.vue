@@ -36,14 +36,14 @@ export default {
       })
       .then (res => {
         if (localStorage.getItem('purchaseProducts')) {
-          this.$store.dispatch('purchase/injectSelectedProducts')
-          next()
-          return
+          vm.$store.dispatch('purchase/injectSelectedProducts', localStorage.getItem('purchaseProducts'))
         }
 
-        if (!sessionStorage.getItem('purchaseId')) {
-          sessionStorage.removeItem('purchaseId')
-        }
+        // if (!sessionStorage.getItem('purchaseId')) {
+        //   sessionStorage.removeItem('purchaseId')
+        // }
+
+        console.log(res.data.createPurchasesTransaction.purchasesTransactionId, 'supertest')
 
         sessionStorage.setItem (
           'purchaseId',

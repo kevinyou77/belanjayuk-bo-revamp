@@ -51,17 +51,17 @@
         label=""
         label-for="input">
         Nama pelanggan
-        <div v-if="$apollo.queries.customers.loading">Loading...</div>
+        <div v-if="$apollo.queries.suppliers.loading">Loading...</div>
         <b-form-select
           v-else 
           v-model="customerId"
           class="mb-3">
           <option :value="``">Please select an option</option>
           <option
-            v-for="(item, index) in customers"
+            v-for="(item, index) in suppliers"
             :key="index"
             :value="item.id">
-            {{ item.user.userProfile.fullName }}
+            {{ item.name }}
           </option>
         </b-form-select>
         <!-- <b-form-invalid-feedback :state="isProductStockTypeValid">
@@ -193,15 +193,18 @@
 
 <script>
 import { mapState } from 'vuex'
-import { mutations, mutationTypes } from '../../commands/purchaseCommands'
 import {
-  queryTypes as customerQueryTypes,
-  queries as customerQueries,
-} from '../../commands/customerCommands'
+  queries, queryTypes,
+  mutations, mutationTypes
+} from '../../commands/purchaseCommands'
+import {
+  queryTypes as supplierQueryTypes,
+  queries as supplierQueries,
+} from '../../commands/supplierCommands'
 
-const getCustomersQuery = () => {
-  const { GET_CUSTOMERS } = customerQueryTypes
-  return customerQueries[GET_CUSTOMERS]
+const getSuppliers = () => {
+  const { GET_SUPPLIERS } = supplierQueryTypes
+  return supplierQueries[GET_SUPPLIERS]
 }
 
 const checkoutMutation = () => {
@@ -217,7 +220,7 @@ const completePaymentMutation = () => {
 export default {
   data () {
     return {
-      customers: [],
+      suppliers: [],
       customerId: '',
       error: '',
       checkoutResultData: {},
@@ -261,22 +264,24 @@ export default {
       const flattendProductDetail = this.selectedProducts.reduce((prev, { productDetail }) => {
         const detail = {
           productDetailId: productDetail[0].id,
-          numberOfPurchase: productDetail[0].value
+          numberOfPurchase: parseInt(productDetail[0].numberOfPurchase)
         }
         return [ ...prev, detail ]
       }, [])
 
-      const transactionParameters = {
+      const purchasesTransactionParameters = {
         purchasesTransactionId: sessionStorage.getItem('purchaseId'),
-        supplierId : '932c6fbf-3259-4317-917f-58293e1ac809',
+        supplierId : '6748133d-61cf-4a41-8382-d31267c3ba90',
         staffId: sessionStorage.getItem('staffId'),
         detail: flattendProductDetail,
       }
 
+      console.log(purchasesTransactionParameters, 'paramsss')
+
       this.$apollo.mutate({
         mutation: checkoutMutation(),
         variables: {
-          transaction: transactionParameters,
+          purchasesTransaction: purchasesTransactionParameters,
         }
       })
       .then (res => {
@@ -285,7 +290,7 @@ export default {
         this.$bvModal.show('confirm-payment-modal')
       })
       .catch (err => {
-        console.log(err)
+        console.log(err, 'error in purchase checkout')
         this.error = 'Terjadi masalah, coba lagi!'
         this.$bvModal.show('error-modal')
       })
@@ -321,7 +326,7 @@ export default {
     }
   },
   apollo: {
-    customers: getCustomersQuery(),
-  }
+    suppliers: getSuppliers(),
+  },
 }
 </script>
