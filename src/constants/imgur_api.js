@@ -18,3 +18,5 @@ class ImgurEndpoints {
   }
 
 }
+
+export default ImgurEndpoints
