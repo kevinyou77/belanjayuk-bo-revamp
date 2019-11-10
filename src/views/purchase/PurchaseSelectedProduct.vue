@@ -276,8 +276,6 @@ export default {
         detail: flattendProductDetail,
       }
 
-      console.log(purchasesTransactionParameters, 'paramsss')
-
       this.$apollo.mutate({
         mutation: checkoutMutation(),
         variables: {
@@ -285,12 +283,10 @@ export default {
         }
       })
       .then (res => {
-        console.log(res)
         this.checkoutResultData = res.data.checkout
         this.$bvModal.show('confirm-payment-modal')
       })
       .catch (err => {
-        console.log(err, 'error in purchase checkout')
         this.error = 'Terjadi masalah, coba lagi!'
         this.$bvModal.show('error-modal')
       })
