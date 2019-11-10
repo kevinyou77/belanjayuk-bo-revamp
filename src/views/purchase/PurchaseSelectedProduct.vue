@@ -13,9 +13,9 @@
         :key="index"
         >
           <div class="transaction-selected-list-item-image">
-            <!-- <img :src="item.image"
+            <img :src="item.imageUrl"
               width="100"
-              heigh="100" alt=""> -->
+              heigh="100" alt="">
           </div>
 
           <div class="transaction-selected-list-item-info">
@@ -139,20 +139,6 @@
                   : {{ item.productDetail.value }}
                 </span>
               </div>
-
-              <div
-                class="details-item-box">
-                <span
-                  v-if="isProductStockFulfilled(item.numberOfPurchases, item.productDetail.value)"
-                  class="details-item-box-available">
-                  Tersedia!
-                </span>
-                <span
-                  v-else
-                  class="details-item-box-unavailable">
-                  Produk tidak tersedia!
-                </span>
-              </div>
           </div>
 
           <div class="total">
@@ -230,7 +216,7 @@ export default {
   },
   computed: {
     ...mapState({
-      selectedProducts: state => state.transaction.selectedProducts,
+      selectedProducts: state => state.purchase.selectedProducts,
     }),
     totalPrice () {
       return this.selectedProducts.reduce ((total, item) => total + item.productDetail.sellingPrice, 0)
@@ -248,11 +234,11 @@ export default {
         SKU: item.SKU,
         productDetailId: item.productDetail[0].id,
       }
-      this.$store.dispatch('transaction/removeSelectedProduct', selectedProductInfo)
+      this.$store.dispatch('purchase/removeSelectedProduct', selectedProductInfo)
     },
     showCheckoutModal () {
       if (this.isSelectedProductsEmpty) {
-        store.dispatch('transaction/setErrorMessage', 'Keranjang kosong!')
+        store.dispatch('purchase/setErrorMessage', 'Keranjang kosong!')
         this.$bvModal.show('error-modal')
 
         return
@@ -271,7 +257,7 @@ export default {
 
       const purchasesTransactionParameters = {
         purchasesTransactionId: sessionStorage.getItem('purchaseId'),
-        supplierId : '6748133d-61cf-4a41-8382-d31267c3ba90',
+        supplierId : this.customerId,
         staffId: sessionStorage.getItem('staffId'),
         detail: flattendProductDetail,
       }
@@ -283,7 +269,8 @@ export default {
         }
       })
       .then (res => {
-        this.checkoutResultData = res.data.checkout
+        console.log(res.data)
+        this.checkoutResultData = res.data.checkoutPurchases
         this.$bvModal.show('confirm-payment-modal')
       })
       .catch (err => {
@@ -295,12 +282,12 @@ export default {
       this.$apollo.mutate({
         mutation: completePaymentMutation(),
         variables: {
-          transactionId: sessionStorage.getItem('transactionId'),
+          purchasesTransactionId: sessionStorage.getItem('purchaseId'),
           amountOfPayment: parseInt(this.amountOfPayment),
         }
       })
       .then (res => {
-        localStorage.removeItem('products')
+        localStorage.removeItem('purchaseProducts')
 
         this.error = 'Berhasil membayar!'
         this.$bvModal.show('error-modal')
@@ -310,13 +297,6 @@ export default {
         this.$bvModal.show('error-modal')
       })
     },
-    isProductStockFulfilled (numberOfPurchases, availableStock) {
-      const available = numberOfPurchases === availableStock
-
-      !available && (this.isAllProductAvailable = false)
-
-      return available
-    },
     remainingDebt () {
       return checkoutResultData.totalPrice === this.amountOfPayment
     }
@@ -324,5 +304,8 @@ export default {
   apollo: {
     suppliers: getSuppliers(),
   },
+  updated () {
+    console.log(this.selectedProducts)
+  }
 }
 </script>

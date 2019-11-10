@@ -57,7 +57,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.actions)
+    console.log(this.items)
   }
 }
 </script>

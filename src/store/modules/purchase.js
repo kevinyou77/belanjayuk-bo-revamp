@@ -24,14 +24,14 @@ const actions = {
   injectSelectedProducts ({ commit }, products) {
     commit('injectSelectedProducts', products)
   },
-  removeSelectedProduct ({ commit }, selectedProductInfo) {
+  removeSelectedProduct ({ commit, state }, selectedProductInfo) {
     const filteredSelectedProducts = state.selectedProducts.filter(item => {
       return item.productDetail[0].id !== selectedProductInfo.productDetailId
     })
 
     commit ('modifySelectedProduct', filteredSelectedProducts)
   },
-  updateSelectedProduct ({ commit }, { SKU, stock }) {
+  updateSelectedProduct ({ commit, state }, { SKU, stock }) {
     const targetProduct = { ...state.selectedProducts.filter(item => item.SKU === SKU) }
     targetProduct.stock = stock
 

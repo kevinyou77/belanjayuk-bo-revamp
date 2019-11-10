@@ -35,14 +35,12 @@ export default {
         mutation: createTransactionIdMutation()
       })
       .then (res => {
-        if (localStorage.getItem('products')) {
-          this.$store.dispatch('transaction/injectSelectedProducts')
+        const existingProducts = localStorage.getItem('products')
+        if (existingProducts) {
+          vm.$store.dispatch('transaction/injectSelectedProducts', JSON.parse(existingProducts))
+
           next()
           return
-        }
-
-        if (!sessionStorage.getItem('transactionId')) {
-          sessionStorage.removeItem('transactionId')
         }
 
         sessionStorage.setItem (

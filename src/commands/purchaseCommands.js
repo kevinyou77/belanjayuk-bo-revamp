@@ -50,11 +50,11 @@ export const mutations = {
     }
   `,
   [mutationTypes.COMPLETE_PAYMENT_PURCHASE]: gql`
-    mutation completePayment (
+    mutation completePaymentPurchases (
       $purchasesTransactionId: String!,
       $amountOfPayment: BigDecimal!
     ) {
-      completePayment(
+      completePaymentPurchases (
         purchasesTransactionId: $purchasesTransactionId,
         amountOfPayment: $amountOfPayment
       ){

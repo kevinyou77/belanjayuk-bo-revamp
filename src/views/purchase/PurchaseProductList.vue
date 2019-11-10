@@ -122,7 +122,7 @@ export default {
   },
   computed: {
     ...mapState({
-      selectedProducts: state => state.transaction.selectedProducts,
+      selectedProducts: state => state.purchase.selectedProducts,
     }),
     filteredProductList () {
       return this.products.filter(item => {
@@ -180,7 +180,7 @@ export default {
       product.productDetail = filteredProductDetail
       product.productDetail[0]["numberOfPurchase"] = this.stockAmount
 
-      this.$store.dispatch('transaction/addSelectedProduct', product)
+      this.$store.dispatch('purchase/addSelectedProduct', product)
         .then(res => {
           this.showSuccessToast()
           localStorage.setItem('purchaseProducts', JSON.stringify(this.selectedProducts))
@@ -213,5 +213,8 @@ export default {
   apollo: {
     products: getProductsQuery()
   },
+  updated () {
+    console.log(this.products)
+  }
 }
 </script>

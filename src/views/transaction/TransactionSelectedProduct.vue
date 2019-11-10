@@ -245,11 +245,11 @@ export default {
         SKU: item.SKU,
         productDetailId: item.productDetail[0].id,
       }
-      this.$store.dispatch('purchase/removeSelectedProduct', selectedProductInfo)
+      this.$store.dispatch('transaction/removeSelectedProduct', selectedProductInfo)
     },
     showCheckoutModal () {
       if (this.isSelectedProductsEmpty) {
-        this.$store.dispatch('purchase/setErrorMessage', 'Keranjang kosong!')
+        this.$store.dispatch('transaction/setErrorMessage', 'Keranjang kosong!')
         this.$bvModal.show('error-modal')
 
         return

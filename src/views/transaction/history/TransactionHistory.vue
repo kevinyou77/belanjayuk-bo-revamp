@@ -2,7 +2,7 @@
   <div>
     <List
       key="`list`"
-      :items="transactionsById"
+      :items="transactions"
        />
   </div>
 </template>
@@ -29,9 +29,7 @@ const getTransactionsByIdQuery = () => {
 
 const getTransactions = () => {
   const { GET_TRANSACTIONS } = queryTypes
-  const getTransactions = queries[GET_TRANSACTIONS]
-
-  return getTransactions
+  return queries[GET_TRANSACTIONS]
 }
 
 export default {
@@ -62,9 +60,37 @@ export default {
       })
       .catch (err => console.log(err))
     },
+    getAllTransactionData () {
+      this.$apollo.query({
+        query: getTransactions(),
+        variables: {
+          limit: 10
+        }
+      })
+      .then (res => {
+        console.log(res, 'tx success')
+      })
+      .catch (err => {
+        console.log(err, 'something went wrong')
+      })
+    },
+    getAllTransactionDataByStatus () {
+      this.$apollo.query({
+        query: getTransactionsByIdQuery(),
+        variables: {
+          status: 3
+        }
+      })
+      .then (res => console.log(res, 'status success'))
+      .catch (err => console.log(err, 'error data status'))
+    }
+  },
+  mounted () {
+    this.getAllTransactionData()
+    this.getAllTransactionDataByStatus()
   },
   updated () {
-    
+    console.log(this.transactions)
   }
 }
 </script>

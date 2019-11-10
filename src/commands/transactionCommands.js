@@ -67,8 +67,8 @@ export const mutations = {
 
 export const queries = {
   [queryTypes.GET_TRANSACTIONS]: gql`
-    query transactions {
-      transactionsWithLimit(limit: 10){
+    query transactionsWithLimit ($limit: Int!) {
+      transactionsWithLimit(limit: $limit) {
         totalCount
         hasNextData
         transactions {
@@ -106,10 +106,6 @@ export const queries = {
                 dateOfBirth
                 id
               }
-            }
-            role {
-              name
-              id
             }
           } 
         }

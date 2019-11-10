@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     ...mapState({
-      error: state => state.transaction.error,
+      error: state => state.purchase.error,
     }),
   },
   beforeRouteEnter (to, from, next) {
@@ -35,15 +35,13 @@ export default {
         mutation: createPurchaseIdMutation()
       })
       .then (res => {
-        if (localStorage.getItem('purchaseProducts')) {
-          vm.$store.dispatch('purchase/injectSelectedProducts', localStorage.getItem('purchaseProducts'))
+        const existingPurchaseProducts = localStorage.getItem('purchaseProducts')
+        if (existingPurchaseProducts) {
+          vm.$store.dispatch('purchase/injectSelectedProducts', JSON.parse(existingPurchaseProducts))
+
+          next()
+          return
         }
-
-        // if (!sessionStorage.getItem('purchaseId')) {
-        //   sessionStorage.removeItem('purchaseId')
-        // }
-
-        console.log(res.data.createPurchasesTransaction.purchasesTransactionId, 'supertest')
 
         sessionStorage.setItem (
           'purchaseId',
