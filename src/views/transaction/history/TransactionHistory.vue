@@ -43,6 +43,12 @@ export default {
       status: 1,
     }
   },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.getAllTransactionData()
+      vm.getAllTransactionDataByStatus()
+    })
+  },
   methods: {
     onTransactionStatusTabClick () {
       this.$apollo.query({
@@ -68,7 +74,11 @@ export default {
         }
       })
       .then (res => {
-        console.log(res, 'tx success')
+        const { transactionsWithLimit } = res.data
+        const { transactions } = transactionsWithLimit
+        this.transactions = transactions
+
+        console.log(this.transactions, 'txs')
       })
       .catch (err => {
         console.log(err, 'something went wrong')
@@ -84,10 +94,6 @@ export default {
       .then (res => console.log(res, 'status success'))
       .catch (err => console.log(err, 'error data status'))
     }
-  },
-  mounted () {
-    this.getAllTransactionData()
-    this.getAllTransactionDataByStatus()
   },
   updated () {
     console.log(this.transactions)

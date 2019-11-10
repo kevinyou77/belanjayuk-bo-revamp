@@ -2,7 +2,7 @@ import axios from 'axios'
 import { 
   IMGUR_BASE_URL,
   UPLOAD_IMAGE
-} from './imgurApi'
+} from '../constants/imgurApi'
 
 class ImgurEndpoints {
   static postImage ({ image, onSuccess, onError }) {
