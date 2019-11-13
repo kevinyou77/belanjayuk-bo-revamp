@@ -86,17 +86,25 @@ const router = new Router ({
       }
     },
     {
-      path: '/help',
-      name: 'help',
-      component: lazyLoad('purchase/Purchase'),
+      path: '/transaction/history',
+      name: 'transaction-history',
+      component: lazyLoad('transaction/history/TransactionHistory'),
       meta: {
         requireAuth: true,
       }
     },
     {
-      path: '/transaction/history',
-      name: 'transaction-history',
-      component: lazyLoad('transaction/history/TransactionHistory'),
+      path: '/transaction/history/:id',
+      name: 'transaction-history-detail',
+      component: lazyLoad('transaction/history/TransactionHistoryDetail'),
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
+      path: '/help',
+      name: 'help',
+      component: lazyLoad('purchase/Purchase'),
       meta: {
         requireAuth: true,
       }

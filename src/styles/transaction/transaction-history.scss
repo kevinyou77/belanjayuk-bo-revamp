@@ -1,0 +1,33 @@
+.transaction-detail {
+  &-info {
+    display: flex;
+    justify-content: space-around;
+
+    padding: 1rem;
+    font-size: 1.3rem;
+
+    .transaction-detail-customer {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .transaction-detail-staff {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  &-summary {
+    display: flex;
+
+    &-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

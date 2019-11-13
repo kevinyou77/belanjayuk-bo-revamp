@@ -6,7 +6,7 @@
       <span class="heading heading-default">{{ header.title }}</span>
       <b-button
         v-for="(item, index) in header.actions"
-        @click="item.action()"
+        @click="item.action(item)"
         :key="index"
         variant="primary"
         class="mt-3" >

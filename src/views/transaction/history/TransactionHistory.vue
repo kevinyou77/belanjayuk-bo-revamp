@@ -3,6 +3,8 @@
     <List
       key="`list`"
       :items="transactions"
+      :fields="transactionHistoryFields"
+      :actions="transactionHistoryActions()"
        />
   </div>
 </template>
@@ -12,13 +14,6 @@ import {
   queries,
 } from '../../../commands/transactionCommands'
 import List from '../../../components/common/List'
-
-// const getTransactionsQuery = () => {
-//   const { GET_TRANSACTIONS } = queryTypes
-//   const getTransactions = queries[GET_TRANSACTIONS]
-
-//   return getTransactions
-// }
 
 const getTransactionsByIdQuery = () => {
   const { GET_TRANSACTIONS_BY_STATUS } = queryTypes
@@ -32,6 +27,11 @@ const getTransactions = () => {
   return queries[GET_TRANSACTIONS]
 }
 
+const getTransaction = () => {
+  const { GET_TRANSACTION } = queryTypes
+  return queries[GET_TRANSACTION]
+}
+
 export default {
   components: {
     List,
@@ -41,6 +41,16 @@ export default {
       transactions: [],
       transactionsById: [],
       status: 1,
+      transactionsHasMore: false,
+      transactionHistoryFields: [
+        'no',
+        { key: 'customer.user.userProfile.fullName', label: 'Full name' },
+        { key: 'customer.user.userProfile.phoneNumber', label: 'Phone Number' },
+        { key: 'customer.user.userProfile.address', label: 'Address' },
+        { key: 'staff.user.userProfile.fullName', label: 'Kasir' },
+        { key: 'totalPrice', label: 'Total Price' },
+        { key: 'actions', label: 'Actions' }
+      ],
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -77,8 +87,6 @@ export default {
         const { transactionsWithLimit } = res.data
         const { transactions } = transactionsWithLimit
         this.transactions = transactions
-
-        console.log(this.transactions, 'txs')
       })
       .catch (err => {
         console.log(err, 'something went wrong')
@@ -88,12 +96,24 @@ export default {
       this.$apollo.query({
         query: getTransactionsByIdQuery(),
         variables: {
-          status: 3
+          status: this.status
         }
       })
       .then (res => console.log(res, 'status success'))
       .catch (err => console.log(err, 'error data status'))
-    }
+    },
+    goToDetail ({ id }) {
+      this.$router.push(`/transaction/history/${id}`)
+    },
+    transactionHistoryActions () {
+      return [
+        {
+          name: 'More',
+          handle: this.goToDetail,
+          variant: 'danger',
+        }
+      ]
+    },
   },
   updated () {
     console.log(this.transactions)
