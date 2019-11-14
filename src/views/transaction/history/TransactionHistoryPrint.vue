@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="transaction-history">
     <div class="box-underline">
       <span class="heading heading-default">Detil Transaksi</span>
     </div>
@@ -171,13 +171,6 @@
               <span>: Rp.{{ transaction.totalPrice  }}</span>
             </div>
           </div>
-          
-          <b-button
-            @click="print()"
-            type="submit" 
-            variant="primary">
-            Cetak bon
-          </b-button>
         </div>
       </div>
     </div>
@@ -205,9 +198,20 @@ export default {
     }
   },
   methods: {
-    print () {
-      this.$router.push(`/transaction/history/print/${this.transactionId}`)
-    }
+  
+  },
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      vm.$store.dispatch('auth/toggleAction')
+    })// ...
+  },
+  beforeRouteLeave (to, from, next) {
+    next(vm => {
+      vm.$store.dispatch('auth/toggleAction')
+    })
+  },
+  destroyed () {
+    this.$store.dispatch('auth/toggleAction')
   },
   mounted () {
     this.$apollo.query({

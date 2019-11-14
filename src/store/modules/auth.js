@@ -1,5 +1,6 @@
 const state = {
   loggedIn: false,
+  hasAction: false,
 }
 
 const actions = {
@@ -9,12 +10,18 @@ const actions = {
   logout ({ commit }) {
     commit('setLoggedIn', false)
   },
+  toggleAction ({ commit, state }) {
+    commit ('setHasAction', !state.hasAction)
+  }
 }
 
 const mutations = {
   setLoggedIn (state, loggedIn) {
     state.loggedIn = loggedIn;
   },
+  setHasAction (state, hasAction) {
+    state.hasAction = hasAction
+  }
 }
 
 export default {

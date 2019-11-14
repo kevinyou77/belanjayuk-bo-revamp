@@ -102,6 +102,14 @@ const router = new Router ({
       }
     },
     {
+      path: '/transaction/history/print/:id',
+      name: 'transaction-history-detail-print',
+      component: lazyLoad('transaction/history/TransactionHistoryPrint'),
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
       path: '/help',
       name: 'help',
       component: lazyLoad('purchase/Purchase'),

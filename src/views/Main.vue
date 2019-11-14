@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <Sidebar v-if="loggedIn" />
+    <Sidebar v-if="loggedIn && !hasAction" />
     <div class="content">
       <router-view></router-view>
     </div>
@@ -18,6 +18,7 @@ export default {
   computed: {
     ...mapState({
       loggedInFromStore: state => state.auth.loggedIn,
+      hasAction: state => state.auth.hasAction
     }),
     loggedIn () {
       return this.loggedInFromStore || (sessionStorage.getItem('bearerToken') !== null)
