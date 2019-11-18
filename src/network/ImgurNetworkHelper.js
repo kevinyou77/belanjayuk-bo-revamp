@@ -1,23 +1,30 @@
-import axios from 'axios'
-import { 
-  IMGUR_BASE_URL,
-  UPLOAD_IMAGE
-} from '../constants/imgurApi'
+import { storage } from '../../src/main'
 
 class ImgurEndpoints {
-  static postImage ({ image, onSuccess, onError }) {
-    axios.post(UPLOAD_IMAGE, { image })
-      .then(res => {
-        onSuccess(res)
-      })
-      .catch (err => {
-        onError(err)
-      })
+  static uploadImage ({ image, onSuccess, onError }) {
+    // axios.post(UPLOAD_IMAGE, {
+    //     headers: {
+    //       'Authorization': AUTHORIZED_CLIENT_ID,
+    //       'Content-Type': 'multipart/form-data',
+    //       'Access-Control-Allow-Origin': '*' ,
+    //       'Origin': 'https://backoffice-belanjayuk.herokuapp.com/'
+    //     },
+    //     params: {
+    //       image
+    //     }
+    //   })
+    //   .then(res => {
+    //     onSuccess(res)
+    //   })
+    //   .catch (err => {
+    //     onError(err)
+    //   })
+    storage.child('images')
+    storage.child('images/' + image.name)
+    .put(image)
+    .then(snapshot => console.log(snapshot))
+    .catch(err => console.log(err))
   }
-
-  static getImage ({ imageId, onSuccess, onError }) {
-  }
-
 }
 
 export default ImgurEndpoints

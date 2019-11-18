@@ -7,6 +7,9 @@ import {
 class ImgBBNetworkHelper {
   static uploadImage ({ image, onSuccess, onError }) {
     axios.post(UPLOAD_IMAGE, {
+      headers: {
+        'content-type': 'multipart/form-data'
+      },
       proxy: {
         host: '104.236.174.88',
         port: 3128

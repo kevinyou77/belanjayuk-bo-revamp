@@ -86,7 +86,13 @@ import {
   queryTypes as categoryQueryTypes,
   queries as categoryQueries
 } from '../../commands/categoryCommands'
-import ImgBBNetworkHelper from '../../network/ImgBBNetworkHelper'
+import ImgurNetworkHelper from '../../network/ImgurNetworkHelper'
+import { 
+  UPLOAD_IMAGE,
+  AUTHORIZED_CLIENT_ID
+} from '../../constants/imgurApi'
+import axios from 'axios'
+
 
 const getCategoryQuery = () => {
   const { GET_CATEGORIES } = categoryQueryTypes
@@ -130,8 +136,8 @@ export default {
   },
   methods: {
     uploadImage () {
-      ImgBBNetworkHelper.uploadImage({
-        image: this.file,
+      ImgurNetworkHelper.uploadImage({
+        image: new File([this.file], 'file.jpg'),
         onSuccess: (res) => {
           console.log('mantap soul', res)
         },
