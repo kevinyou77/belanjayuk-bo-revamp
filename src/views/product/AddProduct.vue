@@ -52,6 +52,23 @@
       </b-form-invalid-feedback>
     </b-form-group>
 
+      <!-- Styled -->
+    <b-form-file
+      v-model="file"
+      :state="Boolean(file)"
+      accept=".jpg, .png, .gif"
+      placeholder="Upload foto produk..."
+      drop-placeholder="Lepas disini..."
+    ></b-form-file>
+    <b-button
+      @click="uploadImage()"
+      variant="success"
+      class="mt-3" 
+      block
+    >
+      Unggah gambar
+    </b-button>
+
     <b-button
       @click="onProductAddConfirmed()"
       variant="success"
@@ -69,6 +86,7 @@ import {
   queryTypes as categoryQueryTypes,
   queries as categoryQueries
 } from '../../commands/categoryCommands'
+import ImgBBNetworkHelper from '../../network/ImgBBNetworkHelper'
 
 const getCategoryQuery = () => {
   const { GET_CATEGORIES } = categoryQueryTypes
@@ -86,6 +104,7 @@ export default {
     return {
       selected: null,
       categories: [],
+      file: null,
     }
   },
   apollo: {
@@ -108,7 +127,19 @@ export default {
         && this.isCategoryValid
       )
     },
-
+  },
+  methods: {
+    uploadImage () {
+      ImgBBNetworkHelper.uploadImage({
+        image: this.file,
+        onSuccess: (res) => {
+          console.log('mantap soul', res)
+        },
+        onError: (res) => {
+          console.log('error ajg', res)
+        }
+      })
+    }
   },
 }
 </script>

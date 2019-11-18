@@ -116,7 +116,7 @@ export default {
     },
   },
   updated () {
-    console.log(this.transactions)
+    console.log(this.transactions, 'tx')
   }
 }
 </script>
