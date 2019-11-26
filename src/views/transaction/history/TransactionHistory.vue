@@ -56,7 +56,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.getAllTransactionData()
-      vm.getAllTransactionDataByStatus()
+      // vm.getAllTransactionDataByStatus()
     })
   },
   methods: {
@@ -80,7 +80,8 @@ export default {
       this.$apollo.query({
         query: getTransactions(),
         variables: {
-          limit: 10
+          limit: 10,
+          status: 2
         }
       })
       .then (res => {

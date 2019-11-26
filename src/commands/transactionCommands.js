@@ -68,8 +68,8 @@ export const mutations = {
 
 export const queries = {
   [queryTypes.GET_TRANSACTIONS]: gql`
-    query ($limit: Int!) {
-      transactionsWithLimit(limit: $limit) {
+    query ($limit: Int!, $status: Int!) {
+      transactionsWithLimit(limit: $limit, status: $status) {
         totalCount
         hasNextData
         transactions {
@@ -141,7 +141,7 @@ export const queries = {
     }
   `,
   [queryTypes.GET_TRANSACTION]: gql`
-    query transaction($transactionId: String!) {
+    query transaction($transactionId: String!,) {
       transaction(transactionId: $transactionId){
         paymentStatus
         totalPrice

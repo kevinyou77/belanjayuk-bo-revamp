@@ -71,6 +71,10 @@ const getStaffQuery = () => {
   return getStaff
 }
 
+// const deleteStaffMutation = () => {
+//   const {  } = mutationTypes
+// }
+
 const staffListQuery = () => {
   const { GET_STAFFS } =  queries
   const staffList = queries[GET_STAFFS]

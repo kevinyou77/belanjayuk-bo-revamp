@@ -1,12 +1,12 @@
 <template>
   <div class="category-list">
     <div class="box-underline">
-      <span class="heading heading-default">SUPPLIER</span>
+      <span class="heading heading-default">STAFFS</span>
        <b-button
           @click="showAddStaffModal()"
           variant="primary"
           class="mt-3" >
-          + TAMBAH SUPPLIER
+          + TAMBAH STAFF
         </b-button>
     </div>
     <div>

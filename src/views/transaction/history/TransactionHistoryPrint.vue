@@ -203,7 +203,7 @@ export default {
   beforeRouteEnter (to, from, next) {
     next(vm => {
       vm.$store.dispatch('auth/toggleAction')
-    })// ...
+    })
   },
   beforeRouteLeave (to, from, next) {
     next(vm => {

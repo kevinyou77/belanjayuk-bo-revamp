@@ -11,13 +11,17 @@
     padding: 1rem;
     line-height: 2rem;
 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
     h2 {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
       font-weight: bold;
     }
 
     h1 {
-      font-size: 1.7rem;
+      font-size: 2rem;
       font-weight: bold;
     }
   }

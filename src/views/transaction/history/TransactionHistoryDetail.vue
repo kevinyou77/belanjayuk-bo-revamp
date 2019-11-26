@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="box-underline">
-      <span class="heading heading-default">Detil Transaksi</span>
+      <span class="heading heading-default">
+        Detil Transaksi
+      </span>
     </div>
 
     <div
@@ -13,9 +15,15 @@
 
       <div
         class="transaction-detail-id">
-        <h2>TRANSAKSI NOMOR </h2> 
-        <h1>#{{ transaction.id }}</h1>
+        <div class="detail-left">
+          <h2>TRANSAKSI NOMOR </h2> 
+          <h1>#{{ transaction.id }}</h1>
+        </div>
+        <div class="detail-right">
+          <canvas class="transaction-qr"></canvas>
+        </div>
       </div>
+
 
       <div class="transaction-detail-info">
         <div class="transaction-detail-customer">
@@ -186,6 +194,7 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 import {
   queryTypes,
   queries,
@@ -207,6 +216,17 @@ export default {
   methods: {
     print () {
       this.$router.push(`/transaction/history/print/${this.transactionId}`)
+    },
+    renderQR () {
+      const canvas = document.querySelector('.transaction-qr')
+      QRCode.toCanvas(canvas, this.transaction.id, (err) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+
+        console.log('success')
+      })
     }
   },
   mounted () {
@@ -216,12 +236,14 @@ export default {
     })
     .then (res => {
       this.transaction = res.data.transaction
-      console.log(this.transaction)
       this.loading = false
     })
     .catch (err => {
       this.loading = false
     })
   },
+  updated () {
+    this.renderQR()
+  }
 }
 </script>

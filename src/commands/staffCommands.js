@@ -29,6 +29,7 @@ export const mutations = {
             }
           }
           role {
+            id
             name
           }
       }
@@ -88,6 +89,7 @@ export const queries = {
           }
         }
         role {
+          id
           name
         }
       }
@@ -111,7 +113,7 @@ export const queries = {
           }
         }
         role {
-                id
+          id
           name
         }
       }
