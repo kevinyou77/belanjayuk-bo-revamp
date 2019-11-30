@@ -109,6 +109,7 @@ export const queries = {
           }
         }
         category {
+          id
           name
         }
       }
