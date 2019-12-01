@@ -177,12 +177,14 @@ export default {
       const { productDetail } = product
       const filteredProductDetail = productDetail.filter(item => item.productStock.id === this.productStockId)
 
+      filteredProductDetail[0].stockAmount = this.stockAmount
       product.productDetail = filteredProductDetail
 
       this.$store.dispatch('transaction/addSelectedProduct', product)
         .then(res => {
           this.showSuccessToast()
           localStorage.setItem('products', JSON.stringify(this.selectedProducts))
+          console.log(this.selectedProducts)
         })
         .catch(err => this.showFailedToast())
 

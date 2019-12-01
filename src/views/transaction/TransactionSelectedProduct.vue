@@ -268,10 +268,12 @@ export default {
       const flattendProductDetail = this.selectedProducts.reduce((prev, { productDetail }) => {
         const detail = {
           productDetailId: productDetail[0].id,
-          numberOfPurchase: productDetail[0].value
+          numberOfPurchase: parseInt(productDetail[0].stockAmount)
         }
         return [ ...prev, detail ]
       }, [])
+
+      console.log(flattendProductDetail, 'flattendpr')
 
       const transactionParameters = {
         transactionId: sessionStorage.getItem('transactionId'),
@@ -315,7 +317,7 @@ export default {
       })
     },
     isProductStockFulfilled (numberOfPurchases, availableStock) {
-      const available = numberOfPurchases === availableStock
+      const available = numberOfPurchases <= availableStock
 
       !available && (this.isAllProductAvailable = false)
 

@@ -1,11 +1,47 @@
 <template>
-  <div>
-    <List
-      key="`list`"
-      :items="transactions"
-      :fields="transactionHistoryFields"
-      :actions="transactionHistoryActions()"
-       />
+  <div class="customer transaction-history">
+    <div class="staff-content">
+      <div class="box-underline">
+        <span class="heading heading-default">Riwayat Penjualan</span>
+          <b-form-group
+            label="Sortir berdasarkan"
+            label-for="input">
+              <b-form-select
+                v-model="status"
+                @change="handleStatusChange()"
+                class="mb-3">
+                <!-- <option :value="null">Please select an option</option> -->
+                <option
+                  v-for="(item, index) in transactionStatus"
+                  :key="index"
+                  :value="item.id">
+                  {{ item.name }}
+                </option>
+              </b-form-select>
+          </b-form-group>
+      </div>
+      <div
+        v-if="isLoading"
+        class="loading">
+        <p>Memuat</p>
+      </div>
+      <div 
+        v-else-if="hasError"
+        class="error">
+        <p>Terjadi masalah dalam memuat data</p>
+      </div>
+      <List
+        v-else
+        key="`list`"
+        :items="transactions"
+        :fields="transactionHistoryFields"
+        :actions="transactionHistoryActions()"
+        />
+
+      <p
+        v-if="!hasNextData">Semua data telah ditampilkan</p>
+    </div>
+    
   </div>
 </template>
 <script>
@@ -41,7 +77,10 @@ export default {
       transactions: [],
       transactionsById: [],
       status: 1,
-      transactionsHasMore: false,
+      pageSize: 0,
+      hasNextData: true,
+      isLoading: true,
+      hasError: false,
       transactionHistoryFields: [
         'no',
         { key: 'customer.user.userProfile.fullName', label: 'Full name' },
@@ -51,6 +90,24 @@ export default {
         { key: 'totalPrice', label: 'Total Price' },
         { key: 'actions', label: 'Actions' }
       ],
+      transactionStatus: [
+        {
+          id: 1,
+          name: 'On process'
+        },
+        {
+          id: 2,
+          name: 'On checker'
+        },
+        {
+          id: 3,
+          name: 'Completed'
+        },
+        {
+          id: 4,
+          name: 'On refund'
+        }
+      ]
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -80,17 +137,24 @@ export default {
       this.$apollo.query({
         query: getTransactions(),
         variables: {
-          limit: 10,
-          status: 2
+          limit: this.pageSize,
+          status: this.status
         }
       })
       .then (res => {
         const { transactionsWithLimit } = res.data
-        const { transactions } = transactionsWithLimit
-        this.transactions = transactions
+        const { transactions, hasNextData } = transactionsWithLimit
+
+        this.hasNextData = hasNextData
+        this.transactions = [
+          ...transactions
+        ]
+        this.isLoading = false
       })
       .catch (err => {
         console.log(err, 'something went wrong')
+        this.isLoading = false
+        this.hasError = true
       })
     },
     getAllTransactionDataByStatus () {
@@ -115,9 +179,20 @@ export default {
         }
       ]
     },
+    handleStatusChange () {
+      this.pageSize = 20
+      this.getAllTransactionData()
+    }
   },
-  updated () {
-    console.log(this.transactions, 'tx')
+  mounted () {
+    document.onscroll = () => {
+      const isBottom = document.documentElement.scrollTop + window.innerHeight == document.documentElement.scrollHeight
+      if (isBottom && this.hasNextData) {
+        this.pageSize = this.pageSize + 20
+        console.log(this.pageSize)
+        this.getAllTransactionData()
+      }
+    }
   }
 }
 </script>
