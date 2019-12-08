@@ -6,7 +6,7 @@
       <StaffList
         v-else
         :staffList="staffs"
-        :onStaffDelete="() => {}"
+        :onStaffDelete="onStaffDelete"
         :onStaffEdit="onStaffEdit" />
 
       <b-modal id="add-staff" hide-footer>
@@ -49,6 +49,7 @@ import {
   queryTypes, queries,
 } from '../../commands/staffCommands'
 import dateFormat from '../../utils/dateFormat'
+import moment from 'moment'
 
 const addStaffMutation = () => {
   const { ADD_STAFF } = mutationTypes
@@ -71,9 +72,11 @@ const getStaffQuery = () => {
   return getStaff
 }
 
-// const deleteStaffMutation = () => {
-//   const {  } = mutationTypes
-// }
+const deleteStaffMutation = () => {
+  const { DELETE_STAFF } = mutationTypes
+
+  return mutations[DELETE_STAFF]
+}
 
 const staffListQuery = () => {
   const { GET_STAFFS } =  queries
@@ -163,6 +166,19 @@ export default {
         }
       }
     },
+    onStaffDelete (staffId) {
+      this.$apollo.mutate({
+        mutation: deleteStaffMutation(),
+        variables: { staffId }
+      })
+      .then ((data) => {
+        this.$apollo.queries.staffs.refetch()
+        console.log(data)
+      })
+      .catch ((err) => {
+        console.log(err)
+      })
+    },
     addStaffMutation () {
       this.$apollo.mutate({
         mutation: addStaffMutation(),
@@ -188,7 +204,10 @@ export default {
       .then (res => {
         this.showModal('Data berhasil di ubah!')
       })
-      .catch (err => console.log(err))
+      .catch (err => {
+        this.showModal('Data gagal diubah, coba lagi')
+        console.log(err)
+      })
     },
     editStaffQuery (id, cb) {
       this.$apollo.query({

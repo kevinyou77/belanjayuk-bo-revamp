@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 
 export const mutationTypes = {
   LOGIN: 'login',
+  CHANGE_PASSWORD: 'changePassword'
 }
 
 export const mutations = {
@@ -15,4 +16,17 @@ export const mutations = {
       }
     }
   `,
+  [mutationTypes.CHANGE_PASSWORD]: gql`   
+    mutation changePassword (
+      $oldPassword: String!,
+      $newPassword: String!,
+      $confirmPassword: String!
+    ) {
+      changePassword(
+        oldPassword: $oldPassword, 
+        newPassword: $newPassword, 
+        confirmPassword: $confirmPassword
+      )
+    }
+  `
 }

@@ -4,6 +4,7 @@ export const mutationTypes = {
   ADD_STAFF: 'addStaff',
   GET_STAFFS: 'getStaffs',
   EDIT_STAFF: 'editStaffs',
+  DELETE_STAFF: 'deleteStaff'
 }
 
 export const queryTypes = {
@@ -44,7 +45,7 @@ export const mutations = {
       $noNik: String!,
       $dateOfBirth: Long!,
       $roleId: String!,
-      $staffEmail: String!
+      $staffEmail: String!,
     ) {
       updateStaff(
         staffId: $staffId, 
@@ -61,6 +62,14 @@ export const mutations = {
       }
     }
   `,
+  [mutationTypes.DELETE_STAFF]: gql`
+    mutation ($staffId: String!) {
+      deleteStaff(staffId: $staffId){
+        status
+        id
+      }
+    }
+  `
 }
 
 export const queries = {

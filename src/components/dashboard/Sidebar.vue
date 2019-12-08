@@ -26,6 +26,24 @@
           </div>
         </router-link>
 
+        <router-link to="/debt">
+          <div class="navigation-list-item">
+            <span class="font font-default">
+              Hutang
+              <i class="right"></i>
+            </span>
+          </div>
+        </router-link>
+
+        <router-link to="/refund">
+          <div class="navigation-list-item">
+            <span class="font font-default">
+              Pengembalian
+              <i class="right"></i>
+            </span>
+          </div>
+        </router-link>
+
         <router-link to="/supplier">
           <div class="navigation-list-item">
             <span class="font font-default">Supplier<i class="right"></i></span>

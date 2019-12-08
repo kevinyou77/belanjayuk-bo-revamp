@@ -36,7 +36,7 @@
             </b-button>
             <b-button 
               variant="danger" 
-              @click="onStaffDelete(row.item)" 
+              @click="onStaffDelete(row.item.id)" 
               class="mr-1">
               Delete
             </b-button>
@@ -79,7 +79,6 @@ export default {
   },
   computed: {
     rows () {
-      console.log(this.staffList)
       return this.staffList.length
     }
   },

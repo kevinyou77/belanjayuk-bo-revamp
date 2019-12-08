@@ -4,6 +4,9 @@ export const mutationTypes = {
   CREATE_TRANSACTION_ID: 'createTransactionId',
   CHECKOUT: 'checkout',
   COMPLETE_TRANSACTION: 'createTransaction',
+  PAY_OFF_DEBT: 'payOffDebt',
+  REFUND_TRANSACTION: 'refundTransaction',
+  COMPLETE_REFUND: 'completeRefund'
 }
 
 export const queryTypes = {
@@ -11,6 +14,7 @@ export const queryTypes = {
   GET_TRANSACTION: 'getTransaction',
   GET_TRANSACTIONS_BY_STATUS: 'getTransactionsByStatus',
   GET_TRANSACTION_DETAIL: 'getTransactionDetail',
+  GET_TRANSACTION_BY_PAYMENT_STATUS: 'getTransactionByPaymentStatus'
 }
 
 export const mutations = {
@@ -61,6 +65,56 @@ export const mutations = {
         details {
           numberOfPurchases
         }
+      }
+    }
+  `,
+  [mutationTypes.PAY_OFF_DEBT]: gql`
+    mutation(
+      $transactionId: String!, 
+      $amountPaid: BigDecimal!){
+      payOffDebt(
+        transactionId: $transactionId,
+        amountPaid: $amountPaid
+      ){
+        paymentStatus
+        totalPrice
+        profit
+        status
+        date
+        id
+        transactionDetail
+        staff
+        customer
+        payment
+      }
+    }  
+  `,
+  [mutationTypes.REFUND_TRANSACTION]: gql`
+    mutation (
+      $transactionId: String!
+    ) {
+      refundTransaction(transactionId: $transactionId){
+        totalRefund
+        totalPrice
+        transactionDetails
+      }
+    }
+  `,
+  [mutationTypes.COMPLETE_REFUND]: gql`
+    mutation(
+      $transactionId: String!
+    ) {
+      completeRefund(transactionId: $transactionId){
+        paymentStatus
+        totalPrice
+        profit
+        status
+        date
+        id
+        transactionDetail
+        staff
+        customer
+        payment
       }
     }
   `
@@ -218,6 +272,42 @@ export const queries = {
           debt
           amountOfPayment
           id
+        }
+      }
+    }
+  `,
+  [queryTypes.GET_TRANSACTION_BY_PAYMENT_STATUS]: gql`
+    query transactionsByPaymentStatus ($paymentStatus: Int!) {
+      transactionsByPaymentStatus (paymentStatus: $paymentStatus) { 
+        paymentStatus
+        totalPrice
+        status
+        date
+        id
+        staff {
+          user {
+            username
+            userProfile {
+              fullName
+              phoneNumber
+              address
+            }
+          }
+        }
+        payment {
+          debt
+          amountOfPayment
+          id
+        }
+        customer {
+          user {
+            username
+            userProfile {
+              fullName
+              phoneNumber
+              address
+            }
+          }
         }
       }
     }

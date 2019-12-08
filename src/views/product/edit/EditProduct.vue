@@ -52,20 +52,6 @@
         Kategori harus dipilih!
       </b-form-invalid-feedback>
     </b-form-group>
-    <b-form-group
-      label="Jumlah stok"
-      label-for="input">
-      <b-form-input
-        label="Jumlah stok"
-        id="input-1"
-        v-model="productFields.stock"
-        type="number"
-        required
-      ></b-form-input>
-      <b-form-invalid-feedback :state="isStockValid">
-        Stok produk harus lebih dari 0!
-      </b-form-invalid-feedback>
-    </b-form-group>
 
     <b-button
       @click="onProductAddConfirmed()"

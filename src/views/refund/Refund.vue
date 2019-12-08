@@ -2,24 +2,7 @@
   <div class="customer transaction-history">
     <div class="staff-content">
       <div class="box-underline">
-        <span class="heading heading-default">Riwayat Penjualan</span>
-
-        <b-form-group
-          label="Sortir berdasarkan"
-          label-for="input">
-            <b-form-select
-              v-model="status"
-              @change="handleStatusChange()"
-              class="mb-3">
-              <!-- <option :value="null">Please select an option</option> -->
-              <option
-                v-for="(item, index) in transactionStatus"
-                :key="index"
-                :value="item.id">
-                {{ item.name }}
-              </option>
-            </b-form-select>
-          </b-form-group>
+        <span class="heading heading-default">Pengembalian</span>
       </div>
       <div
         v-if="isLoading"
@@ -49,8 +32,8 @@
 import {
   queryTypes,
   queries,
-} from '../../../commands/transactionCommands'
-import List from '../../../components/common/List'
+} from '../../commands/transactionCommands'
+import List from '../../components/common/List'
 
 const getTransactionsByIdQuery = () => {
   const { GET_TRANSACTIONS_BY_STATUS } = queryTypes
@@ -77,7 +60,7 @@ export default {
     return {
       transactions: [],
       transactionsById: [],
-      status: 1,
+      status: 4,
       pageSize: 0,
       hasNextData: true,
       isLoading: true,
@@ -92,24 +75,6 @@ export default {
         { key: 'totalPrice', label: 'Total Price' },
         { key: 'actions', label: 'Actions' }
       ],
-      transactionStatus: [
-        {
-          id: 1,
-          name: 'On process'
-        },
-        {
-          id: 2,
-          name: 'On checker'
-        },
-        {
-          id: 3,
-          name: 'Completed'
-        },
-        {
-          id: 4,
-          name: 'On refund'
-        }
-      ]
     }
   },
   beforeRouteEnter (to, from, next) {

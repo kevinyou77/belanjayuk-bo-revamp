@@ -117,6 +117,22 @@ const router = new Router ({
         requireAuth: true,
       }
     },
+    {
+      path: '/refund',
+      name: 'refund',
+      component: lazyLoad('refund/Refund'),
+      meta: {
+        requireAuth: true,
+      }
+    },
+    {
+      path: '/debt',
+      name: 'debt',
+      component: lazyLoad('debt/Debt'),
+      meta: {
+        requireAuth: true,
+      }
+    },
   ]
 })
 
