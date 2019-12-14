@@ -1,6 +1,6 @@
 <template>
-  <div class="customer transaction-history">
-    <div class="staff-content">
+  <div class="debt">
+    <div class="debt-content">
       <div class="box-underline">
         <span class="heading heading-default">Daftar Hutang</span>
       </div>
@@ -19,27 +19,62 @@
         key="`list`"
         :items="transactions"
         :fields="transactionHistoryFields"
-        :actions="transactionHistoryActions()"
-        />
+        :actions="transactionHistoryActions()" />
 
       <p
         v-if="!hasNextData">Semua data telah ditampilkan</p>
     </div>
 
-    <b-modal id="debt-modal">
-      <span class="heading heading-default">Hutang</span>
+    <b-modal
+      id="debt-modal"
+      hide-footer>
+      <div class="debt-modal-wrapper">
+        <span class="heading heading-default">Informasi</span>
+        
+        <div class="debt-modal-wrapper-info">
+          <span class="">Nama lengkap: {{ selectedDebt.fullName }}</span>
+          <span class="">Nomor telepon: {{ selectedDebt.phoneNumber }}</span>
+          <span class="">Alamat: {{ selectedDebt.address }}</span>
 
-      <span class="">{{ selectedDebt.fullName }}</span>
-      <span class="">{{ selectedDebt.phoneNumber }}</span>
-      <span class="">{{ selectedDebt.address }}</span>
+          <span class="">Hutang: {{ selectedDebt.debt }}</span>
+          <!-- <span class="">{{ selectedDebt.amountOfPayment }}</span> -->
 
-      <span class="">{{ selectedDebt.debt }}</span>
-      <span class="">{{ selectedDebt.amountOfPayment }}</span>
+          <br>
+          <br>
 
-      <button
-        @click="handlePayOffDebt()">
-          Bayar hutang
-      </button>
+          <b-form-group
+            id="input-group-1"
+            label="Jumlah pembayaran"
+            label-for="input-1"
+          >
+            <b-form-input
+              id="input-1"
+              v-model="amountOfPayment"
+              type="text"
+              required
+            ></b-form-input>
+
+            <b-form-invalid-feedback :state="isAmountOfPaymentValid">
+              Input harus sama dengan hutang
+            </b-form-invalid-feedback>
+            <b-form-valid-feedback :state="isAmountOfPaymentValid">
+              Input valid
+            </b-form-valid-feedback>
+          </b-form-group>
+
+          <b-button
+            variant="primary"
+            @click="handlePayOffDebt(selectedDebt.id)">
+              Bayar hutang
+          </b-button>
+        </div>
+      </div>
+    </b-modal>
+
+    <b-modal
+      id="error-modal"
+      hide-footer>
+        <p>{{ error }}</p>
     </b-modal>
   </div>
 </template>
@@ -69,6 +104,11 @@ export default {
   components: {
     List,
   },
+  computed: {
+    isAmountOfPaymentValid () {
+      return this.amountOfPayment == (this.selectedDebt.debt)
+    }
+  },
   data () {
     return {
       transactions: [],
@@ -96,6 +136,7 @@ export default {
         amountOfPayment: '',
       },
       amountOfPayment: 0,
+      error: '',
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -119,17 +160,20 @@ export default {
       .catch (err => console.log(err, 'error data status'))
     },
     handlePayOffDebt (id) {
+      console.log(id, 'id')
       this.$apollo.mutate({
         mutation: payOffDebtMutation(),
         variables: {
           transactionId: id,
-          amountOfPayment: this.amountOfPayment
+          amountPaid: parseInt(this.amountOfPayment)
         }
       })
       .then (res => {
         this.showModal('Data berhasil di ubah!')
       })
-      .catch (err => console.log(err))
+      .catch (err => {
+        this.showModal(err)
+      })
     },
     handlePayOffDebtButton (item) {
       const selectedDebt = {
@@ -138,6 +182,7 @@ export default {
         fullName: item.customer.user.userProfile.fullName,
         debt: item.payment.debt,
         amountOfPayment: item.payment.amountOfPayment,
+        id: item.id
       }
 
       this.selectedDebt = { ...selectedDebt }
@@ -156,7 +201,11 @@ export default {
     handleStatusChange () {
       this.pageSize = 20
       this.getAllTransactionData()
-    }
+    },
+    showModal (msg) {
+      this.error = msg
+      this.$bvModal.show('error-modal')
+    },
   },
 }
 </script>

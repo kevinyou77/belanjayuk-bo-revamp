@@ -1,5 +1,9 @@
 <template>
   <div class="transaction-list">
+    <div>
+      <span class="heading heading-default">Transaksi</span>
+    </div>
+
     <div class="transaction-list-search-bar">
       <b-form-input
         v-model="searchQuery"

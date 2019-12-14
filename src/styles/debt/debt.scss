@@ -1,0 +1,47 @@
+.debt {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  position: relative;
+
+  height: 100%;
+  width: 100%;
+
+  margin-top: 2rem;
+
+  &-content {
+    width: 90%;
+    padding: 3rem;
+
+    border-radius: $border-radius-default;
+
+    box-shadow: $box-shadow-default;
+    
+    background-color: $white;
+  }
+
+
+  .debt-modal-wrapper-info {
+    display: flex;
+    flex-direction: column;
+
+    // &-info {
+    //   display: flex;
+    //   flex-direction: column;
+    // }
+  }
+}
+
+#debt-modal {
+  .debt-modal-wrapper-info {
+    display: flex;
+    flex-direction: column;
+
+    span {
+      font-size: 15px;
+    }
+  }
+}

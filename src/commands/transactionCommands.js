@@ -82,10 +82,6 @@ export const mutations = {
         status
         date
         id
-        transactionDetail
-        staff
-        customer
-        payment
       }
     }  
   `,
@@ -96,7 +92,36 @@ export const mutations = {
       refundTransaction(transactionId: $transactionId){
         totalRefund
         totalPrice
-        transactionDetails
+        transactionDetails {
+          numberOfPurchases
+          status
+          id
+          transactionID
+          productDetail {
+            value
+            status
+            id
+            productStock {
+              name
+              status
+              id
+            }
+            sellingPrice
+            purchasePrice
+            product {
+              SKU
+              name
+              stock 
+              imageUrl
+              status
+              id
+              category {
+                id
+                name
+              }
+            }
+          }
+        }
       }
     }
   `,
@@ -111,10 +136,6 @@ export const mutations = {
         status
         date
         id
-        transactionDetail
-        staff
-        customer
-        payment
       }
     }
   `

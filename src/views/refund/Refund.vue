@@ -25,6 +25,40 @@
       <p
         v-if="!hasNextData">Semua data telah ditampilkan</p>
     </div>
+
+    <b-modal 
+      id="refund-modal">
+      <span
+        v-for="(item, index) in refundInformation.transactionDetails"
+        :key="index"
+        class="heading heading-default">
+         {{ item.productDetail.value }}
+         Stok: {{ item.productDetail.productStock.name }}
+         Harga jual: {{ item.productDetail.sellingPrice }}
+         Harga beli: {{ item.productDetail.purchasePrice }}
+         SKU: {{ item.productDetail.product.SKU }}
+         Nama produk: {{ item.productDetail.product.name }}
+         <!-- {{ item.productDetail.product.stock  }} -->
+         {{ item.productDetail.product.imageUrl }}
+         Kategori {{ item.productDetail.product.category.name }}
+         Total Price: {{ item.totalPrice }}
+         Jumlah pembelian: {{ item.numberOfPurchases }}
+      </span>
+      <span class="heading heading-default">{{ refundInformation.totalPrice }}</span>
+      <span class="heading heading-default">{{ refundInformation.totalRefund }}</span>
+
+      <b-button
+        @click="completeRefundTransaction()"
+        type="submit" variant="primary">Kembalikan</b-button>
+    </b-modal>
+
+    <b-modal id="success-modal">
+      <span class="heading heading-default">Berhasil melakukan pengembalian</span>
+    </b-modal>
+
+    <!-- <b-modal id="error-modal">
+      <span class="heading heading-default">{{ error }}</span>
+    </b-modal> -->
     
   </div>
 </template>
@@ -32,6 +66,8 @@
 import {
   queryTypes,
   queries,
+  mutationTypes,
+  mutations,
 } from '../../commands/transactionCommands'
 import List from '../../components/common/List'
 
@@ -52,6 +88,16 @@ const getTransaction = () => {
   return queries[GET_TRANSACTION]
 }
 
+const refundTransaction = () => {
+  const { REFUND_TRANSACTION } = mutationTypes
+  return mutations[REFUND_TRANSACTION]
+}
+
+const completeRefundTransactionMutation = () => {
+  const { COMPLETE_REFUND } = mutationTypes
+  return mutations[COMPLETE_REFUND]
+}
+
 export default {
   components: {
     List,
@@ -61,7 +107,7 @@ export default {
       transactions: [],
       transactionsById: [],
       status: 4,
-      pageSize: 0,
+      pageSize: 20,
       hasNextData: true,
       isLoading: true,
       hasError: false,
@@ -75,6 +121,33 @@ export default {
         { key: 'totalPrice', label: 'Total Price' },
         { key: 'actions', label: 'Actions' }
       ],
+      transactionStatus: [
+        {
+          id: 1,
+          name: 'On process'
+        },
+        {
+          id: 2,
+          name: 'On checker'
+        },
+        {
+          id: 3,
+          name: 'Completed'
+        },
+        {
+          id: 4,
+          name: 'On refund'
+        }
+      ],
+      selectedDebt: {
+        phoneNumber: '',
+        address: '',
+        fullName: '',
+        debt: '',
+        amountOfPayment: '',
+      },
+      refundInformation: false,
+      currentTransactionId: '',
     }
   },
   beforeRouteEnter (to, from, next) {
@@ -140,8 +213,8 @@ export default {
     transactionHistoryActions () {
       return [
         {
-          name: 'More',
-          handle: this.goToDetail,
+          name: 'Kembalikan',
+          handle: this.refundTransaction,
           variant: 'danger',
         }
       ]
@@ -149,6 +222,34 @@ export default {
     handleStatusChange () {
       this.pageSize = 20
       this.getAllTransactionData()
+    },
+    refundTransaction (tx) {
+      this.currentTransactionId = tx.id
+
+      this.$apollo.mutate({
+        mutation: refundTransaction(),
+        variables: { transactionId: tx.id }
+      })
+      .then (res => {
+        this.refundInformation = { ...res.data.refundTransaction }
+        this.$bvModal.show('refund-modal')
+        console.log('refund tx')
+      })
+      .catch (err => {
+        console.log(err, 'error')
+      })
+    },
+    completeRefundTransaction () {
+      this.$apollo.mutate({
+        mutation: completeRefundTransactionMutation(),
+        variables: { transactionId: this.currentTransactionId }
+      })
+      .then (res => {
+        console.log(res, 'complete refund')
+      })
+      .catch (err => {
+        console.log(err, 'error complete refund')
+      })
     }
   },
   mounted () {
