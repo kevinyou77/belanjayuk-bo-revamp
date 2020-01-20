@@ -57,10 +57,18 @@
       @click="onProductAddConfirmed()"
       variant="success"
       class="mt-3" 
-      :disabled="!isFormValid"
       block
     >
-      Lanjut input detil produk
+      Ke edit detil produk
+    </b-button>
+
+    <b-button
+      @click="updateProduct()"
+      variant="success"
+      class="mt-3" 
+      block
+    >
+      Simpan produk
     </b-button>
   </div>
 </template>
@@ -82,7 +90,7 @@ export default {
   props: [
     'productFields',
     'onProductAddConfirmed',
-    'productData'
+    'updateProduct'
   ],
   data () {
     return {

@@ -86,12 +86,7 @@ import {
   queryTypes as categoryQueryTypes,
   queries as categoryQueries
 } from '../../commands/categoryCommands'
-import ImgurNetworkHelper from '../../network/ImgurNetworkHelper'
-import { 
-  UPLOAD_IMAGE,
-  AUTHORIZED_CLIENT_ID
-} from '../../constants/imgurApi'
-import axios from 'axios'
+import FirestoreHelper from '../../network/FirestoreHelper'
 
 
 const getCategoryQuery = () => {
@@ -136,10 +131,15 @@ export default {
   },
   methods: {
     uploadImage () {
-      ImgurNetworkHelper.uploadImage({
-        image: new File([this.file], 'file.jpg'),
-        onSuccess: (res) => {
-          console.log('mantap soul', res)
+      const metadata = {
+        contentType: 'image/jpeg',
+      }
+
+      FirestoreHelper.uploadImage({
+        image: new File([this.file], 'hehe.jpg'),
+        metadata,
+        onSuccess: (res, url) => {
+          console.log(url)
         },
         onError: (res) => {
           console.log('error ajg', res)

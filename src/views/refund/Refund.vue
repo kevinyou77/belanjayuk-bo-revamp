@@ -27,27 +27,45 @@
     </div>
 
     <b-modal 
+      hide-footer
       id="refund-modal">
-      <span
+      <div
         v-for="(item, index) in refundInformation.transactionDetails"
         :key="index"
-        class="heading heading-default">
-         {{ item.productDetail.value }}
-         Stok: {{ item.productDetail.productStock.name }}
-         Harga jual: {{ item.productDetail.sellingPrice }}
-         Harga beli: {{ item.productDetail.purchasePrice }}
-         SKU: {{ item.productDetail.product.SKU }}
-         Nama produk: {{ item.productDetail.product.name }}
-         <!-- {{ item.productDetail.product.stock  }} -->
-         {{ item.productDetail.product.imageUrl }}
-         Kategori {{ item.productDetail.product.category.name }}
-         Total Price: {{ item.totalPrice }}
-         Jumlah pembelian: {{ item.numberOfPurchases }}
-      </span>
-      <span class="heading heading-default">{{ refundInformation.totalPrice }}</span>
-      <span class="heading heading-default">{{ refundInformation.totalRefund }}</span>
+        class="refund-modal-div"
+        >
+        <img
+          :src="item.productDetail.product.imageUrl"
+          width="100"
+          height="100"
+         />
+        <div class="info">
+          <div>
+            <span class="font-default">Nama produk:</span><br>
+            <span class="font-default">Stok</span><br>
+            <span class="font-default">Harga jual</span><br>
+            <span class="font-default">Harga beli</span><br>
+            <span class="font-default">Kategori</span><br>
+            <span class="font-default">Total harga</span><br>
+          </div>
+          <div>
+            <span class="font-default">: {{ item.productDetail.product.name }}</span><br>
+            <span class="font-default">: {{ item.numberOfPurchases }} {{ item.productDetail.productStock.name }}</span><br>
+            <span class="font-default">: {{ item.productDetail.product.category.name }}</span><br>
+            <span class="font-default">: Rp.{{ item.productDetail.sellingPrice }}</span><br>
+            <span class="font-default">: Rp.{{ item.productDetail.purchasePrice }}</span><br>
+            <span class="font-default">: Rp.{{ item.productDetail.value *  item.productDetail.purchasePrice}}</span><br>
+          </div>
+        </div>
+      </div>
 
+      <div class="total">
+        <span class="font-medium">Total harga: Rp.{{ refundInformation.totalPrice }}</span>
+        <span class="font-medium">Total pengembalian: Rp.{{ refundInformation.totalRefund }}</span>
+      </div>
+      
       <b-button
+        block
         @click="completeRefundTransaction()"
         type="submit" variant="primary">Kembalikan</b-button>
     </b-modal>
@@ -56,9 +74,9 @@
       <span class="heading heading-default">Berhasil melakukan pengembalian</span>
     </b-modal>
 
-    <!-- <b-modal id="error-modal">
+    <b-modal id="error-modal">
       <span class="heading heading-default">{{ error }}</span>
-    </b-modal> -->
+    </b-modal>
     
   </div>
 </template>
@@ -104,6 +122,7 @@ export default {
   },
   data () {
     return {
+      error: '',
       transactions: [],
       transactionsById: [],
       status: 4,
@@ -245,12 +264,18 @@ export default {
         variables: { transactionId: this.currentTransactionId }
       })
       .then (res => {
+        this.showModal('Data berhasil di ubah!')
         console.log(res, 'complete refund')
       })
       .catch (err => {
+        this.showModal('Terjadi masalah, mohon coba lagi')
         console.log(err, 'error complete refund')
       })
-    }
+    },
+    showModal (msg) {
+      this.error = msg
+      this.$bvModal.show('error-modal')
+    },
   },
   mounted () {
     document.onscroll = () => {

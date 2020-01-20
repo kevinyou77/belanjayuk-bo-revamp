@@ -11,7 +11,7 @@
         <b-form-input
           id="input-1"
           v-model="productDetailFields.purchasePrice"
-          :value="productData.purchasePrice"
+          :value="productDetailFields.purchasePrice"
           type="number"
           required
         />
@@ -24,7 +24,7 @@
         id="input-group-1"
         label="Harga jual"
         label-for="sellingPrice"
-        :value="productData.sellingPrice"
+        :value="productDetailFields.sellingPrice"
       >
         <b-form-input
           id="sellingPrice"
@@ -63,7 +63,7 @@
         label-for="input">
         <b-form-input
           label="Jumlah stok"
-          :value="productData.stock"
+          :value="productDetailFields.stock"
           id="input-1"
           v-model="productDetailFields.value"
           type="number"
@@ -115,7 +115,6 @@ export default {
   props: [
     'productDetailFields',
     'onProductDetailAdd',
-    'productData',
   ],
   data () {
     return {

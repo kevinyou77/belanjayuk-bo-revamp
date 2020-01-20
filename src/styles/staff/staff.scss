@@ -12,6 +12,11 @@
 
   margin-top: 2rem;
 
+  .box-underline {
+    display: flex;
+    justify-content: space-between;
+  }
+
   &-content {
     width: 90%;
     padding: 3rem;

@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import gql from 'graphql-tag'
 import AddStaff from './AddStaff'
 import StaffList from './StaffList'
 import EditStaff from './EditStaff'
@@ -49,7 +48,6 @@ import {
   queryTypes, queries,
 } from '../../commands/staffCommands'
 import dateFormat from '../../utils/dateFormat'
-import moment from 'moment'
 
 const addStaffMutation = () => {
   const { ADD_STAFF } = mutationTypes

@@ -92,10 +92,10 @@
           </div>
         </router-link>
 
-        <router-link to="/help">
+        <router-link to="/store-settings">
           <div class="navigation-list-item">
             <span class="font font-default">
-              Bantuan
+              Pengaturan Toko
               <i class="right"></i>
             </span>
           </div>

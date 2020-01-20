@@ -160,7 +160,6 @@ export default {
       .catch (err => console.log(err, 'error data status'))
     },
     handlePayOffDebt (id) {
-      console.log(id, 'id')
       this.$apollo.mutate({
         mutation: payOffDebtMutation(),
         variables: {

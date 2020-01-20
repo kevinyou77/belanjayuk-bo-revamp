@@ -133,6 +133,14 @@ const router = new Router ({
         requireAuth: true,
       }
     },
+    {
+      path: '/store-settings',
+      name: 'store-settings',
+      component: lazyLoad('store-settings/StoreSettings'),
+      meta: {
+        requireAuth: true,
+      }
+    }
   ]
 })
 

@@ -79,9 +79,9 @@
           <EditProduct
             v-if="!formFinalStep"
             key="`edit-product`"
-            :editProductData="editProductData"
-            :productFields="addProductFields"
-            :onProductAddConfirmed="onProductAddConfirmed" />
+            :productFields="editProductFields"
+            :onProductAddConfirmed="onProductAddConfirmed"
+            :updateProduct="updateProduct" />
 
           <transition-group
             v-else
@@ -90,26 +90,31 @@
             mode="out-in">
             <EditProductDetail
               key="`product detail`"
-              :productDetailFields="productDetailInput"
-              :onProductDetailAdd="onProductDetailAdd" />
+              :productDetailFields="editProductDetailInput"
+              :onProductDetailAdd="onEditProductDetailAdd" />
 
             <List
               key="`editlist`"
               :items="editProductDetailInputArray"
               :fields="productDetailListFields"
-              :actions="productDetailListActions()" />
+              :actions="editProductDetailListActions()" />
 
             <b-button
-              @click="handleAddProductMutation()"
+              @click="handleEditProductMutation()"
               key="`finalize button`"
               variant="primary"
               class="mt-3" 
-              :disabled="!isFormConditionFulfilled"
+              :disabled="!isEditFormConditionFulfilled"
               block >
               Simpan produk
             </b-button>
           </transition-group>
         </transition>
+    </b-modal>
+
+
+    <b-modal id="error-modal">
+      <span class="heading heading-default">{{ error }}</span>
     </b-modal>
   </div>
 </template>
@@ -167,6 +172,16 @@ const editProductMutation = () => {
   return updateProduct
 }
 
+const editProductDetailMutation = () => {
+  const { ADD_PRODUCT_DETAIL } = mutationTypes
+  return mutations[ADD_PRODUCT_DETAIL]
+}
+
+const deleteProductDetailMutation = () => {
+  const { DELETE_PRODUCT_DETAIL } = mutationTypes
+  return mutations[DELETE_PRODUCT_DETAIL]
+}
+
 export default {
   components: {
     ProductList,
@@ -205,12 +220,34 @@ export default {
       ],
       productDetailInputArray: [],
       editProductDetailInputArray: [],
+      editProductFields: {
+        name: '',
+        SKU: '',
+        stock: 0,
+        categoryId: null,
+      },
+      editProductDetailInput: {
+        productStockId: null,
+        tempId: {
+          id: '',
+          name: '',
+        },
+        sellingPrice: '',
+        purchasePrice: '',
+        value: '',
+        productId: '',
+      },
       formFinalStep: false,
+      error: '',
+      productId: null,
     }
   },
   computed: {
     isFormConditionFulfilled () {
       return this.productDetailInputArray.length !== 0
+    },
+    isEditFormConditionFulfilled () {
+      return this.editProductDetailInputArray.length !== 0
     }
   },
   methods: {
@@ -248,7 +285,34 @@ export default {
       .catch (err => console.log(err))
     },
     onProductEdit (id) {
-      this.$apollo.queries.editProductData.refetch({ name: id }).then (res => {
+      this.$apollo.query({
+        query: getProductQuery(),
+        variables: { productId: id }
+      }).then (res => {
+        this.editProductFields = {
+          name: res.data.product.name,
+          SKU: res.data.product.SKU,
+          stock: res.data.product.stock,
+          categoryId: res.data.product.category.id,
+        }
+
+        this.productId = res.data.product.id
+        console.log(res.data.product.productDetail, 'testestste')
+        this.editProductDetailInputArray = res.data.product.productDetail.map(item => {
+          if (!item.status) return
+          return {
+            productStockId: item.productStock.id,
+            tempId: {
+              id: item.productStock.id,
+              name: item.productStock.name,
+            },
+            sellingPrice: item.sellingPrice,
+            purchasePrice: item.purchasePrice,
+            value: item.value,
+            productId: item.id,
+          }
+        })
+
         this.showEditProductModal()
       })
       .catch (err => console.log(err))
@@ -261,10 +325,24 @@ export default {
         }
       })
       .then (res => {
-        console.log(res)
+        this.showModal("Data berhasil di input!")
       })
       .catch (err => {
-        console.log(err)
+        this.showModal("Terjadi kesalahan, mohon coba lagi!")
+      })
+    },
+    handleEditProductMutation () {
+      this.$apollo.mutate({
+        mutation: editProductMutation(),
+        variables: {
+          ...this.constructEditMutationVariables()
+        }
+      })
+      .then (res => {
+        this.showModal("Data berhasil di ubah!")
+      })
+      .catch (err => {
+        this.showModal("Terjadi kesalahan, coba lagi!!")
       })
     },
     onProductAddConfirmed () {
@@ -289,10 +367,65 @@ export default {
         { ...newProductDetail }
       ]
     },
+    onEditProductDetailAdd (newProductDetail) {
+      const {
+        sellingPrice,
+        purchasePrice,
+        value,
+        tempId,
+      } = newProductDetail
+
+      newProductDetail.sellingPrice = parseInt(sellingPrice)
+      newProductDetail.purchasePrice = parseInt(purchasePrice)
+      newProductDetail.value = parseInt(value)
+      newProductDetail.productStockId = tempId.id
+
+      this.$apollo.mutate({
+        mutation: editProductDetailMutation(),
+        variables: {
+          productDetail: {
+            productStockId: tempId.id,
+            sellingPrice: parseInt(sellingPrice),
+            purchasePrice: parseInt(purchasePrice),
+            value: parseInt(value),
+            productId: this.productId,
+          }
+        }
+      })
+      .then(res => {
+        console.log(res, 'edit product detail')
+
+        this.editProductDetailInputArray = [
+          ...this.editProductDetailInputArray,
+          { ...newProductDetail }
+        ]
+      })
+      .catch (err => {
+        console.log(err)
+      })
+    },
     onProductDetailDelete (productDetail) {
       this.productDetailInputArray = this.productDetailInputArray.filter(
         item => item.productStockId !== productDetail.productStockId
       )
+    },
+    onProductDetailEditDelete (productDetail) {
+      console.log(productDetail, 'del')
+      this.$apollo.mutate({
+        mutation: deleteProductDetailMutation(),
+        variables: { id: productDetail.productId }
+      })
+      .then (res => {
+        console.log(res)
+        this.editProductDetailInputArray = this.editProductDetailInputArray.filter(
+          item => item.productStockId !== productDetail.productStockId
+        )
+      })
+      .catch (res => {
+        this.showModal("Terjadi kesalahan, coba lagi!")
+      })
+
+      console.log(this.editProductDetailInputArray, 'after')
     },
     constructMutationVariables () {
       const { stock } = this.addProductFields
@@ -314,6 +447,27 @@ export default {
         }
       }
     },
+    constructEditMutationVariables () {
+      const { stock } = this.editProductFields
+      this.editProductFields.stock = parseInt(stock)
+
+      const productFields = { ...this.editProductFields }
+      delete productFields.imageUrl
+      // productFields.imageUrl = 'https://images.unsplash.com/photo-1572946281197-6129946d463f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1982&q=80'
+      console.log(productFields, 'pf')
+      
+      return {
+        product: {
+          ...productFields,
+          // productDetailInput: [
+          //   ...this.editProductDetailInputArray.map (item => {
+          //     delete item.tempId
+          //     return item
+          //   })
+          // ]
+        }
+      }
+    },
     showAddProductModal () {
       this.$bvModal.show('add-product-modal')
     },
@@ -325,6 +479,15 @@ export default {
         {
           name: 'Delete',
           handle: this.onProductDetailDelete,
+          variant: 'danger',
+        }
+      ]
+    },
+    editProductDetailListActions () {
+      return [
+        {
+          name: 'Delete',
+          handle: this.onProductDetailEditDelete,
           variant: 'danger',
         }
       ]
@@ -343,10 +506,29 @@ export default {
         }
       ]
     },
+    showModal (msg) {
+      this.error = msg
+      this.$bvModal.show('error-modal')
+    },
+    updateProduct () {
+      this.$apollo.mutate({
+        mutation: editProductMutation(),
+        variables: {
+          productId: this.productId,
+          categoryId: this.editProductFields.categoryId,
+          name: this.editProductFields.name
+        }
+      })
+      .then (res => {
+        this.showModal('Data berhasil diubah!')
+      })
+      .catch (_ => {
+        this.showModal('Terjadi masalah, coba lagi!')
+      })
+    },
   },
   apollo: {
     products: getProductsQuery(),
-    editProductData: getProductQuery(),
   },
 }
 </script>

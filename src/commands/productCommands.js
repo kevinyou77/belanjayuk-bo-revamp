@@ -2,8 +2,10 @@ import gql from 'graphql-tag'
 
 export const mutationTypes = {
   ADD_PRODUCT: 'addProduct',
+  ADD_PRODUCT_DETAIL: 'addProductDetail',
   UPDATE_PRODUCT: 'updateProduct',
-  DELETE_PRODUCT: 'deleteProduct'
+  DELETE_PRODUCT: 'deleteProduct',
+  DELETE_PRODUCT_DETAIL: 'deleteProductDetail'
 }
 
 export const queryTypes = {
@@ -77,15 +79,46 @@ export const mutations = {
     mutation deleteProduct($id: String!){
       deleteProduct(id: $id)
     }
+  `,
+  [mutationTypes.ADD_PRODUCT_DETAIL]: gql`
+    mutation createProductDetail($productDetail: ProductDetailInput!){
+      createProductDetail(productDetail: $productDetail){
+        value
+      }
+    }
+  `,
+  [mutationTypes.DELETE_PRODUCT_DETAIL]: gql`
+    mutation deleteProductDetail($id: String!) {
+      deleteProductDetail(id: $id)
+    }
   `
 }
 
 export const queries = {
   [queryTypes.GET_PRODUCT]: gql`
-    query datas {
-      roles {
-        id
+    query product($productId: String!) {
+      product(productId: $productId) {
+        SKU
         name
+        stock
+        imageUrl
+        status
+        id
+        productDetail {
+          id
+          value
+          purchasePrice
+          sellingPrice
+          status
+          productStock {
+            id
+            name
+          }
+        }
+        category {
+          id
+          name
+        }
       }
     }
   `,
@@ -103,6 +136,7 @@ export const queries = {
           value
           purchasePrice
           sellingPrice
+          status
           productStock {
             id
             name

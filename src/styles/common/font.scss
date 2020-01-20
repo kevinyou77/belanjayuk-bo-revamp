@@ -9,12 +9,19 @@ a {
 .box {
   &-underline {
     border-bottom: 3px solid black;
+
+    display: flex;
+    justify-content: space-between;
   }
 }
 
 .font {
   outline: none;
   color: $font-color-primary;
+
+  &-small {
+    font-size: 1rem;
+  }
 
   &-default {
     font-size: 1.3rem;
