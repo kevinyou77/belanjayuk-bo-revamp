@@ -10,7 +10,6 @@
         id="sku"
         v-model="productFields.SKU"
         type="text"
-        :value="productData"
         required
       ></b-form-input>
       <b-form-invalid-feedback :state="isSkuValid">

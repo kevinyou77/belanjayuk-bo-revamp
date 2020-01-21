@@ -1,5 +1,8 @@
 <template>
   <div class="transaction-selected">
+    <div class="cart">
+      <h2 class="heading-default">Keranjang belanja</h2>
+    </div>
     <div class="transaction-selected-list">
       <div
         v-if="selectedProducts.length === 0"
@@ -219,7 +222,7 @@ export default {
       selectedProducts: state => state.purchase.selectedProducts,
     }),
     totalPrice () {
-      return this.selectedProducts.reduce ((total, item) => total + item.productDetail.sellingPrice, 0)
+      return this.selectedProducts.reduce ((total, item) => total + (item.productDetail[0].sellingPrice * item.productDetail[0].value), 0)
     },
     isSelectedProductsEmpty () {
       return this.selectedProducts.length === 0
@@ -304,8 +307,9 @@ export default {
   apollo: {
     suppliers: getSuppliers(),
   },
-  updated () {
-    console.log(this.selectedProducts)
+  mounted () {
+    console.log('test')
+    console.log(this.selectedProducts[0].productDetail[0], 'selected')
   }
 }
 </script>

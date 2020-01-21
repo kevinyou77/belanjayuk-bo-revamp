@@ -70,7 +70,6 @@ export default {
         { key: 'user.userProfile.phoneNumber', label: 'Nomor telepon' },
         { key: 'user.email', label: 'E-mail' },
         { key: 'dateOfBirth', label: 'Tanggal Lahir' },
-        { key: 'user.userProfile.noNik', label: 'Alamat' },
         { key: 'role.name', label: 'Peran' },
         { key: 'actions', label: 'Aksi' }
       ],

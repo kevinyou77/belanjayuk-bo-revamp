@@ -80,6 +80,14 @@
             </b-form-valid-feedback> -->
       </b-form-group>
 
+       <b-button
+        @click="onProductAddConfirmed()"
+        variant="success"
+        class="mt-3" 
+        block >
+        Kembali ke edit produk
+      </b-button>
+
       <b-button
         @click="onProductDetailAdd(productDetailFields)"
         variant="success"
@@ -115,6 +123,7 @@ export default {
   props: [
     'productDetailFields',
     'onProductDetailAdd',
+    'onProductAddConfirmed'
   ],
   data () {
     return {

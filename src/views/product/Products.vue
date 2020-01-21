@@ -77,10 +77,10 @@
           name="slide-fade"
           mode="out-in">
           <EditProduct
-            v-if="!formFinalStep"
+            v-if="!editFormFinalStep"
             key="`edit-product`"
             :productFields="editProductFields"
-            :onProductAddConfirmed="onProductAddConfirmed"
+            :onProductAddConfirmed="onEditProductAddConfirmed"
             :updateProduct="updateProduct" />
 
           <transition-group
@@ -91,6 +91,7 @@
             <EditProductDetail
               key="`product detail`"
               :productDetailFields="editProductDetailInput"
+              :onProductAddConfirmed="onEditProductAddConfirmed"
               :onProductDetailAdd="onEditProductDetailAdd" />
 
             <List
@@ -238,6 +239,7 @@ export default {
         productId: '',
       },
       formFinalStep: false,
+      editFormFinalStep: false,
       error: '',
       productId: null,
     }
@@ -299,6 +301,7 @@ export default {
         this.productId = res.data.product.id
         console.log(res.data.product.productDetail, 'testestste')
         this.editProductDetailInputArray = res.data.product.productDetail.map(item => {
+          console.log(item.status)
           if (!item.status) return
           return {
             productStockId: item.productStock.id,
@@ -348,6 +351,9 @@ export default {
     onProductAddConfirmed () {
       this.formFinalStep = !this.formFinalStep
     },
+    onEditProductAddConfirmed () {
+      this.editFormFinalStep = !this.editFormFinalStep
+    },
     onProductDetailAdd (newProductDetail) {
       const {
         sellingPrice,
@@ -393,8 +399,6 @@ export default {
         }
       })
       .then(res => {
-        console.log(res, 'edit product detail')
-
         this.editProductDetailInputArray = [
           ...this.editProductDetailInputArray,
           { ...newProductDetail }
