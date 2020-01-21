@@ -8,107 +8,112 @@
     
     <div class="navigation">
       <div class="navigation-list">
-        <router-link to="/dashboard">
+        <router-link to="/dashboard" v-if="isAdmin">
           <div class="navigation-list-item">
             <span class="font font-default">Dashboard<i class="right"></i></span>
           </div>
         </router-link>
 
-        <router-link to="/transaction">
+        <router-link
+          v-if="isCashier || isAdmin"
+          to="/transaction">
           <div class="navigation-list-item">
             <span class="font font-default">Penjualan<i class="right"></i></span>
           </div>
         </router-link>
 
-        <router-link to="/purchase">
-          <div class="navigation-list-item">
-            <span class="font font-default">Pembelian<i class="right"></i></span>
-          </div>
-        </router-link>
+        <template v-if="isAdmin">
+          <router-link to="/purchase">
+            <div class="navigation-list-item">
+              <span class="font font-default">Pembelian<i class="right"></i></span>
+            </div>
+          </router-link>
 
-        <router-link to="/debt">
-          <div class="navigation-list-item">
-            <span class="font font-default">
-              Hutang
-              <i class="right"></i>
-            </span>
-          </div>
-        </router-link>
+          <router-link to="/debt">
+            <div class="navigation-list-item">
+              <span class="font font-default">
+                Hutang
+                <i class="right"></i>
+              </span>
+            </div>
+          </router-link>
 
-        <router-link to="/refund">
-          <div class="navigation-list-item">
-            <span class="font font-default">
-              Pengembalian
-              <i class="right"></i>
-            </span>
-          </div>
-        </router-link>
+          <router-link to="/refund">
+            <div class="navigation-list-item">
+              <span class="font font-default">
+                Pengembalian
+                <i class="right"></i>
+              </span>
+            </div>
+          </router-link>
 
-        <router-link to="/supplier">
-          <div class="navigation-list-item">
-            <span class="font font-default">Supplier<i class="right"></i></span>
-          </div>
-        </router-link>
+          <router-link to="/supplier">
+            <div class="navigation-list-item">
+              <span class="font font-default">Supplier<i class="right"></i></span>
+            </div>
+          </router-link>
 
-        <router-link to="/transaction/history">
-          <div class="navigation-list-item">
-            <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>
-          </div>
-        </router-link>
+          <router-link to="/transaction/history">
+            <div class="navigation-list-item">
+              <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>
+            </div>
+          </router-link>
 
-        <router-link to="/products">
-          <div class="navigation-list-item">
-            <span class="font font-default">Produk<i class="right"></i></span>
-          </div>
-        </router-link>
+          <router-link to="/products">
+            <div class="navigation-list-item">
+              <span class="font font-default">Produk<i class="right"></i></span>
+            </div>
+          </router-link>
 
-        <router-link to="/category">
-          <div class="navigation-list-item">
-            <span class="font font-default">Kategori<i class="right"></i></span>
-          </div>
-        </router-link>
+          <router-link to="/category">
+            <div class="navigation-list-item">
+              <span class="font font-default">Kategori<i class="right"></i></span>
+            </div>
+          </router-link>
 
-        <router-link to="/customers">
-          <div class="navigation-list-item">
-            <span class="font font-default">Pelanggan<i class="right"></i></span>
-          </div>
-        </router-link>
-        
-        <router-link to="/stock-products">
-          <div class="navigation-list-item">
-            <span class="font font-default">
-              Stok Produk
-              <i class="right"></i>
-            </span>
-          </div>
-        </router-link>
+          <router-link to="/customers">
+            <div class="navigation-list-item">
+              <span class="font font-default">Pelanggan<i class="right"></i></span>
+            </div>
+          </router-link>
+          
+          <router-link to="/stock-products">
+            <div class="navigation-list-item">
+              <span class="font font-default">
+                Stok Produk
+                <i class="right"></i>
+              </span>
+            </div>
+          </router-link>
 
-        <router-link to="/staff">
-          <div class="navigation-list-item">
-            <span class="font font-default">
-              Staff
-              <i class="right"></i>
-            </span>
-          </div>
-        </router-link>
+          <router-link to="/staff">
+            <div class="navigation-list-item">
+              <span class="font font-default">
+                Staff
+                <i class="right"></i>
+              </span>
+            </div>
+          </router-link>
 
-        <router-link to="/store-settings">
-          <div class="navigation-list-item">
-            <span class="font font-default">
-              Pengaturan Toko
-              <i class="right"></i>
-            </span>
-          </div>
-        </router-link>
+          <router-link to="/store-settings">
+            <div class="navigation-list-item">
+              <span class="font font-default">
+                Pengaturan Toko
+                <i class="right"></i>
+              </span>
+            </div>
+          </router-link>
 
-        <router-link @click.native="onLogout()" to="/logout">
-          <div class="navigation-list-item">
-            <span class="font font-default">
-              Keluar
-              <i class="right"></i>
-            </span>
-          </div>
-        </router-link>
+          <router-link @click.native="onLogout()" to="/logout">
+            <div class="navigation-list-item">
+              <span class="font font-default">
+                Keluar
+                <i class="right"></i>
+              </span>
+            </div>
+          </router-link>
+        </template>
+
         
       </div>
     </div>
@@ -125,5 +130,15 @@ export default {
       this.$store.dispatch('auth/logout')
     },
   },
+  computed: {
+    isCashier () {
+      const role = sessionStorage.getItem('roleName')
+      return role.toLowerCase() === 'cashier'
+    },
+    isAdmin () {
+      const role = sessionStorage.getItem('roleName')
+      return role.toLowerCase() === 'admin'
+    }
+  }
 }
 </script>

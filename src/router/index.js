@@ -145,7 +145,18 @@ const router = new Router ({
 })
 
 router.beforeEach((to, _, next) => {
-  const bearerToken = sessionStorage.getItem('bearerToken')
+  const bearerToken = sessionStorage.getItem('bearerToken') ? sessionStorage.getItem('bearerToken') : ""
+  const role = sessionStorage.getItem('roleName') ? sessionStorage.getItem('roleName') : ""
+
+  if (bearerToken && role.toLowerCase() === 'cashier') {
+    if (to.fullPath === '/transaction') {
+      next()
+    } else {
+      next({
+        path: '/transaction'
+      })
+    }
+  } 
 
   if (to.fullPath === '/' && bearerToken) {
     next({
