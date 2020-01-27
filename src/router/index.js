@@ -148,6 +148,10 @@ router.beforeEach((to, _, next) => {
   const bearerToken = sessionStorage.getItem('bearerToken') ? sessionStorage.getItem('bearerToken') : ""
   const role = sessionStorage.getItem('roleName') ? sessionStorage.getItem('roleName') : ""
 
+  if (role.toLowerCase() === 'cashier') {
+    // set session storage cannot login
+  }
+
   if (bearerToken && role.toLowerCase() === 'cashier') {
     if (to.fullPath === '/transaction') {
       next()
