@@ -201,6 +201,10 @@ import {
   queryTypes as customerQueryTypes,
   queries as customerQueries,
 } from '../../commands/customerCommands'
+import {
+  mutations as txMutations,
+  mutationTypes as txMutationTypes
+} from '../../commands/transactionCommands'
 
 const getCustomersQuery = () => {
   const { GET_CUSTOMERS } = customerQueryTypes
@@ -215,6 +219,12 @@ const checkoutMutation = () => {
 const completePaymentMutation = () => {
   const { COMPLETE_TRANSACTION } = mutationTypes
   return mutations[COMPLETE_TRANSACTION]
+}
+
+
+const createTransactionIdMutation = () => {
+  const { CREATE_TRANSACTION_ID } = txMutationTypes
+  return txMutations[CREATE_TRANSACTION_ID]
 }
 
 export default {
@@ -309,14 +319,38 @@ export default {
         }
       })
       .then (res => {
-        localStorage.removeItem('products')
+        this.refetchTransactionId (
+          {
+            onSuccess: () => {
+              localStorage.removeItem('products')
+              this.$store.dispatch('transaction/removeAllSelectedProducts')
 
-        this.error = 'Berhasil membayar!'
-        this.$bvModal.show('error-modal')
+              this.error = 'Berhasil membayar!'
+              this.$bvModal.show('error-modal')
+            },
+            onFailed: () => {
+              this.error = 'Terjadi masalah, coba lagi!'
+              this.$bvModal.show('error-modal')
+            }
+          }
+        )
+      })
+    },
+    refetchTransactionId ({onSuccess, onFailed}) {
+      this.$apollo.mutate({
+        mutation: createTransactionIdMutation()
+      })
+      .then (res => {
+        sessionStorage.setItem (
+          'transactionId',
+          res.data.createTransaction.transactionId
+        )
+
+        onSuccess(res.data.createTransaction.transactionId)
       })
       .catch (err => {
-        this.error = 'Terjadi masalah, coba lagi!'
-        this.$bvModal.show('error-modal')
+        console.log(err)
+        onFailed(err)
       })
     },
     isProductStockFulfilled (numberOfPurchases, availableStock) {
@@ -328,7 +362,7 @@ export default {
     },
     remainingDebt () {
       return checkoutResultData.totalPrice === this.amountOfPayment
-    }
+    },
   },
   apollo: {
     customers: getCustomersQuery(),

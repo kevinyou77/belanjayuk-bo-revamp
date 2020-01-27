@@ -71,6 +71,11 @@ export default {
   },
   beforeDestroy () {
     window.removeEventListener("beforeunload")
-  }
+    const existingProducts = localStorage.getItem('products')
+    if (existingProducts) {
+      localStorage.removeItem('products')
+      this.$store.dispatch('transaction/removeAllSelectedProducts')
+    }
+  },
 }
 </script>

@@ -77,7 +77,7 @@ export default {
     return {
       transactions: [],
       transactionsById: [],
-      status: 1,
+      status: 2,
       pageSize: 20,
       hasNextData: true,
       isLoading: true,
@@ -93,10 +93,6 @@ export default {
         { key: 'actions', label: 'Actions' }
       ],
       transactionStatus: [
-        {
-          id: 1,
-          name: 'On process'
-        },
         {
           id: 2,
           name: 'On checker'

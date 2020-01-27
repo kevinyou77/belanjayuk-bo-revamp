@@ -218,5 +218,8 @@ export default {
   apollo: {
     products: getProductsQuery()
   },
+  updated () {
+    console.log(this.products)
+  }
 }
 </script>

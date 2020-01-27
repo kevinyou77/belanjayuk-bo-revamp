@@ -33,7 +33,7 @@
       <div class="transaction-product-modal">
         <div class="transaction-product-modal-info">
           <img 
-            :src="selectedProduct.image"
+            :src="selectedProduct.imageUrl"
             height="150"
             width="150" />
 

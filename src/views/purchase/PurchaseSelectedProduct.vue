@@ -191,6 +191,11 @@ import {
   queries as supplierQueries,
 } from '../../commands/supplierCommands'
 
+import {
+  mutations as txMutations,
+  mutationTypes as txMutationTypes
+} from '../../commands/transactionCommands'
+
 const getSuppliers = () => {
   const { GET_SUPPLIERS } = supplierQueryTypes
   return supplierQueries[GET_SUPPLIERS]
@@ -204,6 +209,11 @@ const checkoutMutation = () => {
 const completePaymentMutation = () => {
   const { COMPLETE_PAYMENT_PURCHASE } = mutationTypes
   return mutations[COMPLETE_PAYMENT_PURCHASE]
+}
+
+const createTransactionIdMutation = () => {
+  const { CREATE_TRANSACTION_ID } = txMutationTypes
+  return txMutations[CREATE_TRANSACTION_ID]
 }
 
 export default {
@@ -290,14 +300,42 @@ export default {
         }
       })
       .then (res => {
-        localStorage.removeItem('purchaseProducts')
-
-        this.error = 'Berhasil membayar!'
-        this.$bvModal.show('error-modal')
+        this.refetchTransactionId (
+          {
+            onSuccess: () => {
+              localStorage.removeItem('purchaseProducts')
+              this.$store.dispatch('purchase/removeAllSelectedProducts')
+              this.error = 'Berhasil membayar!'
+              this.$bvModal.show('error-modal')
+            },
+            onFailed: () => {
+              this.error = 'Terjadi kesalahan, coba lagi!'
+              this.$bvModal.show('error-modal')
+            }
+          }
+        )
+       
       })
       .catch (err => {
         this.error = 'Terjadi masalah, coba lagi!'
         this.$bvModal.show('error-modal')
+      })
+    },
+    refetchTransactionId ({onSuccess, onFailed}) {
+      this.$apollo.mutate({
+        mutation: createTransactionIdMutation()
+      })
+      .then (res => {
+        sessionStorage.setItem (
+          'transactionId',
+          res.data.createTransaction.transactionId
+        )
+
+        onSuccess(res.data.createTransaction.transactionId)
+      })
+      .catch (err => {
+        console.log(err)
+        onFailed(err)
       })
     },
     remainingDebt () {
