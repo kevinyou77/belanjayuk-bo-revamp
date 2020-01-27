@@ -54,8 +54,23 @@ export default {
       })
     })
   },
-  apollo: {
+  mounted () {
+    window.addEventListener("beforeunload", function (e) {
+      var confirmationMessage = "Keranjang anda akan hilang apabila anda pergi dari tab ini.";
 
+      (e || window.event).returnValue = confirmationMessage
+
+      const existingProducts = localStorage.getItem('purchaseProducts')
+      if (existingProducts) {
+        localStorage.removeItem('purchaseProducts')
+        this.$store.dispatch('purchase/removeAllSelectedProducts')
+      }
+
+      return confirmationMessage;
+    });
+  },
+  beforeDestroy () {
+    window.removeEventListener("beforeunload")
   }
 }
 </script>

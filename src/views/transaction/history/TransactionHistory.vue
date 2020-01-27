@@ -78,7 +78,7 @@ export default {
       transactions: [],
       transactionsById: [],
       status: 1,
-      pageSize: 0,
+      pageSize: 20,
       hasNextData: true,
       isLoading: true,
       hasError: false,
@@ -144,6 +144,7 @@ export default {
         }
       })
       .then (res => {
+        console.log(res, 'b4x')
         const { transactionsWithLimit } = res.data
         const { transactions, hasNextData } = transactionsWithLimit
 
@@ -195,6 +196,9 @@ export default {
         this.getAllTransactionData()
       }
     }
-  }
+  },
+  beforeDestroy () {
+    document.onscroll = null
+  },
 }
 </script>
