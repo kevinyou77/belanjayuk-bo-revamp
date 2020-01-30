@@ -23,6 +23,7 @@
     <!-- ADD MODAL -->
     <b-modal
       id="add-product-modal"
+      @hidden="resetAddModal"
       hide-footer>
       <div class="box-underline">
         <span class="heading heading-default">Tambah Produk</span>
@@ -68,6 +69,7 @@
     <!-- EDIT MODAL -->
     <b-modal
       id="edit-product-modal"
+      @hidden="resetEditModal"
       hide-footer>
       <div class="box-underline">
         <span class="heading heading-default">Edit produk</span>
@@ -274,6 +276,27 @@ export default {
       }
       this.productDetailInputArray = []
     },
+    resetEditForm () {
+      this.editProductFields = {
+        name: '',
+        SKU: '',
+        stock: '',
+        categoryId: null,
+      }
+
+      this.editProductDetailInput = {
+        productStockId: null,
+        tempId: {
+          id: '',
+          name: '',
+        },
+        sellingPrice: '',
+        purchasePrice: '',
+        value: '',
+        productId: '',
+      }
+      this.editProductDetailInputArray = []
+    },
     onProductDelete (id) {
       this.$apollo.mutate({
         mutation: deleteProductMutation(),
@@ -299,9 +322,7 @@ export default {
         }
 
         this.productId = res.data.product.id
-        console.log(res.data.product.productDetail, 'testestste')
         this.editProductDetailInputArray = res.data.product.productDetail.map(item => {
-          console.log(item.status)
           if (!item.status) return
           return {
             productStockId: item.productStock.id,
@@ -329,6 +350,7 @@ export default {
       })
       .then (res => {
         this.showModal("Data berhasil di input!")
+        this.$bvModal.hide('add-product-modal')
       })
       .catch (err => {
         this.showModal("Terjadi kesalahan, mohon coba lagi!")
@@ -343,6 +365,7 @@ export default {
       })
       .then (res => {
         this.showModal("Data berhasil di ubah!")
+        this.$bvModal.hide('edit-product-modal')
       })
       .catch (err => {
         this.showModal("Terjadi kesalahan, coba lagi!!")
@@ -463,12 +486,6 @@ export default {
       return {
         product: {
           ...productFields,
-          // productDetailInput: [
-          //   ...this.editProductDetailInputArray.map (item => {
-          //     delete item.tempId
-          //     return item
-          //   })
-          // ]
         }
       }
     },
@@ -530,6 +547,16 @@ export default {
         this.showModal('Terjadi masalah, coba lagi!')
       })
     },
+    resetAddModal () {
+      this.resetForm()
+      this.$bvModal.hide('add-product-modal')
+      this.formFinalStep = false
+    },
+    resetEditModal () {
+      this.resetEditForm()
+      this.$bvModal.hide('edit-product-modal')
+      this.editFormFinalStep = false
+    }
   },
   apollo: {
     products: getProductsQuery(),

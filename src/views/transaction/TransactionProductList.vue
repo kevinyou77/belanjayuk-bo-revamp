@@ -86,6 +86,10 @@
         </button>
       </div>
     </b-modal>
+
+    <b-modal id="error-input-modal">
+      <span style="font-size: 2rem">{{ error }}</span>
+    </b-modal>
   </div>
 </template>
 
@@ -122,6 +126,7 @@ export default {
       productStockId: '',
       products: [],
       searchQuery: '',
+      error: '',
     }
   },
   computed: {
@@ -130,7 +135,7 @@ export default {
     }),
     filteredProductList () {
       return this.products.filter(item => {
-        return (
+        return item.stock != 0 && (
           item.SKU.toLowerCase().includes(this.searchQuery)
           || item.name.toLowerCase().includes(this.searchQuery)
         )
@@ -172,11 +177,20 @@ export default {
     showModal () {
       this.$bvModal.show('transaction-product-modal')
     },
+    showErrorModal (msg) {
+      this.error = msg
+      this.$bvModal.show('error-input-modal')
+    },
     handleTransactionItemOnClick (newProduct) {
       this.selectedProduct = { ...newProduct }
       this.showModal()
     },
     handleTransactionModalAdd (newProduct) {
+      if (this.stockAmount === 0) {
+        this.showErrorModal('Nilai stok produk harus lebih dari 0')
+        return
+      }
+
       const product = { ...newProduct }
       const { productDetail } = product
       const filteredProductDetail = productDetail.filter(item => item.productStock.id === this.productStockId)
@@ -186,9 +200,7 @@ export default {
 
       this.$store.dispatch('transaction/addSelectedProduct', product)
         .then(res => {
-          this.showSuccessToast()
           localStorage.setItem('products', JSON.stringify(this.selectedProducts))
-          console.log(this.selectedProducts)
         })
         .catch(err => this.showFailedToast())
 

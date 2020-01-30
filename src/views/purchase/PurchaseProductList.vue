@@ -185,7 +185,6 @@ export default {
 
       this.$store.dispatch('purchase/addSelectedProduct', product)
         .then(res => {
-          this.showSuccessToast()
           localStorage.setItem('purchaseProducts', JSON.stringify(this.selectedProducts))
         })
         .catch(err => this.showFailedToast())

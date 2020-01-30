@@ -8,101 +8,101 @@
     
     <div class="navigation">
       <div class="navigation-list">
-        <router-link to="/dashboard" v-if="isAdmin">
+        <a to="/dashboard" v-if="isAdmin">
           <div class="navigation-list-item">
             <span class="font font-default">Dashboard<i class="right"></i></span>
           </div>
-        </router-link>
+        </a>
 
-        <router-link
+        <a
           v-if="isCashier || isAdmin"
-          to="/transaction">
+          :href="$router.resolve('/transaction').href">
           <div class="navigation-list-item">
             <span class="font font-default">Penjualan<i class="right"></i></span>
           </div>
-        </router-link>
+        </a>
 
         <template v-if="isAdmin">
-          <router-link to="/purchase">
+          <a :href="$router.resolve('/purchase').href">
             <div class="navigation-list-item">
               <span class="font font-default">Pembelian<i class="right"></i></span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/debt">
+          <a :href="$router.resolve('/debt').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Hutang
                 <i class="right"></i>
               </span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/refund">
+          <a :href="$router.resolve('/refund').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Pengembalian
                 <i class="right"></i>
               </span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/supplier">
+          <a :href="$router.resolve('/supplier').href">
             <div class="navigation-list-item">
               <span class="font font-default">Supplier<i class="right"></i></span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/transaction/history">
+          <a :href="$router.resolve('/transaction/history').href">
             <div class="navigation-list-item">
               <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/products">
+          <a :href="$router.resolve('/products').href">
             <div class="navigation-list-item">
               <span class="font font-default">Produk<i class="right"></i></span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/category">
+          <a :href="$router.resolve('/category').href">
             <div class="navigation-list-item">
               <span class="font font-default">Kategori<i class="right"></i></span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/customers">
+          <a :href="$router.resolve('/customers').href">
             <div class="navigation-list-item">
               <span class="font font-default">Pelanggan<i class="right"></i></span>
             </div>
-          </router-link>
+          </a>
           
-          <router-link to="/stock-products">
+          <a :href="$router.resolve('/stock-products').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Stok Produk
                 <i class="right"></i>
               </span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/staff">
+          <a :href="$router.resolve('/staff').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Staff
                 <i class="right"></i>
               </span>
             </div>
-          </router-link>
+          </a>
 
-          <router-link to="/store-settings">
+          <a :href="$router.resolve('/store-settings').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Pengaturan Toko
                 <i class="right"></i>
               </span>
             </div>
-          </router-link>
+          </a>
 
           <router-link @click.native="onLogout()" to="/logout">
             <div class="navigation-list-item">

@@ -53,7 +53,7 @@
       <b-form-group
         label=""
         label-for="input">
-        Nama pelanggan
+        Nama supplier
         <div v-if="$apollo.queries.suppliers.loading">Loading...</div>
         <b-form-select
           v-else 

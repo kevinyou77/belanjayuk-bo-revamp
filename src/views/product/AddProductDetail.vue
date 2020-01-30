@@ -57,10 +57,10 @@
         </b-form-invalid-feedback>
       </b-form-group>
       <b-form-group
-        label="Jumlah stok"
+        label="Nilai stok"
         label-for="input">
         <b-form-input
-          label="Jumlah stok"
+          label="Nilai stok"
           id="input-1"
           v-model="productDetailFields.value"
           type="number"
