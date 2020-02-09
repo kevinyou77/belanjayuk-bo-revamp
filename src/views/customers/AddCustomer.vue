@@ -30,7 +30,7 @@
               Nomor telepon tidak valid (format: 08xx)
             </b-form-invalid-feedback>
             <b-form-valid-feedback :state="isPhoneNumberValid">
-              Nama stok produk valid
+              Nama telepon valid
             </b-form-valid-feedback>
           </b-form-group>
 

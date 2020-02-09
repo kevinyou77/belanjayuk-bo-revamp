@@ -13,10 +13,10 @@
         required
       ></b-form-input>
       <b-form-invalid-feedback :state="isUsernameValid">
-        Nama stok produk harus lebih dari 1 huruf
+        Nama supplier harus lebih dari 1 huruf
       </b-form-invalid-feedback>
       <b-form-valid-feedback :state="isUsernameValid">
-        Nama stok produk valid
+        Nama supplier valid
       </b-form-valid-feedback>
     </b-form-group>
 
@@ -34,7 +34,7 @@
           Nomor telepon tidak valid (format: 08xx)
         </b-form-invalid-feedback>
         <b-form-valid-feedback :state="isPhoneNumberValid">
-          Nama stok produk valid
+          Nomor telepon valid
         </b-form-valid-feedback>
       </b-form-group>
 

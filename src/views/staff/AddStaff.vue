@@ -17,10 +17,10 @@
             required
           ></b-form-input>
           <b-form-invalid-feedback :state="isUsernameValid">
-            Nama stok produk harus lebih dari 1 huruf
+            Username harus lebih dari 1 huruf
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="isUsernameValid">
-            Nama stok produk valid
+            Username produk valid
           </b-form-valid-feedback>
         </b-form-group>
 

@@ -30,7 +30,9 @@
           />
       </b-modal>
 
-      <b-modal id="error-modal">
+      <b-modal 
+        ok-only
+        id="error-modal">
         <span class="heading heading-default">{{ error }}</span>
       </b-modal>
     </div>

@@ -8,7 +8,10 @@
     
     <div class="navigation">
       <div class="navigation-list">
-        <a to="/dashboard" v-if="isAdmin">
+        <a
+          v-if="isAdmin"
+          :href="$router.resolve('/dashboard').href" 
+          >
           <div class="navigation-list-item">
             <span class="font font-default">Dashboard<i class="right"></i></span>
           </div>
@@ -103,18 +106,17 @@
               </span>
             </div>
           </a>
-
-          <router-link @click.native="onLogout()" to="/logout">
-            <div class="navigation-list-item">
-              <span class="font font-default">
-                Keluar
-                <i class="right"></i>
-              </span>
-            </div>
-          </router-link>
         </template>
 
-        
+        <router-link @click.native="onLogout()" to="/logout">
+          <div class="navigation-list-item">
+            <span class="font font-default">
+              Keluar
+              <i class="right"></i>
+            </span>
+          </div>
+        </router-link>
+
       </div>
     </div>
     
