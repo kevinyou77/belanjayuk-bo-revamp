@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import jwt from 'jsonwebtoken'
 
 Vue.use(Router)
 
@@ -147,6 +148,14 @@ const router = new Router ({
 router.beforeEach((to, _, next) => {
   const bearerToken = sessionStorage.getItem('bearerToken') ? sessionStorage.getItem('bearerToken') : ""
   const role = sessionStorage.getItem('roleName') ? sessionStorage.getItem('roleName') : ""
+
+  const decodedBearerToken = jwt.decode(bearerToken)
+  const { exp } = decodedBearerToken
+  const isExpired = Date.now() >= exp * 1000
+
+  if (isExpired) {
+    return next({ path: '/' });
+  }
 
   if (role.toLowerCase() === 'cashier') {
     // set session storage cannot login

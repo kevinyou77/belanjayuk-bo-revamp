@@ -87,6 +87,8 @@ export default {
       if (!/^\d{9,12}$/.test(phoneNumber)) {
         return false
       }
+
+      return true
     },
     isAddressValid () {
       return this.supplierFields.address.length > 5
