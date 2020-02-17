@@ -153,7 +153,7 @@ router.beforeEach((to, _, next) => {
   
   let exp = null
   let isExpired = false
-  if (decodedBearerToken.exp) {
+  if (bearerToken) {
     exp = decodedBearerToken.exp
     isExpired = Date.now() >= exp * 1000
   }
