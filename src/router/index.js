@@ -150,8 +150,13 @@ router.beforeEach((to, _, next) => {
   const role = sessionStorage.getItem('roleName') ? sessionStorage.getItem('roleName') : ""
 
   const decodedBearerToken = jwt.decode(bearerToken)
-  const { exp } = decodedBearerToken
-  const isExpired = Date.now() >= exp * 1000
+  
+  let exp = null
+  let isExpired = false
+  if (decodedBearerToken.exp) {
+    exp = decodedBearerToken.exp
+    isExpired = Date.now() >= exp * 1000
+  }
 
   if (isExpired) {
     return next({ path: '/' });
