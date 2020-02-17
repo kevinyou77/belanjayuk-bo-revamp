@@ -177,6 +177,11 @@
       id="error-modal">
       {{ error }}
     </b-modal>
+
+     <b-modal
+      id="success-modal">
+      {{ error }}
+    </b-modal>
   </div>
 </template>
 
@@ -282,7 +287,7 @@ export default {
         }
       })
       .then (res => {
-        console.log(res.data)
+        console.log(res.data, 'res')
         this.checkoutResultData = res.data.checkoutPurchases
         this.$bvModal.show('confirm-payment-modal')
       })
@@ -306,7 +311,7 @@ export default {
               localStorage.removeItem('purchaseProducts')
               this.$store.dispatch('purchase/removeAllSelectedProducts')
               this.error = 'Berhasil membayar!'
-              this.$bvModal.show('error-modal')
+              this.$bvModal.show('success-modal')
             },
             onFailed: () => {
               this.error = 'Terjadi kesalahan, coba lagi!'

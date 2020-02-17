@@ -188,7 +188,7 @@
     </b-modal>
 
     <b-modal
-      id="error-modal">
+      id="notify-modal">
       {{ error }}
     </b-modal>
   </div>
@@ -263,7 +263,7 @@ export default {
     showCheckoutModal () {
       if (this.isSelectedProductsEmpty) {
         this.$store.dispatch('transaction/setErrorMessage', 'Keranjang kosong!')
-        this.$bvModal.show('error-modal')
+        this.$bvModal.show('notify-modal')
 
         return
       }
@@ -273,7 +273,7 @@ export default {
     checkout () {
       if (this.customerId === '') {
         this.error = 'Nama pelanggan harus diisi!'
-        this.$bvModal.show('error-modal')
+        this.$bvModal.show('notify-modal')
 
         return
       }
@@ -307,7 +307,7 @@ export default {
       })
       .catch (err => {
         this.error = 'Terjadi masalah, coba lagi!'
-        this.$bvModal.show('error-modal')
+        this.$bvModal.show('notify-modal')
       })
     },
     completePayment () {
@@ -326,11 +326,11 @@ export default {
               this.$store.dispatch('transaction/removeAllSelectedProducts')
 
               this.error = 'Berhasil membayar!'
-              this.$bvModal.show('error-modal')
+              this.$bvModal.show('notify-modal')
             },
             onFailed: () => {
               this.error = 'Terjadi masalah, coba lagi!'
-              this.$bvModal.show('error-modal')
+              this.$bvModal.show('notify-modal')
             }
           }
         )
