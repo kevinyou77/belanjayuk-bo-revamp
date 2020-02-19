@@ -169,6 +169,8 @@ export default {
       })
       .then (res => {
         this.showModal('Data berhasil di ubah!')
+
+        this.$router.go(0)
       })
       .catch (err => {
         this.showModal(err)

@@ -100,6 +100,7 @@ export default {
   props: [
     'productFields',
     'onProductAddConfirmed',
+    'onPhotoUpload'
   ],
   data () {
     return {
@@ -130,19 +131,24 @@ export default {
     },
   },
   methods: {
+    uuidv4() {
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+    },
     uploadImage () {
       const metadata = {
         contentType: 'image/jpeg',
       }
 
       FirestoreHelper.uploadImage({
-        image: new File([this.file], 'hehe.jpg'),
+        image: new File([this.file], `${this.uuidv4()}.jpg`),
         metadata,
         onSuccess: (res, url) => {
-          console.log(url)
+          this.onPhotoUpload(url)
         },
         onError: (res) => {
-          console.log('error ajg', res)
+          this.onPhotoUpload(null, res)
         }
       })
     }

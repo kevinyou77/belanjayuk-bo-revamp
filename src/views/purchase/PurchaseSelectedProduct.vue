@@ -1,7 +1,7 @@
 <template>
   <div class="transaction-selected">
     <div class="cart">
-      <h2 class="heading-default">Keranjang belanja</h2>
+      <h2 class="heading-default">Keranjang Belanja</h2>
     </div>
     <div class="transaction-selected-list">
       <div

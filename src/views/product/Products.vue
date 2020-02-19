@@ -36,7 +36,8 @@
             v-if="!formFinalStep"
             key="`addproduct`"
             :productFields="addProductFields"
-            :onProductAddConfirmed="onProductAddConfirmed" />
+            :onProductAddConfirmed="onProductAddConfirmed"
+            :onPhotoUpload="onPhotoUpload" />
           <transition-group
             v-else
             tag="div"
@@ -244,6 +245,7 @@ export default {
       editFormFinalStep: false,
       error: '',
       productId: null,
+      imageUrl: '',
     }
   },
   computed: {
@@ -459,7 +461,7 @@ export default {
       this.addProductFields.stock = parseInt(stock)
 
       const productFields = { ...this.addProductFields }
-      productFields.imageUrl = 'https://images.unsplash.com/photo-1572946281197-6129946d463f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1982&q=80'
+      productFields.imageUrl = this.imageUrl
       console.log(productFields, 'pf')
       
       return {
@@ -556,6 +558,18 @@ export default {
       this.resetEditForm()
       this.$bvModal.hide('edit-product-modal')
       this.editFormFinalStep = false
+    },
+    onPhotoUpload (url, err) {
+      if (url == null) {
+        this.showModal('Gagal mengunggah foto!')
+        console.log('error', err)
+
+        return
+      }
+
+      this.imageUrl = url
+      console.log(this.imageUrl, 'imgurl')
+      this.showModal('Berhasil mengunggah foto!')
     }
   },
   apollo: {

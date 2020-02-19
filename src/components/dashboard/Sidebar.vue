@@ -19,6 +19,14 @@
 
         <a
           v-if="isCashier || isAdmin"
+          :href="$router.resolve('/transaction/history').href">
+          <div class="navigation-list-item">
+            <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>
+          </div>
+        </a>
+
+        <a
+          v-if="isCashier || isAdmin"
           :href="$router.resolve('/transaction').href">
           <div class="navigation-list-item">
             <span class="font font-default">Penjualan<i class="right"></i></span>
@@ -53,12 +61,6 @@
           <a :href="$router.resolve('/supplier').href">
             <div class="navigation-list-item">
               <span class="font font-default">Supplier<i class="right"></i></span>
-            </div>
-          </a>
-
-          <a :href="$router.resolve('/transaction/history').href">
-            <div class="navigation-list-item">
-              <span class="font font-default">Riwayat Penjualan<i class="right"></i></span>
             </div>
           </a>
 

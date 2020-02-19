@@ -124,6 +124,8 @@ export default {
       .then ((data) => {
         this.showModal('Data sukses di input')
         this.clearFields()
+
+        this.$router.go(0)
       })
       .catch (err => {
         this.showModal('Data gagal di input, mohon cek kembali data yang di isi')
@@ -138,6 +140,8 @@ export default {
       })
       .then (res => {
         this.showModal('Data berhasil di ubah!')
+
+        this.$router.go(0)
       })
       .catch (err => console.log(err))
     },
@@ -180,6 +184,8 @@ export default {
       })
       .then (data => {
         this.showModal('Data berhasil dihapus')
+
+        this.$router.go(0)
       })
       .catch (err => {
         console.log(err)

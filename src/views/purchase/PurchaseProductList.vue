@@ -162,7 +162,7 @@ export default {
       })
     },
     showSuccessToast () {
-      this.$bvToast.toast(`Mantul!`, {
+      this.$bvToast.toast(`Berhasil!`, {
         title: 'Produk sukses ditambah kedalam cart',
         autoHideDelay: 1000,
         toaster: 'b-toaster-top-center'
