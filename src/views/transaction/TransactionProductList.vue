@@ -74,7 +74,7 @@
                 required
               ></b-form-input>
               <b-form-invalid-feedback :state="isStockValid">
-                Jumlah stok tidak mencukupi
+                Jumlah stok tidak mencukupi!
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -167,6 +167,13 @@ export default {
         toaster: 'b-toaster-top-center'
       })
     },
+    showInvalidStockToast () {
+      this.$bvToast.toast(`Oops`, {
+        title: 'Stok tidak mencukupi!',
+        autoHideDelay: 1000,
+        toaster: 'b-toaster-top-center'
+      })
+    },
     showSuccessToast () {
       this.$bvToast.toast(`Berhasil!`, {
         title: 'Produk sukses ditambah kedalam cart',
@@ -186,8 +193,9 @@ export default {
       this.showModal()
     },
     handleTransactionModalAdd (newProduct) {
-      if (this.stockAmount === 0) {
-        this.showErrorModal('Nilai stok produk harus lebih dari 0')
+      if (!this.isStockValid) {
+        this.showInvalidStockToast()
+
         return
       }
 

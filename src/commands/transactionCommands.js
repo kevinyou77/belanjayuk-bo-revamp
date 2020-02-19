@@ -44,6 +44,7 @@ export const mutations = {
             product {
               SKU
               name
+              stock
             }
           }
         }

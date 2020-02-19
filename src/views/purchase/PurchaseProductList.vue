@@ -176,6 +176,11 @@ export default {
       this.showModal()
     },
     handleTransactionModalAdd (newProduct) {
+      if (this.stockAmount === 0) {
+        this.showErrorModal('Nilai stok produk harus lebih dari 0')
+        return
+      }
+      
       const product = { ...newProduct }
       const { productDetail } = product
       const filteredProductDetail = productDetail.filter(item => item.productStock.id === this.productStockId)

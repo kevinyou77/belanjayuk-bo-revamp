@@ -139,14 +139,14 @@
                 </span>
                 <span 
                   class="details-item-box-info">
-                  : {{ item.productDetail.value }}
+                  : {{ item.productDetail.product.stock }}
                 </span>
               </div>
 
               <div
                 class="details-item-box">
                 <span
-                  v-if="isProductStockFulfilled(item.numberOfPurchases, item.productDetail.value)"
+                  v-if="isProductStockFulfilled(item.numberOfPurchases, item.productDetail.product.stock)"
                   class="details-item-box-available">
                   Tersedia!
                 </span>
@@ -302,6 +302,7 @@ export default {
         }
       })
       .then (res => {
+        console.log(res.data.checkout, 'checkout')
         this.checkoutResultData = res.data.checkout
         this.$bvModal.show('confirm-payment-modal')
       })
