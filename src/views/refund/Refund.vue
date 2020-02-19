@@ -74,7 +74,9 @@
       <span class="heading heading-default">Berhasil melakukan pengembalian</span>
     </b-modal>
 
-    <b-modal id="error-modal">
+    <b-modal 
+      id="error-modal"
+      cancel-disabled>
       <span class="heading heading-default">{{ error }}</span>
     </b-modal>
     
@@ -264,7 +266,9 @@ export default {
         variables: { transactionId: this.currentTransactionId }
       })
       .then (res => {
-        this.showModal('Data berhasil di ubah!')
+        this.showModal('Pengembalian uang berhasil!')
+
+        this.$router.go(0)
         console.log(res, 'complete refund')
       })
       .catch (err => {

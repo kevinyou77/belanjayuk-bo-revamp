@@ -53,7 +53,9 @@
           Simpan pengaturan
         </b-button>
 
-        <b-modal id="error-modal">
+        <b-modal 
+          id="error-modal"
+          cancel-disabled>
           <span class="heading heading-default">{{ error }}</span>
         </b-modal>
       </div>

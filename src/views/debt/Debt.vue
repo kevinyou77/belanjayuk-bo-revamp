@@ -168,7 +168,7 @@ export default {
         }
       })
       .then (res => {
-        this.showModal('Data berhasil di ubah!')
+        this.showModal('Pembayaran hutang berhasil')
 
         this.$router.go(0)
       })

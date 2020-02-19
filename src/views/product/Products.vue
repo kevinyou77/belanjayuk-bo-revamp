@@ -24,6 +24,7 @@
     <b-modal
       id="add-product-modal"
       @hidden="resetAddModal"
+      cancel-disabled
       hide-footer>
       <div class="box-underline">
         <span class="heading heading-default">Tambah Produk</span>
@@ -104,7 +105,7 @@
               :actions="editProductDetailListActions()" />
 
             <b-button
-              @click="handleEditProductMutation()"
+              @click="updateProduct()"
               key="`finalize button`"
               variant="primary"
               class="mt-3" 
@@ -117,7 +118,9 @@
     </b-modal>
 
 
-    <b-modal id="error-modal">
+    <b-modal 
+      id="error-modal"
+      cancel-disabled>
       <span class="heading heading-default">{{ error }}</span>
     </b-modal>
   </div>
@@ -534,6 +537,11 @@ export default {
       this.$bvModal.show('error-modal')
     },
     updateProduct () {
+      console.log({
+          productId: this.productId,
+          categoryId: this.editProductFields.categoryId,
+          name: this.editProductFields.name
+        }, 'clog')
       this.$apollo.mutate({
         mutation: editProductMutation(),
         variables: {
@@ -544,6 +552,8 @@ export default {
       })
       .then (res => {
         this.showModal('Data berhasil diubah!')
+
+        this.$router.go(0)
       })
       .catch (_ => {
         this.showModal('Terjadi masalah, coba lagi!')

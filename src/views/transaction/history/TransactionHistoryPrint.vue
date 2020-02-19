@@ -1,110 +1,73 @@
 <template>
-  <div class="transaction-history">
-    <div class="box-underline">
-      <span class="heading heading-default">Detil Transaksi</span>
+  <div class="">
+    <div>
+      <span>Detil Transaksi</span>
     </div>
 
     <div
       v-if="loading"
-      class="transaction-detail-fail">Data failed to load</div>
+      >Data failed to load</div>
     <div 
       v-else
-      class="transaction-detail">
+      >
 
-      <div
-        class="transaction-detail-id">
+      <div>
         <h2>TRANSAKSI NOMOR </h2> 
         <h1>#{{ transaction.id }}</h1>
       </div>
 
-      <div class="transaction-detail-info">
-        <div class="transaction-detail-customer">
-          <div class="transaction-detail-customer-wrapper">
-            <div class="transaction-detail-customer-wrapper-fields">
+      <div>
+        <div>
+          <div>
+            <div>
               <h2>Pelanggan</h2>
             </div>
-            <div class="transaction-detail-customer-wrapper-fields">
-              Nama lengkap:
+            <div>
+              Nama lengkap: {{ transaction.customer.user.userProfile.fullName }}
             </div>
-            <div class="transaction-detail-customer-wrapper-fields">
-              Email:
+            <div>
+              Email: {{ transaction.customer.user.email }}
             </div>
-            <div class="transaction-detail-customer-wrapper-fields">
-              Alamat:
+            <div>
+              Alamat: {{ transaction.customer.user.userProfile.address }}
             </div>
-            <div class="transaction-detail-customer-wrapper-fields">
-              Nomor telepon:
-            </div>
-          </div>
-
-          <div class="transaction-detail-customer-content">
-            <div class="transaction-detail-customer-content-item">
-              &nbsp;
-            </div>
-            <div class="transaction-detail-customer-content-item">
-              {{ transaction.customer.user.email }}
-            </div>
-            <div class="transaction-detail-customer-content-item">
-              {{ transaction.customer.user.userProfile.fullName }}
-            </div>
-            <div class="transaction-detail-customer-content-item">
-              {{ transaction.customer.user.userProfile.address }}
-            </div>
-            <div class="transaction-detail-customer-content-item">
-              {{ transaction.customer.user.userProfile.phoneNumber }}
+            <div>
+              Nomor telepon: {{ transaction.customer.user.userProfile.phoneNumber }}
             </div>
           </div>
         </div>
 
-        <div class="transaction-detail-staff">
-          <div class="transaction-detail-staff-wrapper">
-            <div class="transaction-detail-staff-wrapper-fields">
+        <div>
+          <div>
+            <div>
               <h2>Kasir</h2>
             </div>
-            <div class="transaction-detail-staff-wrapper-fields">
-              Nama lengkap:
+            <div>
+              Nama lengkap: {{ transaction.staff.user.userProfile.fullName }}
             </div>
-            <div class="transaction-detail-staff-wrapper-fields">
-              Email:
+            <div>
+              Email: {{ transaction.staff.user.email }}
             </div>
-            <div class="transaction-detail-staff-wrapper-fields">
-              Alamat:
+            <div>
+              Alamat: {{ transaction.staff.user.userProfile.address }}
             </div>
-            <div class="transaction-detail-staff-wrapper-fields">
-              Nomor telepon:
-            </div>
-          </div>
-
-          <div class="transaction-detail-staff-content">
-            <div class="transaction-detail-staff-content-item">
-              &nbsp;
-            </div>
-            <div class="transaction-detail-staff-content-item">
-              {{ transaction.staff.user.email }}
-            </div>
-            <div class="transaction-detail-staff-content-item">
-              {{ transaction.staff.user.userProfile.fullName }}
-            </div>
-            <div class="transaction-detail-staff-content-item">
-              {{ transaction.staff.user.userProfile.address }}
-            </div>
-            <div class="transaction-detail-staff-content-item">
-              {{ transaction.staff.user.userProfile.phoneNumber }}
+            <div>
+              Nomor telepon: {{ transaction.staff.user.userProfile.phoneNumber }}
             </div>
           </div>
         </div>
       </div>
 
-      <div class="transaction-detail-products">
-        <div class="transaction-detail-products-wrapper">
-          <div class="transaction-detail-products-title">
+      <div>
+        <div>
+          <div>
             <h2>Produk yang dibeli</h2>
           </div>
           <div 
             v-for="(item, index) in transaction.transactionDetail"
             :key="index"
-            class="transaction-detail-products-items">
-              <div class="items-left">
+            >
+              <div>
                 <img
                   :src="item.productDetail.product.imageUrl"
                   height="100"
@@ -112,39 +75,39 @@
                   alt="">
               </div>
 
-              <div class="items-right">
-                <div class="items-title-wrapper">
-                  <div class="items-title">
+              <div >
+                <div>
+                  <div>
                     Nama Produk
                   </div>
-                  <div class="items-title">
+                  <div>
                     Harga beli
                   </div>
-                  <div class="items-title">
+                  <div>
                     Harga jual
                   </div>
-                  <div class="items-title">
+                  <div>
                     Jumlah pembelian
                   </div>
-                  <div class="items-title">
+                  <div>
                     Nama stok produk
                   </div>
                 </div>
 
-                <div class="items-content-wrapper">
-                  <div class="items-content">
+                <div>
+                  <div>
                     :  {{ item.productDetail.product.name }}
                   </div>
-                  <div class="items-content">
+                  <div>
                     :  {{ item.productDetail.purchasingPrice }}
                   </div>
-                  <div class="items-content">
+                  <div>
                     :  {{ item.productDetail.sellingPrice }}
                   </div>
-                  <div class="items-content">
+                  <div>
                     :  {{ item.numberOfPurchase }}
                   </div>
-                  <div class="items-content">
+                  <div>
                     :  {{ item.productDetail.productStock.name }}
                   </div>
                 </div>
@@ -152,19 +115,19 @@
           </div>
         </div>
 
-        <div class="transaction-detail-summary">
-          <div class="title">
+        <div>
+          <div>
             Summary
           </div>
 
-          <div class="summary">
-            <div class="transaction-detail-summary-title">
+          <div>
+            <div>
               <span>Jumlah pembayaran</span>
               <span>Hutang</span>
               <span>Untung</span>
               <span>Total harga</span>
             </div>
-            <div class="transaction-detail-summary-content">
+            <div>
               <span>: Rp.{{ transaction.payment.amountOfPayment }}</span>
               <span>: Rp.{{ transaction.payment.debt }}</span>
               <span>: Rp.{{ transaction.profit }}</span>
