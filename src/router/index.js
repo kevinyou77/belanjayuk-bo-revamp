@@ -146,6 +146,21 @@ const router = new Router ({
 })
 
 router.beforeEach((to, _, next) => {
+  // const statusFromSessionStorage = sessionStorage.getItem('loggedIn') ? sessionStorage.getItem('loggedIn') : 0
+  // const isLoggedIn = statusFromSessionStorage === 1
+  // console.log(isLoggedIn)
+
+  // if (!isLoggedIn) {
+  //   return next({ path: '/' })
+  // }
+
+  // const statusFromSessionStorage = sessionStorage.getItem('loggedIn') ? sessionStorage.getItem('loggedIn') : 0
+  // const isLoggedIn = statusFromSessionStorage === 1
+
+  // if (to.fullPath === '/') {
+  //   return next({ path: '/' })
+  // }
+
   const bearerToken = sessionStorage.getItem('bearerToken') ? sessionStorage.getItem('bearerToken') : ""
   const role = sessionStorage.getItem('roleName') ? sessionStorage.getItem('roleName') : ""
 

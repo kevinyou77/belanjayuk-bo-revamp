@@ -1,5 +1,43 @@
+
+
 .transaction-history {
-  
+
+}
+
+div.transaction-history-print {
+  padding: 10px;
+  font-family: "Courier New", Courier, monospace !important;
+  font-size: 7px;
+  width: 200px;
+
+  .header {
+    font-weight: 700;
+  }
+
+  .print-id {
+    font-weight: 700;
+  }
+
+  .pelanggan {
+    display: flex;
+
+    .left {
+      display: inline-block;
+    }
+
+    .right {
+      display: inline-block;
+    }
+  }
+
+  .detail-list {
+    display: flex;
+    justify-content: space-around;
+    span {
+      display: inline-block;
+      flex-basis: 1;
+    }
+  }
 }
 
 .transaction-detail {

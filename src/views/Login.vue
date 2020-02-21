@@ -91,6 +91,7 @@ export default {
       sessionStorage.setItem('roleName', roleName)
       sessionStorage.setItem('username', username)
       sessionStorage.setItem('staffId', id)
+      sessionStorage.setItem('loggedIn', 1)
 
       this.$store.dispatch('auth/authenticate')
       this.$router.push('/dashboard')

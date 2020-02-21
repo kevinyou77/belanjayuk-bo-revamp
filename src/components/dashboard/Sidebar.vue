@@ -131,6 +131,7 @@ export default {
   name: 'sidebar',
   methods: {
     onLogout () {
+      sessionStorage.setItem('loggedIn', 0)
       this.$store.dispatch('auth/logout')
     },
   },

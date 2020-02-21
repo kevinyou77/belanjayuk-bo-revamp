@@ -217,7 +217,7 @@ export const queries = {
     }
   `,
   [queryTypes.GET_TRANSACTION]: gql`
-    query transaction($transactionId: String!,) {
+    query transaction($transactionId: String!) {
       transaction(transactionId: $transactionId){
         paymentStatus
         totalPrice

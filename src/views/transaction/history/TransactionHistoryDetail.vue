@@ -125,9 +125,9 @@
                   <div class="items-title">
                     Nama Produk
                   </div>
-                  <div class="items-title">
+                  <!-- <div class="items-title">
                     Harga beli
-                  </div>
+                  </div> -->
                   <div class="items-title">
                     Harga jual
                   </div>
@@ -143,14 +143,14 @@
                   <div class="items-content">
                     :  {{ item.productDetail.product.name }}
                   </div>
-                  <div class="items-content">
+                  <!-- <div class="items-content">
                     :  {{ item.productDetail.purchasingPrice }}
-                  </div>
+                  </div> -->
                   <div class="items-content">
                     :  {{ item.productDetail.sellingPrice }}
                   </div>
                   <div class="items-content">
-                    :  {{ item.numberOfPurchase }}
+                    :  {{ item.numberOfPurchases }}
                   </div>
                   <div class="items-content">
                     :  {{ item.productDetail.productStock.name }}
@@ -237,6 +237,7 @@ export default {
     .then (res => {
       this.transaction = res.data.transaction
       this.loading = false
+      console.log(this.transaction, 'tx')
     })
     .catch (err => {
       this.loading = false
@@ -244,6 +245,6 @@ export default {
   },
   updated () {
     this.renderQR()
-  }
+  },
 }
 </script>
