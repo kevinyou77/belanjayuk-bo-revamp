@@ -145,8 +145,11 @@ export default {
       return this.productDetailFields.value > 0
     },
     isProductStockTypeValid () {
-      return this.productDetailFields.productStockId !== null
+      return this.productDetailFields.tempId !== null
     },
   },
+  updated () {
+    console.log(this.productDetailFields.tempId, 'pid')
+  }
 }
 </script>

@@ -178,6 +178,15 @@
         </b-form-group>
 
         <b-button
+          @click="cancelPayment()"
+          key="`cancel button`"
+          variant="danger"
+          class="mt-3" 
+          block >
+          Batal
+        </b-button>
+
+        <b-button
           @click="completePayment()"
           key="`finalize button`"
           variant="primary"
@@ -364,6 +373,17 @@ export default {
     remainingDebt () {
       return checkoutResultData.totalPrice === this.amountOfPayment
     },
+    cancelPayment () {
+      this.refetchTransactionId({ 
+        onSuccess: () => {
+          this.$bvModal.hide('confirm-payment-modal')
+        },
+        onFailed: () => {
+          this.error = 'Terjadi kesalahan, coba lagi!'
+          this.$bvModal.show('notify-modal')
+        }
+      })
+    }
   },
   apollo: {
     customers: getCustomersQuery(),

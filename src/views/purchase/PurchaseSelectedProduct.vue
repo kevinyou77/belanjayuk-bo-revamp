@@ -345,7 +345,7 @@ export default {
     },
     remainingDebt () {
       return checkoutResultData.totalPrice === this.amountOfPayment
-    }
+    },
   },
   apollo: {
     suppliers: getSuppliers(),
