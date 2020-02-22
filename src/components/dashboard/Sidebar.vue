@@ -33,14 +33,9 @@
           </div>
         </a>
 
-        <template v-if="isAdmin">
-          <a :href="$router.resolve('/purchase').href">
-            <div class="navigation-list-item">
-              <span class="font font-default">Pembelian<i class="right"></i></span>
-            </div>
-          </a>
-
-          <a :href="$router.resolve('/debt').href">
+        <a
+          v-if="isCashier || isAdmin" 
+          :href="$router.resolve('/debt').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Hutang
@@ -49,12 +44,21 @@
             </div>
           </a>
 
-          <a :href="$router.resolve('/refund').href">
+          <a
+            v-if="isCashier || isAdmin" 
+            :href="$router.resolve('/refund').href">
             <div class="navigation-list-item">
               <span class="font font-default">
                 Pengembalian
                 <i class="right"></i>
               </span>
+            </div>
+          </a>
+
+        <template v-if="isAdmin">
+          <a :href="$router.resolve('/purchase').href">
+            <div class="navigation-list-item">
+              <span class="font font-default">Pembelian<i class="right"></i></span>
             </div>
           </a>
 
