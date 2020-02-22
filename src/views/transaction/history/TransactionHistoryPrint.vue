@@ -7,32 +7,30 @@
       v-else
       >
 
-      <div style="text-align: center; font-size: 7px">
-        <h2 class="header">TRANSAKSI NOMOR</h2> 
-        <h1 class="print-id">#{{ transaction.id }}</h1>
-        <h2 class="header">{{ dateFormat(transaction.date) }}</h2>
+      <div style="text-align: center; font-size: 10px">
+        <h2 class="header" style="font-size: 10px">TRANSAKSI NOMOR</h2> 
+        <h1 class="print-id" style="font-size: 8px">#{{ transaction.id }}</h1>
+        <h2 class="header" style="font-size: 8px">{{ dateFormat(transaction.date) }}</h2>
       </div><br>
 
-      <h2 class="header">Pelanggan</h2>
       <div class="pelanggan">
-        <div class="right">
+        <div class="left">
+          <h2 class="header">Pelanggan</h2>
           <div>{{ transaction.customer.user.userProfile.fullName }}</div>
-          <div>{{ transaction.customer.user.email }}</div>
-          <div>{{ transaction.customer.user.userProfile.address }}</div>
           <div>{{ transaction.customer.user.userProfile.phoneNumber }}</div>
+          <br>
+          <h2 class="header">Kasir</h2>
+          <div>{{ transaction.staff.user.userProfile.fullName }}</div>
+        </div>
+        <div 
+          class="right">
+          <canvas 
+            width="50"
+            height="50"
+            class="transaction-qr-print"></canvas>
         </div>
       </div>
       <br>
-
-      <h2 class="header">Kasir</h2>
-      <div class="pelanggan">
-        <div class="right">
-          <div>{{ transaction.staff.user.userProfile.fullName }}</div>
-          <div>{{ transaction.staff.user.email }}</div>
-          <div>{{ transaction.staff.user.userProfile.address }}</div>
-          <div>{{ transaction.staff.user.userProfile.phoneNumber }}</div>
-        </div>
-      </div>
       <br>
 
       <div>
@@ -74,6 +72,7 @@ import {
   queries,
 } from '../../../commands/transactionCommands'
 import dateFormat from '../../../utils/dateFormat'
+import QRCode from 'qrcode'
 
 const getTransaction = () => {
   const { GET_TRANSACTION } = queryTypes
@@ -90,7 +89,17 @@ export default {
     }
   },
   methods: {
-  
+    renderQR () {
+      var opts = {
+        width: 70,
+      }
+      const canvas = document.querySelector('.transaction-qr-print')
+      QRCode.toCanvas(canvas, this.transaction.id, opts, (err) => {
+        if (err) {
+          return
+        }
+      })
+    }
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
@@ -119,5 +128,8 @@ export default {
       this.loading = false
     })
   },
+  updated () {
+    this.renderQR()
+  }
 }
 </script>

@@ -7,8 +7,8 @@
 div.transaction-history-print {
   padding: 10px;
   font-family: "Courier New", Courier, monospace !important;
-  font-size: 7px;
-  width: 200px;
+  font-size: 10px;
+  width: 250px;
 
   .header {
     font-weight: 700;
@@ -20,6 +20,7 @@ div.transaction-history-print {
 
   .pelanggan {
     display: flex;
+    justify-content: space-between;
 
     .left {
       display: inline-block;
@@ -37,6 +38,11 @@ div.transaction-history-print {
       display: inline-block;
       flex-basis: 1;
     }
+  }
+
+  .transaction-qr-print {
+    height: 30px;
+    width: 30px;
   }
 }
 
