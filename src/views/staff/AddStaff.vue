@@ -211,7 +211,7 @@ export default {
     isUsernameValid () {
       return (
         this.staffFields.username.length > 3
-        && this.staffFields.username.indexOf(' ') >= 0
+        && !(this.staffFields.username.indexOf(' ') >= 0)
       )
     },
     isPasswordValid () {
