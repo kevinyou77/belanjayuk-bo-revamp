@@ -341,6 +341,8 @@ export default {
 
               this.error = 'Berhasil membayar!'
               this.$bvModal.show('notify-modal')
+
+              this.$bvModal.hide('confirm-payment-modal')
             },
             onFailed: () => {
               this.error = 'Terjadi masalah, coba lagi!'
