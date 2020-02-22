@@ -78,6 +78,14 @@
       </b-form-group>
 
       <b-button
+        @click="onProductAddConfirmed()"
+        variant="success"
+        class="mt-3" 
+        block >
+        Kembali ke edit produk
+      </b-button>
+
+      <b-button
         @click="onProductDetailAdd(productDetailFields)"
         variant="success"
         class="mt-3" 
@@ -111,6 +119,7 @@ export default {
   props: [
     'productDetailFields',
     'onProductDetailAdd',
+    'onProductAddConfirmed'
   ],
   data () {
     return {
@@ -132,7 +141,7 @@ export default {
       return this.productDetailFields.value > 0
     },
     isProductStockTypeValid () {
-      return this.productDetailFields.productStockId !== null
+      return this.productDetailFields.tempId !== null
     },
   },
 }

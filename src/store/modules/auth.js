@@ -8,7 +8,10 @@ const actions = {
     commit('setLoggedIn', true)
   },
   logout ({ commit }) {
-    commit('setLoggedIn', false)
+    return new Promise((resolve, reject) => {
+      commit('setLoggedIn', false)
+      resolve()
+    })
   },
   toggleAction ({ commit, state }) {
     commit ('setHasAction', !state.hasAction)

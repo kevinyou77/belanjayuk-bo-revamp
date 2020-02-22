@@ -55,7 +55,7 @@
 
         <b-modal 
           id="error-modal"
-          cancel-disabled>
+          ok-only>
           <span class="heading heading-default">{{ error }}</span>
         </b-modal>
       </div>

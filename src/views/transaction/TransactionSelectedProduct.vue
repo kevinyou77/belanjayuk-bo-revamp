@@ -87,6 +87,9 @@
     <b-modal
       v-if="checkoutResultData !== {}"
       id="confirm-payment-modal"
+      no-close-on-esc
+      no-close-on-backdrop
+      hide-header-close
       hide-footer>
         <div class="details">
           <div 
@@ -197,6 +200,7 @@
     </b-modal>
 
     <b-modal
+      ok-only
       id="notify-modal">
       {{ error }}
     </b-modal>

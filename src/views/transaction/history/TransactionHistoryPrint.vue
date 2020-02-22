@@ -8,6 +8,10 @@
       >
 
       <div style="text-align: center; font-size: 10px">
+        <h2 class="header" style="font-size: 10px">{{ store.name }}</h2> 
+        <h2 class="header" style="font-size: 10px">{{ store.address }}</h2> 
+        <h2 class="header" style="font-size: 10px">{{ store.phoneNumber }}</h2><br>
+
         <h2 class="header" style="font-size: 10px">TRANSAKSI NOMOR</h2> 
         <h1 class="print-id" style="font-size: 8px">#{{ transaction.id }}</h1>
         <h2 class="header" style="font-size: 8px">{{ dateFormat(transaction.date) }}</h2>
@@ -71,12 +75,22 @@ import {
   queryTypes,
   queries,
 } from '../../../commands/transactionCommands'
+import { 
+  queries as storeSettingQueries,
+  queryTypes as storeSettingsQueryTypes,
+} from '../../../commands/storeSettingCommands'
+
 import dateFormat from '../../../utils/dateFormat'
 import QRCode from 'qrcode'
 
 const getTransaction = () => {
   const { GET_TRANSACTION } = queryTypes
   return queries[GET_TRANSACTION]
+}
+
+const getStoreSettingsQuery = () => {
+  const { GET_STORE } = storeSettingsQueryTypes
+  return storeSettingQueries[GET_STORE]
 }
 
 export default {
@@ -86,6 +100,7 @@ export default {
       transactionId: this.$route.params.id,
       loading: true,
       dateFormat,
+      store: {}
     }
   },
   methods: {
@@ -98,6 +113,25 @@ export default {
         if (err) {
           return
         }
+      })
+    },
+    fetchStoreSettings(onFetchComplete) {
+      this.$apollo.query({
+        query: getStoreSettingsQuery()
+      })
+      .then(res => {
+        console.log(res.data)
+
+        if (res.data.store == null) return
+
+        this.store = {
+          ...res.data.store
+        }
+
+        onFetchComplete()
+      })
+      .catch (err => {
+        console.log(err)
       })
     }
   },
@@ -119,10 +153,14 @@ export default {
       query: getTransaction(),
       variables: { transactionId: this.$route.params.id }
     })
-    .then (res => {
-      this.transaction = res.data.transaction
-      console.log(this.transaction, 'txxx')
-      this.loading = false
+    .then (async res => {
+      this.fetchStoreSettings(() => {
+        this.fetchStoreSettings()
+        this.transaction = res.data.transaction
+        console.log(this.transaction, 'txxx')
+        this.loading = false
+      })
+      
     })
     .catch (err => {
       this.loading = false

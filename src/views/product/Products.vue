@@ -24,7 +24,7 @@
     <b-modal
       id="add-product-modal"
       @hidden="resetAddModal"
-      cancel-disabled
+      ok-only
       hide-footer>
       <div class="box-underline">
         <span class="heading heading-default">Tambah Produk</span>
@@ -47,6 +47,7 @@
             <AddProductDetail
               key="`detail`"
               :productDetailFields="productDetailInput"
+              :onProductAddConfirmed="onProductAddConfirmed"
               :onProductDetailAdd="onProductDetailAdd" />
 
             <List
@@ -120,7 +121,7 @@
 
     <b-modal 
       id="error-modal"
-      cancel-disabled>
+      ok-only>
       <span class="heading heading-default">{{ error }}</span>
     </b-modal>
   </div>
@@ -356,6 +357,8 @@ export default {
       .then (res => {
         this.showModal("Data berhasil di input!")
         this.$bvModal.hide('add-product-modal')
+
+        this.$router.go(0)
       })
       .catch (err => {
         this.showModal("Terjadi kesalahan, mohon coba lagi!")
@@ -371,6 +374,8 @@ export default {
       .then (res => {
         this.showModal("Data berhasil di ubah!")
         this.$bvModal.hide('edit-product-modal')
+
+        this.$router.go(0)
       })
       .catch (err => {
         this.showModal("Terjadi kesalahan, coba lagi!!")
@@ -387,7 +392,6 @@ export default {
         sellingPrice,
         purchasePrice,
         value,
-        productStockId,
         tempId,
       } = newProductDetail
 
@@ -537,11 +541,6 @@ export default {
       this.$bvModal.show('error-modal')
     },
     updateProduct () {
-      console.log({
-          productId: this.productId,
-          categoryId: this.editProductFields.categoryId,
-          name: this.editProductFields.name
-        }, 'clog')
       this.$apollo.mutate({
         mutation: editProductMutation(),
         variables: {

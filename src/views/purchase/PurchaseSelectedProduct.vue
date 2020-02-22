@@ -87,6 +87,9 @@
     <b-modal
       v-if="checkoutResultData !== {}"
       id="confirm-payment-modal"
+      no-close-on-esc
+      no-close-on-backdrop
+      hide-header-close
       hide-footer>
         <div class="details">
           <div 
@@ -164,6 +167,15 @@
         </b-form-group>
 
         <b-button
+          @click="cancelPayment()"
+          key="`cancel button`"
+          variant="danger"
+          class="mt-3" 
+          block >
+          Batal
+        </b-button>
+
+        <b-button
           @click="completePayment()"
           key="`finalize button`"
           variant="primary"
@@ -174,11 +186,13 @@
     </b-modal>
 
     <b-modal
+      ok-only
       id="error-modal">
       {{ error }}
     </b-modal>
 
      <b-modal
+      ok-only
       id="success-modal">
       {{ error }}
     </b-modal>
@@ -201,6 +215,11 @@ import {
   mutationTypes as txMutationTypes
 } from '../../commands/transactionCommands'
 
+import {
+  mutations as purchaseMutations,
+  mutationTypes as purchaseMutationTypes,
+} from '../../commands/purchaseCommands'
+
 const getSuppliers = () => {
   const { GET_SUPPLIERS } = supplierQueryTypes
   return supplierQueries[GET_SUPPLIERS]
@@ -216,9 +235,9 @@ const completePaymentMutation = () => {
   return mutations[COMPLETE_PAYMENT_PURCHASE]
 }
 
-const createTransactionIdMutation = () => {
-  const { CREATE_TRANSACTION_ID } = txMutationTypes
-  return txMutations[CREATE_TRANSACTION_ID]
+const createPurchaseIdMutation = () => {
+  const { CREATE_PURCHASE_ID } = purchaseMutationTypes
+  return purchaseMutations[CREATE_PURCHASE_ID]
 }
 
 export default {
@@ -312,6 +331,8 @@ export default {
               this.$store.dispatch('purchase/removeAllSelectedProducts')
               this.error = 'Berhasil membayar!'
               this.$bvModal.show('success-modal')
+
+              this.$bvModal.hide('confirm-payment-modal')
             },
             onFailed: () => {
               this.error = 'Terjadi kesalahan, coba lagi!'
@@ -326,17 +347,28 @@ export default {
         this.$bvModal.show('error-modal')
       })
     },
+    cancelPayment () {
+      this.refetchTransactionId({ 
+        onSuccess: () => {
+          this.$bvModal.hide('confirm-payment-modal')
+        },
+        onFailed: () => {
+          this.error = 'Terjadi kesalahan, coba lagi!'
+          this.$bvModal.show('notify-modal')
+        }
+      })
+    },
     refetchTransactionId ({onSuccess, onFailed}) {
       this.$apollo.mutate({
-        mutation: createTransactionIdMutation()
+        mutation: createPurchaseIdMutation()
       })
       .then (res => {
         sessionStorage.setItem (
-          'transactionId',
-          res.data.createTransaction.transactionId
+          'purchaseId',
+          res.data.createPurchasesTransaction.purchasesTransactionId
         )
 
-        onSuccess(res.data.createTransaction.transactionId)
+        onSuccess(res.data.createPurchasesTransaction.purchasesTransactionId)
       })
       .catch (err => {
         console.log(err)

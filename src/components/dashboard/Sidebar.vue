@@ -132,7 +132,9 @@ export default {
   methods: {
     onLogout () {
       sessionStorage.setItem('loggedIn', 0)
-      this.$store.dispatch('auth/logout')
+      this.$store.dispatch('auth/logout').then (() => {
+        this.$router.go(0)
+      })
     },
   },
   computed: {

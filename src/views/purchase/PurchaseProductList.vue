@@ -73,7 +73,7 @@
                 required
               ></b-form-input>
               <b-form-invalid-feedback :state="isStockValid">
-                Jumlah stok tidak mencukupi
+                Jumlah stok harus lebih dari 1
               </b-form-invalid-feedback>
             </b-form-group>
           </div>
@@ -136,7 +136,7 @@ export default {
       })
     },
     isStockValid () {
-      return this.stockAmount <= this.selectedProduct.stock
+      return this.stockAmount > 0
     },
     productDetailItem () {
       const { productDetail } = this.selectedProduct

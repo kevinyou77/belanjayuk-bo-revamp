@@ -21,6 +21,9 @@ const router = new Router ({
       path: '/dashboard',
       name: 'dashboard',
       component: lazyLoad('dashboard/Dashboard'),
+      meta: {
+        requireAuth: true,
+      }
     },
     {
       path: '/category',
@@ -162,6 +165,16 @@ router.beforeEach((to, _, next) => {
   // }
 
   const bearerToken = sessionStorage.getItem('bearerToken') ? sessionStorage.getItem('bearerToken') : ""
+
+  if (to.matched.some(record => record.meta.requireAuth)) {
+    if (bearerToken === "") {
+      next({
+        path: '/',
+        params: { nextUrl: to.fullPath },
+      })
+    }
+  }
+
   const role = sessionStorage.getItem('roleName') ? sessionStorage.getItem('roleName') : ""
 
   const decodedBearerToken = jwt.decode(bearerToken)
@@ -200,15 +213,6 @@ router.beforeEach((to, _, next) => {
   if (to.fullPath === '/logout' && bearerToken) {
     sessionStorage.clear()
     next({ path: '/' })
-  }
-
-  if (to.matched.some(record => record.meta.requireAuth)) {
-    if (bearerToken === null) {
-      next({
-        path: '/',
-        params: { nextUrl: to.fullPath },
-      })
-    }
   }
 
   next()
