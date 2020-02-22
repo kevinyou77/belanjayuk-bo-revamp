@@ -20,7 +20,7 @@
             Username harus lebih dari 1 huruf
           </b-form-invalid-feedback>
           <b-form-valid-feedback :state="isUsernameValid">
-            Username produk valid
+            Username valid
           </b-form-valid-feedback>
         </b-form-group>
 
@@ -209,7 +209,10 @@ export default {
   },
   computed: {
     isUsernameValid () {
-      return this.staffFields.username.length > 3
+      return (
+        this.staffFields.username.length > 3
+        && this.staffFields.username.indexOf(' ') >= 0
+      )
     },
     isPasswordValid () {
       const letter = /[a-zA-Z]/
