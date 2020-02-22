@@ -31,7 +31,9 @@
           />
       </b-modal>
 
-      <b-modal id="error-modal">
+      <b-modal 
+        ok-only
+        id="error-modal">
         <span class="heading heading-default">{{ error }}</span>
       </b-modal>
     </div>
@@ -188,7 +190,8 @@ export default {
       })
       .then ((data) => {
         this.showModal('Data sukses di input')
-        // this.clearFields()
+
+        this.$router.go(0)
       })
       .catch (err => {
         this.showModal('Data gagal di input, mohon cek kembali data yang di isi')
@@ -218,6 +221,8 @@ export default {
       })
       .then (res => {
         this.showModal('Data berhasil di ubah!')
+
+        this.$router.go(0)
       })
       .catch (err => console.log(err))
     },
