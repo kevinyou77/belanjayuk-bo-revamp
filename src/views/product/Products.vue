@@ -52,6 +52,7 @@
 
             <List
               key="`list`"
+              v-if="productDetailInputArray.length !== 0"
               :items="productDetailInputArray"
               :fields="productDetailListFields"
               :actions="productDetailListActions()" />
@@ -328,7 +329,8 @@ export default {
         }
 
         this.productId = res.data.product.id
-        this.editProductDetailInputArray = res.data.product.productDetail.map(item => {
+        console.log(res.data.product.productDetail, 'product details')
+        const filteredProductDetail = res.data.product.productDetail.map(item => {
           if (!item.status) return
           return {
             productStockId: item.productStock.id,
@@ -342,6 +344,8 @@ export default {
             productId: item.id,
           }
         })
+
+        this.editProductDetailInputArray = filteredProductDetail.filter (item => item !== undefined)
 
         this.showEditProductModal()
       })
