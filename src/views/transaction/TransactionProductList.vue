@@ -55,7 +55,7 @@
                 class="mb-3">
                 <option :value="null">Please select an option</option>
                 <option
-                  v-for="(item, index) in selectedProduct.productDetail"
+                  v-for="(item, index) in filteredProductStockList"
                   :key="index"
                   :value="item.productStock.id">
                   {{ item.productStock.name }}
@@ -140,6 +140,9 @@ export default {
           || item.name.toLowerCase().includes(this.searchQuery)
         )
       })
+    },
+    filteredProductStockList () {
+      return this.selectedProduct.productDetail.filter (item => item.status)
     },
     isStockValid () {
       return this.stockAmount <= this.selectedProduct.stock
@@ -240,6 +243,7 @@ export default {
   },
   updated () {
     console.log(this.products)
+    console.log(this.selectedProduct.productDetail.map(item => item.status), 'sppp')
   }
 }
 </script>

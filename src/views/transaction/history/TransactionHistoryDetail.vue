@@ -35,9 +35,6 @@
               Nama lengkap:
             </div>
             <div class="transaction-detail-customer-wrapper-fields">
-              Email:
-            </div>
-            <div class="transaction-detail-customer-wrapper-fields">
               Alamat:
             </div>
             <div class="transaction-detail-customer-wrapper-fields">
@@ -48,9 +45,6 @@
           <div class="transaction-detail-customer-content">
             <div class="transaction-detail-customer-content-item">
               &nbsp;
-            </div>
-            <div class="transaction-detail-customer-content-item">
-              {{ transaction.customer.user.email }}
             </div>
             <div class="transaction-detail-customer-content-item">
               {{ transaction.customer.user.userProfile.fullName }}
@@ -119,9 +113,17 @@
                   width="100"
                   alt="">
               </div>
+              
+              
 
               <div class="items-right">
                 <div class="items-title-wrapper">
+                  <div
+                    class="items-title"
+                    style="color: red; font-weight: 700"
+                    v-if="item.status == 4">
+                    Barang telah dikembalikan
+                  </div>
                   <div class="items-title">
                     Nama Produk
                   </div>
@@ -140,6 +142,9 @@
                 </div>
 
                 <div class="items-content-wrapper">
+                  <div class="items-content">
+                    &nbsp;
+                  </div>
                   <div class="items-content">
                     :  {{ item.productDetail.product.name }}
                   </div>
@@ -221,7 +226,6 @@ export default {
       const canvas = document.querySelector('.transaction-qr')
       QRCode.toCanvas(canvas, this.transaction.id, (err) => {
         if (err) {
-          console.log(err)
           return
         }
 
@@ -237,7 +241,8 @@ export default {
     .then (res => {
       this.transaction = res.data.transaction
       this.loading = false
-      console.log(this.transaction, 'tx')
+
+      console.log(this.transaction, 'txsss')
     })
     .catch (err => {
       this.loading = false

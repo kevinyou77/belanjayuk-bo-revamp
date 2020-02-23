@@ -46,8 +46,7 @@
             v-for="(item, index) in transaction.transactionDetail"
             :key="index"
             >
-
-              <div>
+              <div v-if="item.status != 4">
                 <div>
                   <div class="detail-list">
                     <span>{{ item.numberOfPurchases }} {{ item.productDetail.productStock.name }}</span>
